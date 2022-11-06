@@ -1,0 +1,30 @@
+cache-first-strategy
+looks in the cache first, and then it falls back to the network.
+
+waiting state: old data, particularly the old website will be loaded in until the app is closed. Only then will it check for updated data.
+	For development, this can be annoying as it will cause the old website to be loaded 
+	regardless of changes you make, so it is recommended to keep this off until you are 
+	ready to test online.
+	To test, run a standard http build server: https://create-react-app.dev/docs/deployment/
+		-> Use icognito
+	By default, API generated images, text will not be cached, can be changed.
+
+notifications for offline ready status: let the user know when the PWA is ready for offline use.
+
+
+requires https to run...
+
+manifest.json: used to customize how the web app is shown.
+
+client-side-routing: React uses client-side-routing-> Single page applications.
+Utilizes javascript to change what it needs to on the page of the website without the need for a full page reload. One of these changes is the URL for the user's sanity.
+
+	Vs server-side-routing:The user clicks on links that request a new page to be displayed.
+	The link talks to the server about what information it needs, and the server returns the
+	data of that page. It then calls a refresh to the user's computer to reload that page
+	with the new content.
+React Router: Specific type of client-side-routing that has its own component handle the routes to find what the end URL link should be.
+
+
+
+
