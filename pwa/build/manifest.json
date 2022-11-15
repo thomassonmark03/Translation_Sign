@@ -1,6 +1,6 @@
 {
-    "name": "PWA Example",
-    "short_name": "PWAExample",
+    "name": "Park Sign Translator",
+    "short_name": "Park Translator",
     "start_url" : "./index.html",
     "display": "standalone",
     "background_color": "#000000",
