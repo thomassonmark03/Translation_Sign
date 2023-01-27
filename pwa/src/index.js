@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/css/main.css';
-import Header from './assets/js/Header';
-import Body from './assets/js/Body';
+import App from './assets/js/App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-
+import {BrowserRouter} from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Header/>
-    <Body/>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
