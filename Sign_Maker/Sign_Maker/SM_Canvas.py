@@ -4,21 +4,27 @@ from PySide6.QtGui import QPixmap, QPainter, QFont
 from PySide6.QtCore import QSize, Qt
 
 
+import SM_Text
+
+
 
 
 class SM_Display(QLabel):
     #mode, default draw
-    mode = 0
+    mode = 1
     #mode values
     Draw = 0
     Text = 1
+
+    #helpers
+    tool = None
 
 
 
     def __init__(self, *args, **kwargs):
         super(SM_Display, self).__init__(*args, **kwargs)
 
-        canvas = QPixmap(1920, 1080)
+        canvas = QPixmap(1024, 768)
         canvas.fill(Qt.white)
 
         self.setPixmap(canvas)
@@ -36,34 +42,43 @@ class SM_Display(QLabel):
         self.setPixmap(canvas)
 
     def mousePressEvent(self, pos):
-        canvas = self.pixmap()
-        editor = QPainter(canvas)
         if self.mode == self.Text: 
-            font = QFont()
-            font.setFamily('Times')
-            font.setBold(True)
-            font.setPointSize(40)
-            editor.drawText(pos.x(), pos.y(), "Whattup")
+            print("In text mode")
+            self.tool = SM_Text.SM_Textbox()
+            self.tool.setParent(self)
+            self.tool.move(pos.pos())
+            self.tool.show()
 
-
-        editor.end()
-        self.setPixmap(canvas)
     
 
-
-    def drawText(self, pos, text, font):
+    #Text Mode Functions
+    def drawText(self, pos, text):
         canvas = self.pixmap()
         editor = QPainter(canvas)
         if self.mode == self.Text: 
-            font = QFont()
-            font.setFamily('Times')
-            font.setBold(True)
-            font.setPointSize(40)
+            #editor.setFont(font)
             editor.drawText(pos.x(), pos.y(), text)
 
 
         editor.end()
         self.setPixmap(canvas)
+
+
+    def text_finished(self):
+        if isinstance(self.tool, SM_Text.SM_Textbox):
+            self.drawText(self.tool.pos(), self.tool.text())
+
+            #Might cause memory leak, must checkout
+            self.tool.setParent(None)
+            self.tool.deleteLater()
+            self.tool = None
+        
+        else:
+            print("Text Finished Error")
+
+
+
+
 
     #Mode functions
     def setMode(self, mode):
