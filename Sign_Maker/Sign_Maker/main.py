@@ -2,7 +2,7 @@
 
 
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QVBoxLayout, QWidget, QLayout
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSize, Qt
 
@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
 
 
         #Editor
-        self.canvas = SM_Canvas.SM_Display()
+        self.canvas = SM_Canvas.SM_Display(parent=self)
         self.layout.addWidget(self.canvas)
 
 

@@ -18,12 +18,14 @@ class SM_Display(QLabel):
 
     #helpers
     tool = None
+    toolx = 0
+    tooly = 0
 
 
 
     def __init__(self, *args, **kwargs):
         super(SM_Display, self).__init__(*args, **kwargs)
-
+        self.setFixedSize(1024, 768)
         canvas = QPixmap(1024, 768)
         canvas.fill(Qt.white)
 
@@ -33,7 +35,7 @@ class SM_Display(QLabel):
     def mouseMoveEvent(self, pos):
 
         canvas = self.pixmap()
-        editor = QPainter(canvas)
+        editor = QPainter(canvas, parent= self)
         if self.mode == self.Draw:
         #if True:
             editor.drawPoint(pos.x(), pos.y())
@@ -44,17 +46,37 @@ class SM_Display(QLabel):
     def mousePressEvent(self, pos):
         if self.mode == self.Text: 
             print("In text mode")
-            self.tool = SM_Text.SM_Textbox()
-            self.tool.setParent(self)
+            
+            self.tool = SM_Text.SM_Textbox(parent=self)
+            self.toolx = pos.pos().x
+            self.tooly = pos.pos().y
             self.tool.move(pos.pos())
             self.tool.show()
+            print(pos.pos())
+            
+
+
+            #debug
+            """canvas = self.pixmap()
+            editor = QPainter(canvas, parent=self)
+            editor.drawText(pos.x(), pos.y(), "hello")
+            editor.end()
+            self.setPixmap(canvas)
+            """
+
+            #self.drawText(pos, "hello")
+             
+
+            print(pos.pos())
+
 
     
 
     #Text Mode Functions
     def drawText(self, pos, text):
+        print("drawing text")
         canvas = self.pixmap()
-        editor = QPainter(canvas)
+        editor = QPainter(canvas, parent=self)
         if self.mode == self.Text: 
             #editor.setFont(font)
             editor.drawText(pos.x(), pos.y(), text)
@@ -66,7 +88,10 @@ class SM_Display(QLabel):
 
     def text_finished(self):
         if isinstance(self.tool, SM_Text.SM_Textbox):
-            self.drawText(self.tool.pos(), self.tool.text())
+            pos = self.mapTo(self, self.tool.pos())
+            print(pos)
+            print(self.tool.text())
+            self.drawText(pos ,self.tool.text())
 
             #Might cause memory leak, must checkout
             self.tool.setParent(None)
