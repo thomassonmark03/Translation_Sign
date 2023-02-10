@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from PySide6.QtGui import QPixmap, QPainter, QFont
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize, Qt, QPoint
 
 
 import SM_Text
@@ -18,38 +18,38 @@ class SM_Display(QLabel):
 
     #helpers
     tool = None
-    toolx = 0
-    tooly = 0
 
 
 
     def __init__(self, *args, **kwargs):
-        super(SM_Display, self).__init__(*args, **kwargs)
+        super().__init__()
+        #self.setMaximumSize(1024, 768)
+
+        #--test--
         self.setFixedSize(1024, 768)
         canvas = QPixmap(1024, 768)
-        canvas.fill(Qt.white)
+        canvas.fill(Qt.blue)
 
         self.setPixmap(canvas)
 
-    #Events
+    """#Events
     def mouseMoveEvent(self, pos):
 
         canvas = self.pixmap()
-        editor = QPainter(canvas, parent= self)
+        editor = QPainter(canvas)
         if self.mode == self.Draw:
         #if True:
             editor.drawPoint(pos.x(), pos.y())
 
         editor.end()
         self.setPixmap(canvas)
+    """
 
     def mousePressEvent(self, pos):
         if self.mode == self.Text: 
             print("In text mode")
             
             self.tool = SM_Text.SM_Textbox(parent=self)
-            self.toolx = pos.pos().x
-            self.tooly = pos.pos().y
             self.tool.move(pos.pos())
             self.tool.show()
             print(pos.pos())
@@ -73,13 +73,16 @@ class SM_Display(QLabel):
     
 
     #Text Mode Functions
-    def drawText(self, pos, text):
+    def drawText(self, pos, text, font):
         print("drawing text")
         canvas = self.pixmap()
-        editor = QPainter(canvas, parent=self)
+        editor = QPainter(canvas)
+        editor.setFont(font)
         if self.mode == self.Text: 
             #editor.setFont(font)
-            editor.drawText(pos.x(), pos.y(), text)
+
+            #editor.drawText(pos.x(), pos.y(), text)
+            editor.drawText(pos, text, Qt.AlignVCenter | Qt.AlignJustify)
 
 
         editor.end()
@@ -88,10 +91,23 @@ class SM_Display(QLabel):
 
     def text_finished(self):
         if isinstance(self.tool, SM_Text.SM_Textbox):
-            pos = self.mapTo(self, self.tool.pos())
-            print(pos)
+            self.tool.setCursorPosition(0)
+            posRect = self.tool.cursorRect()    
+            posOffset = self.tool.geometry()
+            #posX = posRect.x() + posOffset.x()
+            #posY = posRect.y() + posOffset.y()
+            #pos = QPoint(posX, posY)
+            #posX = posOffset.topLeft().x() + 5
+            #posY = posOffset.bottomLeft().y() - 4 
+
+            #posX = posOffset.topLeft().x()
+            #posY = posOffset.center().y()
+            pos = posOffset
+            pos.translate(7, 0)
+
+            print(posRect)
             print(self.tool.text())
-            self.drawText(pos ,self.tool.text())
+            self.drawText(pos ,self.tool.text(),self.tool.font())
 
             #Might cause memory leak, must checkout
             self.tool.setParent(None)

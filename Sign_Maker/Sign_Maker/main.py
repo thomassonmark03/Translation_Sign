@@ -12,12 +12,14 @@ import SM_Buttons
 import SM_Canvas
 import SM_Text
 
+from PySide6.QtWidgets import QScrollArea
+
 class MainWindow(QMainWindow):
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__()
         self.layout = QVBoxLayout()
-
+        #self.layout.setSizeConstraint(QLayout.SetMinimumSize)
 
 
         """
@@ -26,14 +28,15 @@ class MainWindow(QMainWindow):
         """
 
 
-        #Editor
+        #Canvas
         self.canvas = SM_Canvas.SM_Display(parent=self)
-        self.layout.addWidget(self.canvas)
-
-
+        self.canvas_scrolling = QScrollArea()
         self.centraWid = QWidget()
 
+        self.canvas_scrolling.setWidget(self.canvas)
+        self.layout.addWidget(self.canvas_scrolling)
         self.centraWid.setLayout(self.layout)
+
 
 
 
