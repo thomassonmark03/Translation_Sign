@@ -1,6 +1,6 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PySide6.QtGui import QPixmap, QPainter, QFont
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QWidget, QGraphicsView
+from PySide6.QtGui import QPixmap, QPainter, QPen, QColor, QFont
 from PySide6.QtCore import QSize, Qt, QPoint
 
 
@@ -53,7 +53,9 @@ class SM_Display(QLabel):
             self.tool.move(pos.pos())
             self.tool.show()
             print(pos.pos())
-            
+ 
+            self.drawPoint(pos.pos() + QPoint(128, 128))            
+            self.drawPoint( QPoint(128,128))
 
 
             #debug
@@ -82,7 +84,9 @@ class SM_Display(QLabel):
             #editor.setFont(font)
 
             #editor.drawText(pos.x(), pos.y(), text)
-            editor.drawText(pos, text, Qt.AlignVCenter | Qt.AlignJustify)
+            editor.drawText(pos, text, Qt.AlignJustify)
+
+
 
 
         editor.end()
@@ -91,31 +95,51 @@ class SM_Display(QLabel):
 
     def text_finished(self):
         if isinstance(self.tool, SM_Text.SM_Textbox):
-            self.tool.setCursorPosition(0)
+            
+            """posOffset = self.tool.frameGeometry()
             posRect = self.tool.cursorRect()    
-            posOffset = self.tool.geometry()
-            #posX = posRect.x() + posOffset.x()
-            #posY = posRect.y() + posOffset.y()
-            #pos = QPoint(posX, posY)
-            #posX = posOffset.topLeft().x() + 5
-            #posY = posOffset.bottomLeft().y() - 4 
-
-            #posX = posOffset.topLeft().x()
-            #posY = posOffset.center().y()
+            
             pos = posOffset
-            pos.translate(7, 0)
 
             print(posRect)
-            print(self.tool.text())
-            self.drawText(pos ,self.tool.text(),self.tool.font())
+            print(str(self.tool.toPlainText()))
+            self.drawText(pos , str(self.tool.toPlainText()),self.tool.font())
 
             #Might cause memory leak, must checkout
             self.tool.setParent(None)
             self.tool.deleteLater()
             self.tool = None
+
+            """
+            #Try
+            print("drawing text")
+            canvas = self.pixmap()
+            editor = QPainter(canvas)
+            editor.setViewport(self.tool.geometry())
+            self.tool.render(editor, QPoint(0,0), renderFlags=QWidget.RenderFlag(QWidget.RenderFlag.DrawChildren | QWidget.RenderFlag.IgnoreMask ))
+            editor.end()
+            self.setPixmap(canvas)
+            self.tool.setParent(None)
+            self.tool.deleteLater()
+            self.tool = None
+           
+
         
         else:
             print("Text Finished Error")
+
+    def drawPoint(self, pos, size=100):
+        canvas = self.pixmap()
+        editor = QPainter(canvas)
+        pen = QPen()
+        pen.setWidth(size)
+        pen.setColor(QColor("black"))
+        editor.setPen(pen)
+        #editor.drawPoint(pos.x(), pos.y())
+
+        editor.end()
+        self.setPixmap(canvas)
+
 
 
 

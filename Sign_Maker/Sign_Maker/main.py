@@ -2,7 +2,9 @@
 
 
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QVBoxLayout, QWidget, QLayout
+from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QVBoxLayout, QWidget, QLayout,
+    QGraphicsScene, QGraphicsView, QGraphicsTextItem
+)
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSize, Qt
 
@@ -29,18 +31,24 @@ class MainWindow(QMainWindow):
 
 
         #Canvas
-        self.canvas = SM_Canvas.SM_Display(parent=self)
-        self.canvas_scrolling = QScrollArea()
-        self.centraWid = QWidget()
+        #self.canvas = SM_Canvas.SM_Display(parent=self)
+        #self.canvas_scrolling = QScrollArea()
+        #self.centraWid = QWidget()
 
-        self.canvas_scrolling.setWidget(self.canvas)
-        self.layout.addWidget(self.canvas_scrolling)
-        self.centraWid.setLayout(self.layout)
+        #self.canvas_scrolling.setWidget(self.canvas)
+        #self.layout.addWidget(self.canvas_scrolling)
+        #self.centraWid.setLayout(self.layout)
+
+        self.scene = QGraphicsScene()
+        self.text = QGraphicsTextItem("Wassup")
+        self.text.setTextInteractionFlags(Qt.TextInteractionFlag.TextEditorInteraction)
+        self.scene.addItem(self.text)
+        self.view = QGraphicsView(self.scene)
 
 
 
 
-        self.setCentralWidget(self.centraWid)
+        self.setCentralWidget(self.view)
 
     def mouseMoveEvent(self, pos):
 
