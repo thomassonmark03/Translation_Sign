@@ -1,7 +1,7 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QWidget, QGraphicsView
-from PySide6.QtGui import QPixmap, QPainter, QPen, QColor, QFont
-from PySide6.QtCore import QSize, Qt, QPoint
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QWidget, QGraphicsView, QGraphicsScene
+from PySide6.QtGui import QPixmap, QPainter, QPen, QColor, QFont, QBrush
+from PySide6.QtCore import QSize, Qt, QPoint, QRect
 
 
 import SM_Text
@@ -9,15 +9,19 @@ import SM_Text
 
 
 
-class SM_Display(QLabel):
+class SM_Display(QGraphicsView):
     #mode, default draw
     mode = 1
     #mode values
     Draw = 0
     Text = 1
 
-    #helpers
+    #tool vars
     tool = None
+    focus = False
+
+    #textbox 
+    text_list = []
 
 
 
@@ -27,10 +31,15 @@ class SM_Display(QLabel):
 
         #--test--
         self.setFixedSize(1024, 768)
-        canvas = QPixmap(1024, 768)
-        canvas.fill(Qt.blue)
+        self.scene = QGraphicsScene()
 
-        self.setPixmap(canvas)
+        #Scene creation
+        self.scene.setBackgroundBrush(Qt.white)  #Sets default background color
+        self.scene.setSceneRect(0, 0, 1024, 768) #Sets bounds of the scene, essential for a scene with no items
+        self.setScene(self.scene)
+        
+        
+
 
     """#Events
     def mouseMoveEvent(self, pos):
@@ -46,30 +55,19 @@ class SM_Display(QLabel):
     """
 
     def mousePressEvent(self, pos):
-        if self.mode == self.Text: 
-            print("In text mode")
-            
-            self.tool = SM_Text.SM_Textbox(parent=self)
-            self.tool.move(pos.pos())
-            self.tool.show()
-            print(pos.pos())
+        if self.focus == False:
+            if self.mode == self.Text: 
+                print("In text mode")
+        
+                self.tool = SM_Text.SM_Textbox()
+                self.tool.setParent(self)
+                self.scene.addItem(self.tool)
+                #self.setScene(self.scene)
+
+                self.tool.setPos(pos.pos())
+                print(pos.pos())
  
-            self.drawPoint(pos.pos() + QPoint(128, 128))            
-            self.drawPoint( QPoint(128,128))
 
-
-            #debug
-            """canvas = self.pixmap()
-            editor = QPainter(canvas, parent=self)
-            editor.drawText(pos.x(), pos.y(), "hello")
-            editor.end()
-            self.setPixmap(canvas)
-            """
-
-            #self.drawText(pos, "hello")
-             
-
-            print(pos.pos())
 
 
     
@@ -151,6 +149,18 @@ class SM_Display(QLabel):
 
     def getMode(self):
         return self.mode
+
+
+    #Tool Functions
+    def toolFocus(self):
+        self.focus = True
+    def toolUnfocus(self):
+        self.focus = False
+    
+    #Text functions
+    def addTxtToList(self, textbox):
+        self.text_list.append(textbox)
+
 
 
 

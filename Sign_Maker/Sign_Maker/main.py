@@ -30,30 +30,22 @@ class MainWindow(QMainWindow):
         """
 
 
-        #Canvas
-        #self.canvas = SM_Canvas.SM_Display(parent=self)
-        #self.canvas_scrolling = QScrollArea()
-        #self.centraWid = QWidget()
+        #Canvas setup
+        self.canvas = SM_Canvas.SM_Display(parent=self)
+        self.canvas_scrolling = QScrollArea()       #Makes the canvas scrollable instead of a constant size
+        self.centraWid = QWidget()
 
-        #self.canvas_scrolling.setWidget(self.canvas)
-        #self.layout.addWidget(self.canvas_scrolling)
-        #self.centraWid.setLayout(self.layout)
+        self.canvas_scrolling.setWidget(self.canvas)
+        self.layout.addWidget(self.canvas_scrolling)
 
-        self.scene = QGraphicsScene()
-        self.text = QGraphicsTextItem("Wassup")
-        self.text.setTextInteractionFlags(Qt.TextInteractionFlag.TextEditorInteraction)
-        self.scene.addItem(self.text)
-        self.view = QGraphicsView(self.scene)
+        #Setting up convert button
+        self.convert_btn = QPushButton("Convert All")
+        self.layout.addWidget(self.convert_btn)
 
+        #Setting up display
+        self.centraWid.setLayout(self.layout)
+        self.setCentralWidget(self.centraWid)
 
-
-
-        self.setCentralWidget(self.view)
-
-    def mouseMoveEvent(self, pos):
-
-        #Text Mode
-        print("The press event")
 
 
 
