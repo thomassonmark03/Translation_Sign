@@ -31,7 +31,8 @@ class MainWindow(QMainWindow):
 
 
         #Canvas setup
-        self.canvas = SM_Canvas.SM_Display(parent=self)
+        self.canvas = SM_Canvas.SM_Display()
+        self.canvas.setParent(self)
         self.canvas_scrolling = QScrollArea()       #Makes the canvas scrollable instead of a constant size
         self.centraWid = QWidget()
 
@@ -39,13 +40,17 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.canvas_scrolling)
 
         #Setting up convert button
-        self.convert_btn = QPushButton("Convert All")
+        self.convert_btn = SM_Buttons.SM_ConvertButton("Convert All")
+        self.convert_btn.clicked.connect(self.convert)
         self.layout.addWidget(self.convert_btn)
 
         #Setting up display
         self.centraWid.setLayout(self.layout)
         self.setCentralWidget(self.centraWid)
 
+
+    def convert(self):
+        self.canvas.convert(self.convert_btn.language)
 
 
 

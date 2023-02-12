@@ -5,6 +5,7 @@ from PySide6.QtCore import QSize, Qt, QPoint, QRect
 
 
 import SM_Text
+import SM_Translate
 
 
 
@@ -159,7 +160,14 @@ class SM_Display(QGraphicsView):
     
     #Text functions
     def addTxtToList(self, textbox):
+        print(f"{textbox.toPlainText()} added to list in addTxtList")
         self.text_list.append(textbox)
+
+    def convert(self, language):
+        text = "" 
+        for textbox in self.text_list:
+            text =  SM_Translate.translate_func(textbox.toPlainText(), language)
+            textbox.setPlainText(text)
 
 
 

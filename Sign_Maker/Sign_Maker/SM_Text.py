@@ -33,7 +33,6 @@ class SM_Textbox(QGraphicsTextItem):
         text = self.toPlainText()
         text_no_space = text.replace(" ", "") #Temporary code, ideally regex that checks for all non-seeable characters
         if(text_no_space != ""):
-            print(f"{text} added to list")
             self.parent().addTxtToList(self)
 
 
