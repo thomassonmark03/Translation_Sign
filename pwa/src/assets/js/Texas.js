@@ -1,11 +1,33 @@
 import Header from "./Header";
+import logo from '../usacelogo.png'
+import {Link} from "react-router-dom"
 
 function Texas() {
     return (
         <>
         <Header/>
-        <h1> Hello its the Texas</h1>
-        </>
+        <div className="container">
+        <Link to="/Texas"> 
+            <div className="content1">
+                <h2>General Rules</h2>
+                <img alt='UsaceLogo' src={logo}></img>
+            </div>
+        </Link>
+        <Link to="/Oklahoma">
+            <div className="content2">
+                <h2>Board 1</h2>
+                <img alt='UsaceLogo' src={logo}></img>
+            </div>
+        </Link>
+        <Link to="/Kansas">
+            <div className="content3">
+                <h2>Board 2</h2>
+                <img alt='UsaceLogo' src={logo}></img>
+            </div>
+        </Link>
+
+    </div>
+    </>
     )
 }
 export default Texas

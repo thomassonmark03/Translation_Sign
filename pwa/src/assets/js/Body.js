@@ -1,57 +1,33 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import '../css/main.css';
-import logo from '../usacelogo.png'
-// import { useState,useEffect } from "react";
-// import { db } from './FirebaseConfig';
-// import { collection,getDocs} from 'firebase/firestore';
 import {Link} from "react-router-dom"
-
+import { collection,getDocs } from "firebase/firestore";
+import { db } from './FirebaseConfig';
 function Body() {
+    const [board,setBoard] = useState([]);
+    const boardCollectionRef = collection(db,"Board");
 
+    useEffect(() => {
+    const getBoard = async() => {
+        const data = await getDocs(boardCollectionRef);
+        setBoard(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+    }
+    getBoard();
+},[]);
+    
   return (
     <div className="container">
-        <Link to="/Texas"> 
-            <div className="content1">
-                <h2>Texas</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
-        <Link to="/Oklahoma">
-            <div className="content2">
-                <h2>Oklahoma</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
-        <Link to="/Texas">
-            <div className="content3">
-                <h2>Kansas</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
-        <Link to="/Texas">
-            <div className="content4">
-                <h2>Maine</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
-        <Link to="/Texas">
-            <div className="content5">
-                <h2>Washington</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
-        <Link to="/Texas">
-            <div className="content6">
-                <h2>Colorado</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
-        <Link to="/Texas">
-            <div className="content7">
-                <h2>Oregon</h2>
-                <img alt='UsaceLogo' src={logo}></img>
-            </div>
-        </Link>
+        {board.map((board)=> {
+            console.log(board);
+            return( 
+                <Link to={board.id}> 
+                    <div className="content1">
+                        <h2>{board.title}</h2>
+                        <img alt={board.title} src={board.img}></img>
+                    </div>
+                </Link>
+            )
+        })}
 
     </div>
   );

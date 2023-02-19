@@ -6,14 +6,16 @@ import Body from "./Body";
 import Texas from "./Texas";
 import Oklahoma from "./Oklahoma";
 import Contact from './Contact';
+import Kansas from './Kansas';
 
 function App() {
     return (
         <Routes>
             <Route path="/" element={[<Header/>,<Body/>]}/>
-            <Route path="/texas" element={<Texas/>}/>
-            <Route path="/oklahoma" element={<Oklahoma/>}/>
-            <Route path="/contact" element={<Contact/>} />
+            <Route path="/texas" element={[<Texas/>]}/>
+            <Route path="/oklahoma" element={[<Oklahoma/>]}/>
+            <Route path="/contact" element={[<Contact/>]} />
+            <Route path="/kansas" element={[<Kansas/>]} />
         </Routes>
     )
 }
