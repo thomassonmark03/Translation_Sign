@@ -4,7 +4,11 @@ import {Link} from "react-router-dom"
 import { collection,getDocs } from "firebase/firestore";
 import { db } from '../Database/FirebaseConfig';
 
+
+import Cookies from 'js-cookie'
+
 function Body() {
+
     const [board,setBoard] = useState([]);
     const boardCollectionRef = collection(db,"Board");
 
@@ -18,6 +22,7 @@ function Body() {
     
   return (
     <div className="container">
+        <button onClick={() => console.log(Cookies.get('pv_lang'))}>Get Cookie</button>
         {board.map((board)=> {
             console.log(board);
             return( 

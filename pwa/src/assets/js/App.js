@@ -3,6 +3,7 @@ import '../css/main.css';
 import {Route,Routes} from "react-router-dom";
 import Home from './components/Home/Home'
 import Body from "./components/test/Body";
+import LanguagePage from './components/Language/LanguagePage';
 import Contact from './components/Admin/Contact';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Routes>
             <Route path="/" element={[<Home/>]}></Route>
             <Route path="/test" element={[<Body/>]}/>
+            <Route path="/LanguagePick" element={[<LanguagePage/>]}/>
         </Routes>
     )
 }

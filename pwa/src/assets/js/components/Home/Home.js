@@ -13,13 +13,15 @@ const TEST_STATES = [
     {
         name: 'Texas',
         description: 'Big Texas',
-        image: TexasPic
+        image: TexasPic,
+        route: './test'
     },
 
     {
         name: 'California',
         description: 'Hot and Dry',
-        image: CaliforniaPic
+        image: CaliforniaPic,
+        route: './test'
     }
 
 
@@ -87,7 +89,15 @@ const Home = () =>{
             <div>
                 {displayStates.map( (state) => {
 
-                        return <State name= {state.name} description = {state.description} stateImage= {state.image}/>
+                        return <State 
+                            name= {state.name} 
+                            description = {state.description} 
+                            stateImage= {state.image}
+                            route= {state.route}
+                        
+                        
+                        
+                        />
                     }
 
 
