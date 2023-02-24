@@ -23,6 +23,7 @@ function Body() {
   return (
     <div className="container">
         <button onClick={() => console.log(Cookies.get('pv_lang'))}>Get Cookie</button>
+        <button onClick={() => console.log(Cookies.remove('pv_lang'))}>Remove Cookie</button>
         {board.map((board)=> {
             console.log(board);
             return( 

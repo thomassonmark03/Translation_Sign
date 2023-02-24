@@ -1,19 +1,47 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../css/main.css';
-import {Route,Routes} from "react-router-dom";
+import {PrivateRoute, Route,Routes} from "react-router-dom";
 import Home from './components/Home/Home'
 import Body from "./components/test/Body";
 import LanguagePage from './components/Language/LanguagePage';
 import Contact from './components/Admin/Contact';
+import Cookies from 'js-cookie'
+import Paths from './components/Paths/Paths';
+
+const Valid_Languages = ['English', 'Spanish'];
 
 function App() {
-    return (
-        <Routes>
-            <Route path="/" element={[<Home/>]}></Route>
-            <Route path="/test" element={[<Body/>]}/>
-            <Route path="/LanguagePick" element={[<LanguagePage/>]}/>
-        </Routes>
+    //Debug
+
+    const [language, setLanguage] = useState(Cookies.get('pv_lang'));
+
+    const display = ()=>{
+
+        console.log('I was executed');
+
+        if(Valid_Languages.includes(language))
+        {
+            return [<Paths></Paths>]
+            
+        }
+        else
+        {
+            return [<LanguagePage></LanguagePage>]
+        }
+
+    }
+
+
+
+    return(
+        <div>
+            {display()}
+        </div>
     )
+
+    
+    
+
 }
 export default App
 
