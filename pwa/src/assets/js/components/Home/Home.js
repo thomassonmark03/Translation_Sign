@@ -80,8 +80,6 @@ const Home = () =>{
     const displayStates = states.filter(filterState);
     console.log(displayStates);
 
-
-
     return(
         <div>
             <Header></Header>
@@ -109,11 +107,13 @@ const Home = () =>{
 
 
             </div>
+
         </div>
 
 
 
-    )
+    );
+
 
 
 

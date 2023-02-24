@@ -8,18 +8,17 @@ import Contact from './components/Admin/Contact';
 import Cookies from 'js-cookie'
 import Paths from './components/Paths/Paths';
 
-const Valid_Languages = ['English', 'Spanish'];
 
 function App() {
     //Debug
 
-    const [language, setLanguage] = useState(Cookies.get('pv_lang'));
+    const [language, setLanguage] = useState(Cookies.get('googtrans'));
 
     const display = ()=>{
 
         console.log('I was executed');
 
-        if(Valid_Languages.includes(language))
+        if(language != undefined)
         {
             return [<Paths></Paths>]
             
