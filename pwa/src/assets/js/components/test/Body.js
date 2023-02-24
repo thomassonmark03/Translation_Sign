@@ -1,8 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import '../css/main.css';
+import './main.css';
 import {Link} from "react-router-dom"
 import { collection,getDocs } from "firebase/firestore";
-import { db } from './FirebaseConfig';
+import { db } from '../Database/FirebaseConfig';
+
 function Body() {
     const [board,setBoard] = useState([]);
     const boardCollectionRef = collection(db,"Board");

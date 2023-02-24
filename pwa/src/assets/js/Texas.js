@@ -1,5 +1,5 @@
-import Header from "./Header";
-import logo from '../usacelogo.png'
+import Header from "./components/Design/Header";
+import logo from './images/usacelogo.png'
 import {Link} from "react-router-dom"
 
 function Texas() {

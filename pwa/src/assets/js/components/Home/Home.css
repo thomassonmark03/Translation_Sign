@@ -1,0 +1,29 @@
+.state{
+    background-color: rgb(23, 85, 105);
+    width: 15rem;
+    margin: 1rem;
+    box-shadow: 10px 10px 15px rgb(37, 116, 189);
+    transition: 0.3s;
+ }
+
+ .state:hover{
+    box-shadow: 10px 10px 10px rgb(37, 116, 189);
+ }
+
+ .state img{
+    width:100%;
+    max-height: 100%;
+    align-self: center;
+ }
+
+
+
+.state p{
+    color:white;
+    text-align: center;
+    width: 100%;
+    font-size: 30px;
+    margin: 0;
+
+
+}
