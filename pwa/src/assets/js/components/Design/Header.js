@@ -15,7 +15,6 @@ function Header() {
           <a href="https://www.usace.army.mil/">US Army Corps of Engineers</a>
         </div>
       </div>
-      <div>Hello</div>
       <div className="cta">
         <Link to="/contact">Admin Login</Link>
       </div>
