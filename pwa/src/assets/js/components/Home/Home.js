@@ -104,7 +104,7 @@ const Home = () =>{
                 {displayStates.map( (state) => {
 
                         return <State 
-                            name= {state.id}
+                            name= {console.log("<Route path='/" + state.id + " element={<Home/>}/>" )}
                             description= {'hello'}
                             stateImage = {state.img}
                             route= {'./' + state.id}
