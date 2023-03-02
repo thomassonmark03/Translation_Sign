@@ -4,7 +4,6 @@ import '../css/main.css';
 function Contact() {
     return (
         <>
-        <Header/>
         <form>
             <h3>Login Here</h3>
 

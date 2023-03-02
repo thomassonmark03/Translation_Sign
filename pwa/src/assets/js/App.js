@@ -3,19 +3,17 @@ import '../css/main.css';
 import {Route,Routes} from "react-router-dom";
 import Header from "./Header";
 import Body from "./Body";
-import Texas from "./Texas";
-import Oklahoma from "./Oklahoma";
+// import Texas from "./Texas";
+import State from './State';
+import Translate from './Translate';
 import Contact from './Contact';
-import Kansas from './Kansas';
 
 function App() {
     return (
         <Routes>
-            <Route path="/" element={[<Header/>,<Body/>]}/>
-            <Route path="/texas" element={[<Texas/>]}/>
-            <Route path="/oklahoma" element={[<Oklahoma/>]}/>
-            <Route path="/contact" element={[<Contact/>]} />
-            <Route path="/kansas" element={[<Kansas/>]} />
+            <Route path="/" element={[<Header/>,<Translate/>,<State/>]}/>
+            <Route path="/texas" element={[<Header/>,<Translate/>,<Body/>]}/>
+            <Route path="/login" element={[<Header/>,<Translate/>,<Contact/>]}/>
         </Routes>
     )
 }
