@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Header from '../Design/Header'
 import State from './State'
 import StateFilter from './StateFilter'
@@ -6,6 +6,9 @@ import StateFilter from './StateFilter'
 
 import TexasPic from './States/texas.jpg'
 import CaliforniaPic from './States/california.jpg'
+
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../Database/FirebaseConfig';
 
 
 const TEST_STATES = [
@@ -30,7 +33,9 @@ const TEST_STATES = [
 
 const Home = () =>{
 
-    const states = [...TEST_STATES];
+    const stateCollection = collection(db, 'States');
+    const [states, setStates] = useState([]);
+    //const states = [...TEST_STATES];
     const [filterText, setFilterText] = useState('');
 
     const filterSet = (text) =>{
@@ -52,8 +57,10 @@ const Home = () =>{
 
     const filterState = (state) =>{
         let matches = 0;
-        let lcStateName = state.name.toLowerCase();
+        let lcStateName = state.id.toLowerCase();
         let lcFilterText = filterText.toLowerCase();
+
+        console.log(lcStateName);
 
         for(let i = 0; i < filterLength && i < lcStateName.length; i++)
         {
@@ -76,9 +83,18 @@ const Home = () =>{
         return matches >= (filterLength/2)
 
     };
-
     const displayStates = states.filter(filterState);
-    console.log(displayStates);
+
+
+    //Database
+    useEffect(() => {
+        const getBoard = async() => {
+            const data = await getDocs(stateCollection);
+            setStates(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+        }
+        getBoard();
+    },[]);
+
 
     return(
         <div>
@@ -88,10 +104,10 @@ const Home = () =>{
                 {displayStates.map( (state) => {
 
                         return <State 
-                            name= {state.name} 
-                            description = {state.description} 
-                            stateImage= {state.image}
-                            route= {state.route}
+                            name= {state.id}
+                            description= {'hello'}
+                            stateImage = {state.img}
+                            route= {'./' + state.id}
                         
                         
                         
@@ -122,4 +138,4 @@ const Home = () =>{
 
 
 
-export default Home
+export default Home;

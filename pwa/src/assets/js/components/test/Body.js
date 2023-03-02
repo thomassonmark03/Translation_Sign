@@ -10,7 +10,7 @@ import Cookies from 'js-cookie'
 function Body() {
 
     const [board,setBoard] = useState([]);
-    const boardCollectionRef = collection(db,"Board");
+    const boardCollectionRef = collection(db,"States");
 
     useEffect(() => {
     const getBoard = async() => {
