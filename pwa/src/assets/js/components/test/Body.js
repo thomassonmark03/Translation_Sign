@@ -27,9 +27,9 @@ function Body() {
         {board.map((board)=> {
             console.log(board);
             return( 
-                <Link to={board.id}> 
+                <Link to={'/BoardPage'}> 
                     <div className="content1">
-                        <h2>{board.title}</h2>
+                        <h2 >{board.title}</h2>
                         <img alt={board.title} src={board.img}></img>
                     </div>
                 </Link>

@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 import {Route,Routes} from "react-router-dom";
 import Header from '../Design/Header';
-import Home from '../Home/Home'
+import Home from '../Home/Home';
 import Body from '../test/Body';
+import Admin from '../Admin/Admin';
 
+import BoardPage from '../Board/BoardPage';
 
 //
     
@@ -64,6 +66,11 @@ import Body from '../test/Body';
                 <Route path='/West Virginia' element={[<Header/>,<Body/>]}/>
                 <Route path='/Wisconsin' element={[<Header/>,<Body/>]}/>
                 <Route path='/Wyoming' element={[<Header/>,<Body/>]}/>
+
+
+                <Route path='/BoardPage' element={<BoardPage/>}/>
+                <Route path='/Admin' element={<Admin/>}/>
+
 
 
             </Routes>

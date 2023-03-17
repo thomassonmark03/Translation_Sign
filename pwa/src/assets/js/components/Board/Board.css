@@ -1,0 +1,38 @@
+
+
+
+.boardTitle{
+
+    font-size: large;
+
+
+
+
+
+}
+
+.boardBody{
+
+    display: flex;
+
+}
+
+.boardImage{
+
+    width: 60%;
+    height: 100%;
+}
+
+.boardText{
+    flex-grow: 1;
+    background-color: aqua;
+    border-radius: 10px;
+    border-color: black;
+    height: 100%;
+}
+
+
+
+
+
+

@@ -70,17 +70,7 @@ const Home = () =>{
                 matches++;
         }
 
-        //Debug
-        /* 
-        console.log("Matches: " + matches);
-        console.log("Filter Length: " + filterLength);
-        console.log("stateName length: " + stateName.length);
-        console.log("stateName: " + stateName);
-        console.log("filterText: " + filterText);
-        console.log("filterText: " + filterText);
-        */
-
-        return matches >= (filterLength/2)
+        return lcFilterText === '' || (lcStateName[0] === lcFilterText[0] && matches >= filterLength - 2);
 
     };
     const displayStates = states.filter(filterState);
@@ -104,7 +94,7 @@ const Home = () =>{
                 {displayStates.map( (state) => {
 
                         return <State 
-                            name= {console.log("<Route path='/" + state.id + " element={<Home/>}/>" )}
+                            name= {state.id}
                             description= {'hello'}
                             stateImage = {state.img}
                             route= {'./' + state.id}
