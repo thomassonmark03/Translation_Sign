@@ -13,8 +13,8 @@ const StateFilter = (props) =>{
     return(
 
         <div className='state-filter'>
-            <label>Filter States</label>
-            <input placeholder = 'Enter State here'type='text' onChange={filterChanged} value={props.defaultText}></input>
+            <label className="state-filter__label"> Filter States</label>
+            <input className="state-filter__input" placeholder = 'Enter State here'type='text' onChange={filterChanged} value={props.defaultText} ></input>
         </div>
 
     );

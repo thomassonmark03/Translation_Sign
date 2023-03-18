@@ -4,6 +4,7 @@ import Header from '../Design/Header';
 import Home from '../Home/Home';
 import Body from '../test/Body';
 import Admin from '../Admin/Admin';
+import ParkPage from '../Parks/ParksPage';
 
 import BoardPage from '../Board/BoardPage';
 
@@ -69,7 +70,10 @@ import BoardPage from '../Board/BoardPage';
 
 
                 <Route path='/BoardPage' element={<BoardPage/>}/>
+                <Route path='/ParkPage' element={<ParkPage/>}/>
                 <Route path='/Admin' element={<Admin/>}/>
+                <Route path='/Texas/Parks' element={<ParkPage/>}/>
+
 
 
 

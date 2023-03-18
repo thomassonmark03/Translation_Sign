@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Board.css'
+
+
 
 
 
@@ -7,12 +9,13 @@ import './Board.css'
 const Board = (props) =>{
 
 
+
     return(
 
         <div className=''>
 
             
-            <h2>{props.title}</h2>
+            <h2 className='boardTitle'>{props.title}</h2>
             <div className='boardBody'>
                 <img alt= {props.title + ' missing!'} src={props.image} className='boardImage'></img>
                 <p className='boardText'>{props.enText}</p>

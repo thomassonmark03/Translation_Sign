@@ -4,9 +4,62 @@ import { useState,useEffect } from "react";
 import { db } from '../Database/FirebaseConfig';
 import { collection,getDocs, addDoc} from 'firebase/firestore';
 
+
 function Admin() {
 
-    const testAdd = async () =>
+    const stateCollection = collection(db, 'States');
+
+
+    const [states, setStates] = useState([]);
+
+    const stateGet = async () =>{
+        const statesSnapshot = await getDocs(stateCollection);
+
+        try{
+
+            setStates(statesSnapshot.map((doc) => ({...doc.data(), id: doc.id}) ) );
+            console.log(states);
+            
+
+        }
+        catch(error){
+            console.log(error);
+        }
+
+
+    }
+
+    useEffect(stateGet, []);
+   
+
+
+    return (
+        <div>
+            <span>
+
+            </span>
+
+
+            <span>
+
+
+            </span>
+
+            <span>
+
+
+            </span>
+        
+
+        
+        
+        
+        
+        </div>
+
+    );
+}
+/*const testAdd = async () =>
     {
         console.log('in add doc');
         try {
@@ -23,24 +76,5 @@ function Admin() {
 
     }
 
-    const testGet = async () =>{
-        const querySnapshot = await getDocs(collection(db, "Board"));
-        querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-        });
-
-    }
-
-
-    //useEffect(testAdd, []);
-
-    useEffect(testGet, []);
-   
-
-
-    return (
-      <div><p>Admin Page</p></div>
-    );
-}
-
+*/
 export default Admin;
