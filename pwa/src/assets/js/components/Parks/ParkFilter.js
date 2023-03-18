@@ -1,7 +1,7 @@
 import React from 'react'
 import './ParkFilter.css'
 
-const StateFilter = (props) =>{
+const ParkFilter = (props) =>{
 
     const filterChanged = (event) =>{
 
@@ -13,7 +13,7 @@ const StateFilter = (props) =>{
     return(
 
         <div className='park-filter'>
-            <label className="park-filter__label"> Filter States</label>
+            <label className="park-filter__label"> Filter Parks</label>
             <input className="park-filter__input" placeholder = 'Enter Park here'type='text' onChange={filterChanged} value={props.defaultText} ></input>
         </div>
 
@@ -24,7 +24,7 @@ const StateFilter = (props) =>{
 };
 
 
-export default StateFilter;
+export default ParkFilter;
 
 
 

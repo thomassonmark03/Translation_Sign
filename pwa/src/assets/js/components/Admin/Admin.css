@@ -1,0 +1,40 @@
+
+
+.sign_translation_editor{
+
+    display: flex;
+
+    flex-wrap: nowrap;
+
+
+}
+
+.sign_translation_editor__states{
+    flex: 1 1 33%;
+    background-color: aliceblue;
+    margin: 0 auto;
+
+
+
+}
+
+.sign_translation_editor__parks{
+
+    flex: 1 1 33%;
+    background-color: darkolivegreen;
+    margin: 0 auto;
+
+}
+
+
+
+
+.sign_translation_editor__boards{
+
+    flex: 1 1 33%;
+    background-color: coral;
+    margin: 0 auto;
+
+}
+
+

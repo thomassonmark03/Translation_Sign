@@ -1,14 +1,15 @@
-import React from 'react'
+import React from 'react';
 
 
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import './Park.css';
 
 
 
 const Park = (props) =>{
     return(
         <Link translate='no' to={props.route}>
-            <div className='state'>
+            <div className='park'>
                 <img alt= {props.name + ' image here'} src={props.parkImage}></img>
                 <p>{props.name}</p>
 

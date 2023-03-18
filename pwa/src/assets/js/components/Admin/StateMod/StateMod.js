@@ -1,21 +1,22 @@
 import React from 'react'
 
 
-import './Home.css'
+import './StateMod.css'
 import {Link} from "react-router-dom"
 
 
 
-const State = (props) =>{
+const StateMod = (props) =>{
+    console.log('StateMod was executed');
+    console.log(props);
     return(
-        <Link translate='no' to={props.route}>
+        <div onClick={() => console.log('Statemod clicked')}>
             <div className='state'>
                 <img alt= {props.name + ' image here'} src={props.stateImage}></img>
                 <p>{props.name}</p>
 
             </div>
-        </Link>
-
+        </div>
 
     )
 
@@ -24,7 +25,7 @@ const State = (props) =>{
 
 
 
-export default State;
+export default StateMod;
 
 
 
