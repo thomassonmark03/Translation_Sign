@@ -73,7 +73,7 @@ const ParkPage = () =>{
             setParks(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
         }
         getPark ();
-    },[parkCollection]);
+    },[]);
 
 
     return(

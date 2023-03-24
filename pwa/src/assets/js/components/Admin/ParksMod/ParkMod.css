@@ -1,4 +1,4 @@
-.park{
+.parkMod{
     background-color: rgb(31, 123, 146);
     width: 250px;
     position: relative;
@@ -10,11 +10,11 @@
     
  }
 
- .park:hover{
+ .parkMod:hover{
     box-shadow: 10px 10px 7px rgb(112, 140, 199);
  }
 
- .park img{
+ .parkMod img{
     width:100%;
     height: 10rem;
     align-self: center;
@@ -23,7 +23,7 @@
 
 
 
-.park p{
+.parkMod p{
     color:white;
     text-align: center;
     width: 100%;

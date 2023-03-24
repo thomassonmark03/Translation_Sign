@@ -8,8 +8,8 @@ import {Link} from "react-router-dom"
 
 const State = (props) =>{
     return(
-        <Link translate='no' to={props.route}>
-            <div className='state'>
+        <Link to={props.route}>
+            <div translate= 'no' className='state'>
                 <img alt= {props.name + ' image here'} src={props.stateImage}></img>
                 <p>{props.name}</p>
 

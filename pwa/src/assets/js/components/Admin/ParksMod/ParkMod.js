@@ -9,7 +9,7 @@ import {Link} from "react-router-dom"
 const ParkMod = (props) =>{
     return(
         <div onClick={() => console.log('ParkMod clicked')}>
-            <div className='park'>
+            <div className='parkMod'>
                 <img alt= {props.name + ' image here'} src={props.parkImage}></img>
                 <p>{props.name}</p>
 

@@ -18,7 +18,7 @@ function Body() {
         setBoard(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
     }
     getBoard();
-},[boardCollectionRef]);
+},[]);
     
   return (
     <div className="container">

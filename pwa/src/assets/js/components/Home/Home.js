@@ -83,7 +83,7 @@ const Home = () =>{
             setStates(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
         }
         getState();
-    },[stateCollection]);
+    },[]);
     
 
 
