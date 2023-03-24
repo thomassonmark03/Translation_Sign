@@ -14,16 +14,16 @@ import { db } from '../Database/FirebaseConfig';
 const TEST_STATES = [
 
     {
-        name: 'Texas',
+        id: 'Texas',
         description: 'Big Texas',
-        image: TexasPic,
+        img: TexasPic,
         route: './test'
     },
 
     {
         name: 'California',
         description: 'Hot and Dry',
-        image: CaliforniaPic,
+        img: CaliforniaPic,
         route: './test'
     }
 
@@ -35,7 +35,7 @@ const Home = () =>{
 
     const stateCollection = collection(db, 'States');
     const [states, setStates] = useState([]);
-    //const states = [...TEST_STATES];
+    //const [states, setStates] = [...TEST_STATES];
     const [filterText, setFilterText] = useState('');
 
     const filterSet = (text) =>{
@@ -84,6 +84,7 @@ const Home = () =>{
         }
         getState();
     },[stateCollection]);
+    
 
 
     return(

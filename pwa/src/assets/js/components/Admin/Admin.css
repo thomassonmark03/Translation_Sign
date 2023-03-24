@@ -1,40 +1,51 @@
 
 
-.sign_translation_editor{
+:root{
+    --state--bg-color: aliceblue;
+    --park--bg-color: rgb(134, 168, 74);
+    --board--bg-color: coral;
+}
+
+.sign_translation_editor_container{
 
     display: flex;
+    flex-direction: row;
 
     flex-wrap: nowrap;
 
 
 }
 
-.sign_translation_editor__states{
+.sign_translation_editor__states__container{
+    background-color: var(--state--bg-color);
     flex: 1 1 33%;
-    background-color: aliceblue;
-    margin: 0 auto;
+    border: 2px solid black;
+    border-radius: 5px;
 
 
 
 }
 
-.sign_translation_editor__parks{
+.sign_translation_editor__parks__container{
 
+    background-color: var(--park--bg-color);
     flex: 1 1 33%;
-    background-color: darkolivegreen;
-    margin: 0 auto;
+    border: 2px solid black;
+    border-radius: 5px;
 
 }
 
 
 
 
-.sign_translation_editor__boards{
+.sign_translation_editor__boards__container{
 
+    background-color: var(--board--bg-color); 
     flex: 1 1 33%;
-    background-color: coral;
-    margin: 0 auto;
+    border: 2px solid black;
+    border-radius: 5px;
 
 }
+
 
 

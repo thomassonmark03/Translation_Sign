@@ -59,7 +59,6 @@ import BoardPage from '../Board/BoardPage';
                 <Route path='/South' Carolina element={[<Header/>,<Body/>]}/>
                 <Route path='/South' Dakota element={[<Header/>,<Body/>]}/>
                 <Route path='/Tennessee' element={[<Header/>,<Body/>]}/>
-                <Route path='/Texas' element={[<Header/>,<Body/>]}/>
                 <Route path='/Utah' element={[<Header/>,<Body/>]}/>
                 <Route path='/Vermont' element={[<Header/>,<Body/>]}/>
                 <Route path='/Virginia' element={[<Header/>,<Body/>]}/>
@@ -72,7 +71,7 @@ import BoardPage from '../Board/BoardPage';
                 <Route path='/BoardPage' element={<BoardPage/>}/>
                 <Route path='/ParkPage' element={<ParkPage/>}/>
                 <Route path='/Admin' element={<Admin/>}/>
-                <Route path='/Texas/Parks' element={<ParkPage/>}/>
+                <Route path='/Texas' element={<ParkPage/>}/>
 
 
 

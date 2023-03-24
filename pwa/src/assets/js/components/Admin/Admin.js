@@ -1,7 +1,8 @@
 import React from 'react';
 import './Admin.css';
 import { useState,useEffect } from "react";
-import { db } from '../Database/FirebaseConfig';
+import db , {imgStorage} from '../Database/FirebaseConfig';
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 import { collection,getDocs, addDoc} from 'firebase/firestore';
 
 import Header from '../Design/Header';
@@ -15,71 +16,124 @@ import BoardFilter from '../Board/BoardFilter';
 //import NotFoundImg from './not_found.png';
 
 import StateMod from './StateMod/StateMod';
+import ParkMod from './ParksMod/ParkMod';
+import BoardMod from './BoardMod/BoardMod';
 
 
-const NotFoundImg = 'https://www.online-tech-tips.com/wp-content/uploads/2022/03/image-41.jpeg';
+const NotFoundImgState = 'https://www.online-tech-tips.com/wp-content/uploads/2022/03/image-41.jpeg';
+const NotFoundImgPark = 'https://community.librenms.org/uploads/default/original/2X/7/759793552edd033b80526884b06a706fdd1a06ba.png';
+const NotFoundImgBoard = 'https://i.ytimg.com/vi/K94i1ALQ-H4/mqdefault.jpg'
+
+
+const TEST_BOARDS = [
+
+    {
+        name: 'Board1',
+        enText: 'Safety jargon smargon',
+        image: NotFoundImgBoard,
+    },
+
+    {
+        name: 'Board2',
+        enText: 'SKIP',
+        image: NotFoundImgBoard,
+    }
+
+
+];
+
+
+const TEST_PARKS = [
+
+    {
+        name: 'Park1',
+        description: 'Poland',
+        image: NotFoundImgPark,
+        board: [TEST_BOARDS[0]]
+    },
+
+    {
+        name: 'Park2',
+        description: 'England',
+        image: NotFoundImgPark,
+        board: [TEST_BOARDS[1]]
+    }
+
+
+];
 
 const TEST_STATES = [
 
     {
         name: 'Texas',
         description: 'Big Texas',
-        image: NotFoundImg,
+        image: NotFoundImgState,
+        parks: [TEST_PARKS[0]],
     },
 
     {
         name: 'California',
         description: 'Hot and Dry',
-        image: NotFoundImg,
+        image: NotFoundImgState,
+        parks: [TEST_PARKS[1]],
     }
 
 
 ];
 
-const TEST_PARKS = [
 
-    {
-        name: 'Park1',
-        description: 'Big Texas',
-        image: NotFoundImg,
-    },
-
-    {
-        name: 'Park2',
-        description: 'Hot and Dry',
-        image: NotFoundImg,
-    }
-
-
-];
-
-const TEST_BOARDS = [
-
-    {
-        name: 'Board1',
-        description: 'Big Texas',
-        image: NotFoundImg,
-    },
-
-    {
-        name: 'Board2',
-        description: 'Hot and Dry',
-        image: NotFoundImg,
-    }
-
-
-];
 
 
 function Admin() {
 
     //const stateCollection = collection(db, 'States');
 
+    const [states, setState] = useState(TEST_STATES);
+    const parks = TEST_STATES[0].parks;
+    const boards = TEST_STATES[0].parks[0].board;
 
-    const [states, setStates] = useState([...TEST_STATES]);
-    const [parks, setParks] = useState([...TEST_PARKS]);
-    const [boards, setBoards] = useState([...TEST_BOARDS]);
+    const [selStates, setSelectedState] = useState([...TEST_STATES]);
+    const [selParks, setSelectedPark] = useState(TEST_STATES[0].parks);
+    const [selBoards, setSelectedBoard] = useState(TEST_STATES[0].parks[0].board);
 
+
+    const uploadState = async(stateName, newStateObj) => {
+        console.log('in upload state');
+        //Ref https://firebase.google.com/docs/storage/web/upload-files
+        const stateImgRef = ref(imgStorage, 'states/'+newStateObj.name);
+        uploadBytes(stateImgRef, newStateObj.image);
+
+        //https://firebase.google.com/docs/storage/web/download-files
+
+
+        newStateObj.image = await getDownloadURL(stateImgRef);
+        setState( (prevState) =>{
+
+            let i;
+            let replaceState = [...prevState];
+
+            for(i = 0; i < replaceState.length; i++)
+            {
+                if(replaceState[i].name == stateName)
+                {
+                    replaceState[i] = newStateObj;
+                }
+            }
+            
+            return [
+                ...replaceState,
+
+            ];    
+            
+        })
+
+
+
+
+    }
+
+
+    
     /*const stateGet = async () =>{
         const statesSnapshot = await getDocs(stateCollection);
 
@@ -111,12 +165,11 @@ function Admin() {
             </select>*/
    
 
-
     return (
-        <div>
+        <div style={{background: "black"}}>
             <Header></Header>
-            <div className='sign_translation_editor'>
-                <div className='sign_translation_editor__states'>
+            <div className='sign_translation_editor_container'>
+                <div className='sign_translation_editor__states__container'>
                     <div>
                         <StateFilter></StateFilter>
                     </div>
@@ -125,7 +178,7 @@ function Admin() {
                     {states.map( (state) => {
 
 
-                            return (<StateMod route = './' name={state.name} stateImage = {state.image}  ></StateMod>)
+                            return (<StateMod toUploadState ={uploadState} route = './' name={state.name} stateImage = {state.image}  ></StateMod>)
 
 
 
@@ -137,15 +190,15 @@ function Admin() {
                     </div>
 
                 </div>
-                <div className='sign_translation_editor__parks'>
+                <div className='sign_translation_editor__parks__container'>
                     <div>
                         <ParkFilter></ParkFilter>
                     </div>
                     <div>
-                    {parks.map( (state) => {
+                    {parks.map( (park) => {
 
 
-                            return <StateMod route = './' name={state.name} stateImage = {state.image}  ></StateMod>
+                            return <StateMod route = './' name={park.name} stateImage = {park.image}  ></StateMod>
 
 
 
@@ -157,15 +210,15 @@ function Admin() {
                     </div>
                 </div>
 
-                <div className='sign_translation_editor__boards'>
+                <div className='sign_translation_editor__boards__container'>
                     <div>
                         <BoardFilter></BoardFilter>
                     </div>
                     <div>
-                        {boards.map( (state) => {
+                        {boards.map( (board) => {
 
 
-                                return <StateMod route = './' name={state.name} stateImage = {state.image}  ></StateMod>
+                                return <StateMod route = './' name={board.name} stateImage = {board.image}  ></StateMod>
 
 
 
