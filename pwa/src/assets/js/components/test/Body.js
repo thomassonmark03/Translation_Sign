@@ -7,10 +7,12 @@ import { db } from '../Database/FirebaseConfig';
 
 import Cookies from 'js-cookie'
 
-function Body() {
+function Body(props) {
 
     const [board,setBoard] = useState([]);
     const boardCollectionRef = collection(db,"Board");
+
+    console.log(props.states);
 
     useEffect(() => {
     const getBoard = async() => {

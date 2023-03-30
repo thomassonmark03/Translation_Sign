@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../css/main.css';
 import {PrivateRoute, Route,Routes} from "react-router-dom";
 import Home from './components/Home/Home'
@@ -9,14 +9,14 @@ import Cookies from 'js-cookie'
 import Paths from './components/Paths/Paths';
 
 
+
 function App() {
-    //Debug
+
 
     const [language, setLanguage] = useState(Cookies.get('googtrans'));
 
     const display = ()=>{
 
-        console.log('I was executed');
 
         if(language != undefined)
         {

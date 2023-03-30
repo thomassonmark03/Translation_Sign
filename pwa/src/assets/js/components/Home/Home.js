@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Header from '../Design/Header'
 import State from './State'
 import StateFilter from './StateFilter'
@@ -7,8 +7,6 @@ import StateFilter from './StateFilter'
 import TexasPic from './States/texas.jpg'
 import CaliforniaPic from './States/california.jpg'
 
-import { collection, getDocs } from "firebase/firestore";
-import { db } from '../Database/FirebaseConfig';
 
 
 const TEST_STATES = [
@@ -31,20 +29,12 @@ const TEST_STATES = [
 ];
 
 
-const Home = () =>{
+const Home = (props) =>{
 
-    const stateCollection = collection(db, 'States');
-    const [states, setStates] = useState([]);
-    //const [states, setStates] = [...TEST_STATES];
+    const states = [...props.states];
     const [filterText, setFilterText] = useState('');
 
     const filterSet = (text) =>{
-        //DEBUG
-        console.log(text);
-        console.log('In filtering states')
-        //
-        
-
         setFilterText(text);
 
 
@@ -57,34 +47,18 @@ const Home = () =>{
 
     const filterState = (state) =>{
         let matches = 0;
-        let lcStateName = state.id.toLowerCase();
-        let lcFilterText = filterText.toLowerCase();
-
-        console.log(lcStateName);
-
-        for(let i = 0; i < filterLength && i < lcStateName.length; i++)
+        for(let i = 0; i < filterLength && i < state.id.length; i++)
         {
-            console.log("state character" + state[i]);
-            console.log("ft Character:" +  filterText[i]);
-            if(lcStateName[i] === lcFilterText[i])
+            if(state.id[i] === filterText[i] || state.id + '32' === filterText[i])
                 matches++;
         }
 
-        return lcFilterText === '' || (lcStateName[0] === lcFilterText[0] && matches >= filterLength - 2);
-
+        return filterText === '' || matches >= filterLength - 2;
     };
     const displayStates = states.filter(filterState);
 
-
-    //Database
-    useEffect(() => {
-        const getState = async() => {
-            const data = await getDocs(stateCollection);
-            setStates(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
-        }
-        getState();
-    },[]);
     
+    //const displayStates = [...states];
 
 
     return(
@@ -116,8 +90,6 @@ const Home = () =>{
             </div>
 
         </div>
-
-
 
     );
 

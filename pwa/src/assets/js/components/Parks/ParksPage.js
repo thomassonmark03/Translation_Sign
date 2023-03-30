@@ -30,9 +30,9 @@ const TEST_PARKS= [
 */
 
 
-const ParkPage = () =>{
+const ParkPage = (props) =>{
 
-    const parkCollection = collection(db, 'States/Texas/Parks');
+    const parkCollection = collection(db, 'States/' + props.stateName + "/Parks");
     const [parks, setParks] = useState([]);
     //const states = [...TEST_STATES];
     const [filterText, setFilterText] = useState('');
