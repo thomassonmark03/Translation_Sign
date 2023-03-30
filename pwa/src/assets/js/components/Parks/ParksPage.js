@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Header from '../Design/Header'
+import {Route,Routes} from "react-router-dom";
 import Park from './Park'
 import ParkFilter from './ParkFilter'
 
@@ -7,6 +8,7 @@ import ParkFilter from './ParkFilter'
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from '../Database/FirebaseConfig';
+import BoardPage from '../Board/BoardSingle';
 
 /*
 const TEST_PARKS= [
@@ -30,10 +32,13 @@ const TEST_PARKS= [
 */
 
 
+//Refs: 
+// https://ui.dev/react-router-nested-routes
+
+
 const ParkPage = (props) =>{
 
-    const parkCollection = collection(db, 'States/' + props.stateName + "/Parks");
-    const [parks, setParks] = useState([]);
+    const parks = props.parks;
     //const states = [...TEST_STATES];
     const [filterText, setFilterText] = useState('');
 
@@ -65,15 +70,6 @@ const ParkPage = (props) =>{
     };
     const displayParks = parks.filter(filterPark);
 
-
-    //Database
-    useEffect(() => {
-        const getPark = async() => {
-            const data = await getDocs(parkCollection);
-            setParks(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
-        }
-        getPark ();
-    },[]);
 
 
     return(

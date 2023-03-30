@@ -1,52 +1,86 @@
-import React, {useState, useEffect} from 'react';
-
-import Board from './Board';
-import Header from '../Design/Header';
-import DangerZone from './danger_zone.png';
-
-import { db } from '../Database/FirebaseConfig';
-import { doc, getDoc } from "firebase/firestore";
-
-const TEST_BOARD = {
-
-    title: 'test',
-    image: DangerZone,
-    enText: 'CAREFUL OF TIDES',
+import React, {useState, useEffect} from 'react'
+import Header from '../Design/Header'
+import {Route,Routes} from "react-router-dom";
+import BoardFilter from './BoardFilter'
 
 
-};
+/*
+const TEST_PARKS= [
+
+    {
+        name: 'Texas',
+        description: 'Big Texas',
+        image: TexasPic,
+        route: './test'
+    },
+
+    {
+        name: 'California',
+        description: 'Hot and Dry',
+        image: CaliforniaPic,
+        route: './test'
+    }
 
 
-const BoardPage = () =>{
-    //const board = TEST_BOARD;
+];
+*/
 
 
-    const [board, setBoard] = useState([]);
+//Refs: 
+// https://ui.dev/react-router-nested-routes
 
 
-    useEffect( () => {
+const BoardPage = (props) =>{
 
-        const getBoard = async() =>{
+    const boards = props.boards;
+    //const states = [...TEST_STATES];
+    const [filterText, setFilterText] = useState('');
 
-            const docRef = doc(db, 'Board', 'Board2');// ref https://rajatamil.medium.com/firebase-9-firestore-get-a-document-by-id-using-getdoc-d9192894d86b
-            const boardDoc = await getDoc(docRef)
-            try{setBoard(boardDoc.data()) ; console.log(boardDoc.data());}
-            catch(error){console.log(error)};
-
-
+    const filterSet = (text) =>{
+        setFilterText(text);
 
 
+    };
 
-        };
-        getBoard();
-    }, [])
-    
+    //Find length of string
+    //Find match of string
+    //If matches > 1/2 length of string, display
+    const filterLength = filterText.length; 
+
+    const filterBoard = (board) =>{
+        let matches = 0;
+        let lcBoardName = board.id.toLowerCase();
+        let lcFilterText = filterText.toLowerCase();
+
+
+        for(let i = 0; i < filterLength && i < lcBoardName.length; i++)
+        {
+            if(lcBoardName[i] === lcFilterText[i])
+                matches++;
+        }
+
+        return lcFilterText === '' || (lcBoardName[0] === lcFilterText[0] && matches >= filterLength - 2);
+
+    };
+    const displayBoards = boards.filter(filterBoard);
+
 
 
     return(
         <div>
             <Header></Header>
-            <Board title={board.title} image={board.img} enText={board.en} ></Board>
+            <BoardFilter setFilter = {filterSet}/>
+
+            {displayBoards.map( (board) =>{
+                
+                <img src={board.img}></img>
+
+                
+            })}
+
+
+
+
         </div>
 
 
@@ -56,9 +90,14 @@ const BoardPage = () =>{
 
 
 
-}
+};
+
+
+
 
 export default BoardPage;
+
+
 
 
 

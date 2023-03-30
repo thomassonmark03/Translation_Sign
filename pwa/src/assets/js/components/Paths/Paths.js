@@ -4,9 +4,9 @@ import Header from '../Design/Header';
 import Home from '../Home/Home';
 import Body from '../test/Body';
 import Admin from '../Admin/Admin';
-import ParkPage from '../Parks/ParksPage';
+import ParkHub from '../Parks/ParkHub';
 
-import BoardPage from '../Board/BoardPage';
+import BoardPage from '../Board/BoardSingle';
 
 import { collection, getDocs} from 'firebase/firestore';
 import { db } from '../Database/FirebaseConfig';
@@ -35,14 +35,14 @@ const Paths = (props) =>{
 
 
     //Renders all the states present in the database.
-    const renderStatePaths = (statesCollection) =>
+    const renderStatePaths = () =>
     {
         let i;
         const stateRoutes = [];
         
-        for(i = 0; i < statesCollection.length; i++)
+        for(i = 0; i < states.length; i++)
         {
-            stateRoutes.push(<Route path={'/' + statesCollection[i].id} element={[<ParkPage stateName = {statesCollection[i].id}/>]}></Route>) 
+            stateRoutes.push(<Route path={'/' + states[i].id + '/*'} element={<ParkHub stateName = {states[i].id}/>}></Route>) 
             //https://ui.dev/react-router-nested-routes
         }
         console.log(stateRoutes);
@@ -50,21 +50,6 @@ const Paths = (props) =>{
         return stateRoutes;
     }
 
-    /*
-    const renderParkPaths = (parks) =>
-    {
-        let i;
-        const stateRoutes = [];
-        
-        for(i = 0; i < statesCollection.length; i++)
-        {
-            stateRoutes.push(<Route path={'/' + statesCollection[i].id} element={[<ParkPage stateName = {statesCollection[i].id}/>]}></Route>) 
-        }
-        console.log(stateRoutes);
-
-        return stateRoutes;
-    }
-    */
 
 
 
@@ -74,11 +59,10 @@ const Paths = (props) =>{
             <Route path= '/' element={<Home states = {states}/>}/>
             <Route path= '/test' element={[<Header/>,<Body/>]}/>
 
-            {renderStatePaths(states)}
+            {renderStatePaths()}
 
 
             <Route path='/BoardPage' element={<BoardPage/>}/>
-            <Route path='/ParkPage' element={<ParkPage/>}/>
             <Route path='/Admin' element={<Admin/>}/>
 
 
