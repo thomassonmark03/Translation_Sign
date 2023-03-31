@@ -7,12 +7,14 @@ import Body from "./Body";
 import State from './State';
 import Translate from './Translate';
 import Contact from './Contact';
+import Qrgeneration from './Qrgeneration';
 
 function App() {
     return (
         <Routes>
-            <Route path="/" element={[<Header/>,<Translate/>,<State/>]}/>
-            <Route path="/texas" element={[<Header/>,<Translate/>,<Body/>]}/>
+            {/* <Route path="/" element={[<Header/>,<Translate/>,<State/>]}/> */}
+            <Route path="/" element={[<Header/>,<Qrgeneration/>]}/>
+            {/* <Route path="/texas" element={[<Header/>,<Translate/>,<Body/>]}/> */}
             <Route path="/login" element={[<Header/>,<Translate/>,<Contact/>]}/>
         </Routes>
     )

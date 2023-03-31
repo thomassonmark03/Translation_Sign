@@ -1,24 +1,25 @@
-import Header from "./Header";
+import {auth} from './FirebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import '../css/main.css';
+import React, { useState } from 'react';
 
 function Contact() {
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('')
+
+    const submit = async() => {
+        const response = await signInWithEmailAndPassword(auth,email,password);
+        console.log(response)
+    }
+
     return (
         <>
-        <form>
             <h3>Login Here</h3>
-
             <label for="username">Username</label>
-            <input type="text" placeholder="Email or Phone" id="username"/>
-
+            <input type="text" placeholder="Email" onChange={(event)=> setEmail(event.target.value)}/>
             <label for="password">Password</label>
-            <input type="password" placeholder="Password" id="password"/>
-
-            <button>Log In</button>
-            <div class="social">
-            <div class="go">Google</div>
-            <div class="fb">Facebook</div>
-            </div>
-        </form> 
+            <input type="password" placeholder="Password" onChange={(event)=> setPassword(event.target.value)}/>
+            <button onClick={submit}>Log In</button>
         </>
     )
 }
