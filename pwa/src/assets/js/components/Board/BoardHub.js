@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {Route,Routes, useLocation} from "react-router-dom";
-import BoardPage from './BoardSingle';
+import BoardPage from './BoardPage';
+import BoardSingle from './BoardSingle';
 
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from '../Database/FirebaseConfig';
+import { render } from '@testing-library/react';
 
 /*
 const TEST_PARKS= [
@@ -37,6 +39,8 @@ const BoardHub = (props) =>{
     const boardCollection = collection(db, 'States/' + props.stateName + '/Parks/' + props.parkName + '/Boards');
     const [boards, setBoards] = useState([]);
 
+    //console.log('States/' + props.stateName + '/Parks/' + props.parkName + '/Boards');
+
     //Database
     useEffect(() => {
         const getBoard = async() => {
@@ -49,24 +53,26 @@ const BoardHub = (props) =>{
 
 
     //Renders all the states present in the database.
-    /*const renderBoardsPath = () =>
+    const renderBoardsPath = () =>
     {
         let i;
         const boardRoutes = [];
         for(i = 0; i < boards.length; i++)
         {
-            boardRoutes.push(<Route path={boards[i].id + '/*'} element={<BoardPage boards = {boards}/>}/>) 
+            boardRoutes.push(<Route path={boards[i].id + '/*'} element={<BoardSingle board = {boards[i]}/>}/>) 
             //https://ui.dev/react-router-nested-routes
         }
     
         return boardRoutes;
-    }*/
+    }
+
 
 
     return(
         <div>
             <Routes>
                 <Route path='' element={<BoardPage boards= {boards}/>}></Route>
+                {renderBoardsPath()}
             </Routes>
         </div>
 

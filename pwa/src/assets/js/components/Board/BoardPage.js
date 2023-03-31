@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react'
-import Header from '../Design/Header'
-import {Route,Routes} from "react-router-dom";
-import BoardFilter from './BoardFilter'
+import React, {useState, useEffect} from 'react';
+import Header from '../Design/Header';
+import {Route,Routes, Link} from "react-router-dom";
+import BoardFilter from './BoardFilter';
+import './BoardPage.css';
 
 
 /*
@@ -71,14 +72,21 @@ const BoardPage = (props) =>{
             <Header></Header>
             <BoardFilter setFilter = {filterSet}/>
 
-            {displayBoards.map( (board) =>{
-                
-                <img src={board.img}></img>
+            <div class='container'>
+                {displayBoards.map((board)=> {
 
-                
-            })}
+                    console.log(board.id);
+                    return( 
+                            <Link to={'./' + board.id}> 
+                                <div className="content1">
+                                    <h2 translate='no' >{board.title}</h2>
+                                    <img alt={board.id} src={board.img}></img>
+                                </div>
+                            </Link>
+                    )
+                })}
 
-
+            </div>
 
 
         </div>

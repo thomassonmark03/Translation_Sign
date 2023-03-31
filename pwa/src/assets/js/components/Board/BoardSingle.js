@@ -17,14 +17,16 @@ const TEST_BOARD = {
 };
 
 
-const BoardSingle = () =>{
+const BoardSingle = (props) =>{
     //const board = TEST_BOARD;
 
 
-    const [board, setBoard] = useState([]);
+    //const [board, setBoard] = useState([]);
+
+    const board = props.board;
 
 
-    useEffect( () => {
+    /*useEffect( () => {
 
         const getBoard = async() =>{
 
@@ -39,7 +41,7 @@ const BoardSingle = () =>{
 
         };
         getBoard();
-    }, [])
+    }, [])*/
     
 
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Route,Routes, useLocation} from "react-router-dom";
 import ParkPage from './ParksPage';
-import BoardPage from '../Board/BoardPage';
+import BoardHub from '../Board/BoardHub';
 import BoardSingle from '../Board/BoardSingle';
 
 import { collection, getDocs } from "firebase/firestore";
@@ -58,7 +58,7 @@ const ParkHub = (props) =>{
         const parksRoutes = [];
         for(i = 0; i < parks.length; i++)
         {
-            parksRoutes.push(<Route path={parks[i].id + '/*'} element={<BoardPage stateName={props.stateName} parkName={props.parkName}/>}></Route>) 
+            parksRoutes.push(<Route path={parks[i].id + '/*'} element={<BoardHub stateName={props.stateName} parkName={parks[i].id}/>}></Route>) 
             //https://ui.dev/react-router-nested-routes
         }
         console.log(parksRoutes);
