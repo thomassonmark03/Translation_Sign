@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import '../css/main.css';
-import {PrivateRoute, Route,Routes} from "react-router-dom";
-import Home from './components/Home/Home'
-import Body from "./components/test/Body";
 import LanguagePage from './components/Language/LanguagePage';
-import Contact from './components/Admin/Contact';
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie'
 import Paths from './components/Paths/Paths';
+
 
 
 
@@ -30,14 +29,35 @@ function App() {
 
     }
 
+    useEffect(
+
+        () =>{
+            toast.info("Alert, this website utilizes cookies");
+        }
+        
+        
+
+
+
+
+    , []);
+
+
 
 
     return(
         <div>
             {display()}
+            <ToastContainer
+                position='bottom-center' 
+                theme='dark' 
+            
+            
+            />
+
+
         </div>
     )
-
     
     
 

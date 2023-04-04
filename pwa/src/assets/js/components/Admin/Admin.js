@@ -93,6 +93,9 @@ function Admin() {
     const boards = TEST_STATES[0].parks[0].board;
 
     const [selStates, setSelectedState] = useState([...TEST_STATES]);
+    const [controlState, setControlState] = useState();
+    
+
     const [selParks, setSelectedPark] = useState(TEST_STATES[0].parks);
     const [selBoards, setSelectedBoard] = useState(TEST_STATES[0].parks[0].board);
 
@@ -129,6 +132,11 @@ function Admin() {
 
 
 
+
+    }
+
+    const modifyState = (state) =>
+    {
 
     }
 
@@ -178,7 +186,7 @@ function Admin() {
                     {states.map( (state) => {
 
 
-                            return (<StateMod toUploadState ={uploadState} route = './' name={state.name} stateImage = {state.image}  ></StateMod>)
+                            return (<StateMod toUploadState ={uploadState} selected ={false} route = './' name={state.name} stateImage = {state.image}  ></StateMod>)
 
 
 

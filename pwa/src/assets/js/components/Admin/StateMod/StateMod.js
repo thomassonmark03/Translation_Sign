@@ -7,16 +7,21 @@ import {Link} from "react-router-dom";
 
 
 const StateMod = (props) =>{
-    const [selected, setSelected]= useState(false);
+    const [selected, setSelected]= useState(props.selected);
     const state_name = props.name;
     const state_img = props.stateImage;
 
     const editState = () =>{
 
         if(selected == true)
+        {
             setSelected(false);
+
+        }
         else
+        {
             setSelected(true);
+        }
 
 
     };
@@ -38,8 +43,6 @@ const StateMod = (props) =>{
             
     }
 
-    console.log("I was rerendered!");
-    console.log(state_img);
     return(
         <div>
             <div onClick={editState} className={`stateMod ${selected ? "stateMod_selected":"stateMod_not_selected"} `}>
