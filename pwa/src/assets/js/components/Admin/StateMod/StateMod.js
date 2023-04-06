@@ -16,6 +16,7 @@ const StateMod = (props) =>{
         if(selected == true)
         {
             setSelected(false);
+            props.onCallState(state_name);
 
         }
         else

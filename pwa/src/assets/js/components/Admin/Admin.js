@@ -88,7 +88,12 @@ function Admin() {
 
     //const stateCollection = collection(db, 'States');
 
-    const [states, setState] = useState(TEST_STATES);
+    const [states, setState] = useState([]);
+    const [stateName, setStateName] = undefined;
+
+
+
+    //const [states, setState] = useState(TEST_STATES);
     const parks = TEST_STATES[0].parks;
     const boards = TEST_STATES[0].parks[0].board;
 
@@ -135,42 +140,41 @@ function Admin() {
 
     }
 
-    const modifyState = (state) =>
+    const stateGet = async(calledStateName) =>
     {
+        if(states.calledStateName == undefined)
+        {
+            const parkCollection = collection(db, 'States/'+ calledStateName + 'Parks');
+               
+            const park = await getDocs(parkCollection);
 
-    }
+            setState( (prevState) => {
 
-
-    
-    /*const stateGet = async () =>{
-        const statesSnapshot = await getDocs(stateCollection);
-
-        try{
-
-            setStates(statesSnapshot.map((doc) => ({...doc.data(), id: doc.id}) ) );
-            console.log(states);
+                return {...prevState, calledStateName: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
             
+            })
+
 
         }
-        catch(error){
-            console.log(error);
-        }
+        setStateName(calledStateName);
 
+
+        
 
     }
-    */
 
-    //useEffect(stateGet, []);
 
-            /*<select>
-                <option>
-                    Texas
-                </option>
-                <option>
-                    Alabama 
-                </option>
+    useEffect(
+        () => {
+           
 
-            </select>*/
+
+        }
+
+
+
+    ,[]) 
+
    
 
     return (

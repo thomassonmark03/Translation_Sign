@@ -13,6 +13,7 @@ function App() {
 
 
     const [language, setLanguage] = useState(Cookies.get('googtrans'));
+    console.log(language);
 
     const display = ()=>{
 
@@ -28,6 +29,19 @@ function App() {
         }
 
     }
+    
+    useEffect(
+
+        () =>{
+            setLanguage(Cookies.get('googtrans'));
+        }
+        
+        
+
+
+
+
+    , Cookies.get('googtrans'));
 
     useEffect(
 
