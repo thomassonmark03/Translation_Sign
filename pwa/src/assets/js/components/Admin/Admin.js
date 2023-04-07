@@ -1,7 +1,7 @@
 import React from 'react';
 import './Admin.css';
 import { useState,useEffect } from "react";
-import db , {imgStorage} from '../Database/FirebaseConfig';
+import {db, imgStorage} from "../Database/FirebaseConfig";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 import { collection,getDocs, addDoc} from 'firebase/firestore';
 
@@ -86,23 +86,24 @@ const TEST_STATES = [
 
 function Admin() {
 
-    //const stateCollection = collection(db, 'States');
-
-    const [states, setState] = useState([]);
-    const [stateName, setStateName] = undefined;
+    const stateCollection = collection(db, 'States');
+    const [states, setStates] = useState([]);
+    const [stateName, setStateName] = useState("");
 
 
 
     //const [states, setState] = useState(TEST_STATES);
-    const parks = TEST_STATES[0].parks;
-    const boards = TEST_STATES[0].parks[0].board;
+    //const parks = TEST_STATES[0].parks;
+    const [parks, setPark] = useState({});
+    const [parkName, setParkName] = useState("");
+    const parksUnfiltered = parks[stateName];
+    console.log("Here are the parks unfiltered");
+    console.log(parksUnfiltered)
 
-    const [selStates, setSelectedState] = useState([...TEST_STATES]);
-    const [controlState, setControlState] = useState();
-    
+    const [boards, setBoards] = useState({}); 
+    const boardsUnfiltered = boards[parkName];
 
-    const [selParks, setSelectedPark] = useState(TEST_STATES[0].parks);
-    const [selBoards, setSelectedBoard] = useState(TEST_STATES[0].parks[0].board);
+
 
 
     const uploadState = async(stateName, newStateObj) => {
@@ -115,7 +116,7 @@ function Admin() {
 
 
         newStateObj.image = await getDownloadURL(stateImgRef);
-        setState( (prevState) =>{
+        setStates( (prevState) =>{
 
             let i;
             let replaceState = [...prevState];
@@ -127,6 +128,8 @@ function Admin() {
                     replaceState[i] = newStateObj;
                 }
             }
+
+            console.log(replaceState);
             
             return [
                 ...replaceState,
@@ -140,17 +143,34 @@ function Admin() {
 
     }
 
-    const stateGet = async(calledStateName) =>
-    {
-        if(states.calledStateName == undefined)
+
+    useEffect( () => {
+
+        const stateGet = async() =>
         {
-            const parkCollection = collection(db, 'States/'+ calledStateName + 'Parks');
+            const statesDocs = await getDocs(stateCollection);
+            setStates( statesDocs.docs.map(   (doc) => ({...doc.data(), id: doc.id}) ) );
+        };
+
+        stateGet();
+    }, []);
+
+    const parkGet = async(calledStateName) =>
+    {
+        console.log(calledStateName);
+        if(parks[calledStateName] === undefined)
+        {
+            const parkCollection = collection(db, 'States/'+ calledStateName + '/Parks');
                
             const park = await getDocs(parkCollection);
 
-            setState( (prevState) => {
+            setPark( (prevParks) => {
+                const newPark = {[calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
+                const newParks = {...prevParks, ...newPark};
+                console.log(newParks);
 
-                return {...prevState, calledStateName: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
+                return newParks;
+                //return {...prevParks, [calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
             
             })
 
@@ -162,20 +182,36 @@ function Admin() {
         
 
     }
+    const boardGet = async(calledParkName) =>
+    {
+        console.log(calledParkName);
+        if(boards[calledParkName] === undefined)
+        {
+            const boardCollection = collection(db, 'States/'+ stateName + '/Parks/' + calledParkName + '/Boards');
+               
+            const board = await getDocs(boardCollection);
 
+            setBoards( (prevBoards) => {
+                const newBoard = {[calledParkName]: board.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
+                const newBoards = {...prevBoards, ...newBoard};
+                console.log(newBoards);
 
-    useEffect(
-        () => {
-           
+                return newBoards;
+                //return {...prevParks, [calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
+            
+            })
 
 
         }
+        setParkName(calledParkName);
+
+
+        
+
+    }
 
 
 
-    ,[]) 
-
-   
 
     return (
         <div style={{background: "black"}}>
@@ -190,7 +226,7 @@ function Admin() {
                     {states.map( (state) => {
 
 
-                            return (<StateMod toUploadState ={uploadState} selected ={false} route = './' name={state.name} stateImage = {state.image}  ></StateMod>)
+                            return (<StateMod toUploadState ={uploadState}  route = './' name={state.id} stateImage = {state.img} onCallState = {parkGet} ></StateMod>)
 
 
 
@@ -206,11 +242,11 @@ function Admin() {
                     <div>
                         <ParkFilter></ParkFilter>
                     </div>
-                    <div>
-                    {parks.map( (park) => {
+                <div>
 
+                    {parksUnfiltered !== undefined && parksUnfiltered.map( (park) => {
 
-                            return <StateMod route = './' name={park.name} stateImage = {park.image}  ></StateMod>
+                            return <ParkMod onCallPark = {boardGet} route = './' name={park.id} parkImage = {park.img}  ></ParkMod>
 
 
 
@@ -227,10 +263,10 @@ function Admin() {
                         <BoardFilter></BoardFilter>
                     </div>
                     <div>
-                        {boards.map( (board) => {
+                        {boardsUnfiltered !== undefined && boardsUnfiltered.map( (board) => {
 
 
-                                return <StateMod route = './' name={board.name} stateImage = {board.image}  ></StateMod>
+                                return <BoardMod route = './' name={board.title} boardImage = {board.img}  ></BoardMod>
 
 
 

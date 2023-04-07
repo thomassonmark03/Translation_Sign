@@ -16,12 +16,13 @@ const StateMod = (props) =>{
         if(selected == true)
         {
             setSelected(false);
-            props.onCallState(state_name);
+            props.onDeselectState();
 
         }
         else
         {
             setSelected(true);
+            props.onCallState(state_name);
         }
 
 

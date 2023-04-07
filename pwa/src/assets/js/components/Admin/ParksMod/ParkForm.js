@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 
 
 
-const StateForm = (props) =>{
+const ParkForm = (props) =>{
 
 
     const [name, setName] = useState("");
@@ -32,17 +32,17 @@ const StateForm = (props) =>{
 
         if(name != "" && image != "")
         {
-            const stateObj = {
+            const parkObj = {
             
                 name: name,
                 image: imageFile,
 
             }
-            console.log(stateObj);
+            console.log(parkObj);
             setImage("");
             setName("");
             setImageFile("");
-            props.toStateUpdate(stateObj);
+            props.toStateUpdate(parkObj);
         }
         else
         {
@@ -60,6 +60,7 @@ const StateForm = (props) =>{
     //https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
     return(
         <div>
+            <input type='text' onChange={nameHandler} value={name}></input>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updateState}>Update</button>
 
@@ -80,18 +81,4 @@ const StateForm = (props) =>{
 
 
 
-export default StateForm;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default ParkForm;

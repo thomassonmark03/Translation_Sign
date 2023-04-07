@@ -11,8 +11,19 @@
     
  }
 
+ .board_selected{
+
+
+    box-shadow: 0px 0px 20px rgb(255, 238, 0); 
+ }
+
+ .board_not_selected{
+    box-shadow: 10px 10px 20px rgb(77, 74, 74);
+
+ }
+
  .board:hover{
-    box-shadow: 10px 10px 7px rgb(112, 140, 199);
+    box-shadow: 10px 10px 7px rgba(38, 42, 51, 0.30);
  }
 
  .board img{
