@@ -8,7 +8,8 @@ import {Link} from "react-router-dom";
 
 const ParkMod = (props) =>{
     const [selected, setSelected]= useState(props.selected);
-    const park_name = props.name;
+    const park_id = props.parkId;
+    const park_name = props.parkName;
     const park_img = props.parkImage;
 
     const editPark = () =>{
@@ -22,7 +23,7 @@ const ParkMod = (props) =>{
         else
         {
     //      setSelected(true);
-            props.onCallPark(park_name);
+            props.onCallPark(park_id);
         }
 
         

@@ -8,8 +8,9 @@ import {Link} from "react-router-dom";
 
 const StateMod = (props) =>{
     const [selected, setSelected]= useState(props.selected);
-    const state_name = props.name;
+    const state_name = props.stateName;
     const state_img = props.stateImage;
+    const state_id = props.stateId;
 
     const editState = () =>{
 
@@ -20,7 +21,7 @@ const StateMod = (props) =>{
         }
         else
         {
-            props.onCallState(state_name);
+            props.onCallState(state_id);
         }
 
 
@@ -30,7 +31,7 @@ const StateMod = (props) =>{
     const updateState = (newStateObj) =>{
     
          console.log(newStateObj);
-         props.toUploadState(state_name, newStateObj);
+         props.toUploadState(state_id, newStateObj);
     }
 
     let editMenu = "";
@@ -44,7 +45,7 @@ const StateMod = (props) =>{
     if(selected)
     {
         editMenu =  <div>
-                        <StateForm name={state_name} image={state_img} toStateUpdate={updateState}></StateForm>
+                        <StateForm name={state_name} image={state_img} id = {state_id} toStateUpdate={updateState}></StateForm>
                     </div>;
             
     }

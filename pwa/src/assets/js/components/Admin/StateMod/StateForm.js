@@ -35,7 +35,7 @@ const StateForm = (props) =>{
             const stateObj = {
             
                 name: name,
-                image: imageFile,
+                imgFile: imageFile,
 
             }
             console.log(stateObj);
@@ -60,6 +60,8 @@ const StateForm = (props) =>{
     //https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
     return(
         <div>
+
+            <input type='text' onChange={nameHandler} value={name}></input>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updateState}>Update</button>
 

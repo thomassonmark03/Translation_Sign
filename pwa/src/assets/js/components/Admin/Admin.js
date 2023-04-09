@@ -3,7 +3,7 @@ import './Admin.css';
 import { useState,useEffect } from "react";
 import {db, imgStorage} from "../Database/FirebaseConfig";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
-import { collection,getDocs, addDoc} from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, updateDoc} from 'firebase/firestore';
 
 import Header from '../Design/Header';
 
@@ -96,6 +96,8 @@ function Admin() {
     const [stateName, setStateName] = useState("");
     const [stateFilter, setStateFilter] = useState("");
 
+    console.log(states);
+
 
 
     //const [states, setState] = useState(TEST_STATES);
@@ -105,8 +107,6 @@ function Admin() {
 
     const [parkFilter, setParkFilter] = useState("");
     const parksUnfiltered = parks[stateName];
-    console.log("Here are the parks unfiltered");
-    console.log(parksUnfiltered)
 
     const [boards, setBoards] = useState({}); 
     const [boardName, setBoardName] = useState({}); 
@@ -116,35 +116,43 @@ function Admin() {
 
 
 
-    const uploadState = async(stateName, newStateObj) => {
+    const uploadState = async(stateId, newStateObj) => {
         console.log('in upload state');
         //Ref https://firebase.google.com/docs/storage/web/upload-files
         const stateImgRef = ref(imgStorage, 'states/'+newStateObj.name);
-        uploadBytes(stateImgRef, newStateObj.image);
+        const uploadSnapshot = await uploadBytes(stateImgRef, newStateObj.imgFile);
+        console.log(uploadSnapshot);
 
         //https://firebase.google.com/docs/storage/web/download-files
 
 
-        newStateObj.image = await getDownloadURL(stateImgRef);
+        newStateObj.img = await getDownloadURL(stateImgRef);
+
+
+        await updateDoc( doc(db, 'States', stateId), {name: newStateObj.name, img: newStateObj.img});
+        const newStateRef = doc(db, 'States', stateId);
+        const newStateDoc = await getDoc(newStateRef);
+
         setStates( (prevState) =>{
 
-            let i;
-            let replaceState = [...prevState];
+            let updateState = [...prevState];
+            let i = 0;
 
-            for(i = 0; i < replaceState.length; i++)
+            for(i = 0; i < prevState.length; i++)
             {
-                if(replaceState[i].name == stateName)
+                if(prevState[i].id == stateId)
                 {
-                    replaceState[i] = newStateObj;
+                    updateState[i] = {...newStateDoc.data(), id: stateId};
                 }
             }
 
-            console.log(replaceState);
-            
-            return [
-                ...replaceState,
+            console.log("Updated state:");
+            console.log(updateState);
 
-            ];    
+            return updateState;
+
+
+
             
         })
 
@@ -190,20 +198,22 @@ function Admin() {
     //Functions to do with selecting a state, park, board.
 
     //Select state.
-    const parkGet = async(calledStateName) =>
+    const parkGet = async(calledStateId) =>
     {
         setParkName(""); //Deselects any previous parks
         setBoardName(""); //Deselects any previous parks
-        if(parks[calledStateName] === undefined)
+        if(parks[calledStateId] === undefined)
         {
-            const parkCollection = collection(db, 'States/'+ calledStateName + '/Parks');
+            const parkCollection = collection(db, 'States/'+ calledStateId + '/Parks');
                
             const park = await getDocs(parkCollection);
 
             setPark( (prevParks) => {
-                const newPark = {[calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
+                const newPark = {[calledStateId]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
                 const newParks = {...prevParks, ...newPark};
+                console.log("Here are the new parks:");
                 console.log(newParks);
+
 
                 return newParks;
                 //return {...prevParks, [calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
@@ -212,7 +222,9 @@ function Admin() {
 
 
         }
-        setStateName(calledStateName);
+        setStateName(calledStateId);
+
+        console.log(parks);
 
 
         
@@ -221,18 +233,17 @@ function Admin() {
 
 
     //Select park
-    const boardGet = async(calledParkName) =>
+    const boardGet = async(calledParkId) =>
     {
         setBoardName(""); //Deselects any previous boards
-        console.log(calledParkName);
-        if(boards[calledParkName] === undefined)
+        if(boards[calledParkId] === undefined)
         {
-            const boardCollection = collection(db, 'States/'+ stateName + '/Parks/' + calledParkName + '/Boards');
+            const boardCollection = collection(db, 'States/'+ stateName + '/Parks/' + calledParkId + '/Boards');
                
             const board = await getDocs(boardCollection);
 
             setBoards( (prevBoards) => {
-                const newBoard = {[calledParkName]: board.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
+                const newBoard = {[calledParkId]: board.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
                 const newBoards = {...prevBoards, ...newBoard};
                 console.log(newBoards);
 
@@ -246,7 +257,7 @@ function Admin() {
 
 
 
-        setParkName(calledParkName);
+        setParkName(calledParkId);
 
 
         
@@ -289,7 +300,7 @@ function Admin() {
                     {statesFiltered.map( (state) => {
 
 
-                            return (<StateMod key ={state.id + '1234'} selected = {state.id === stateName} toUploadState ={uploadState}  name={state.id} stateImage = {state.img} onCallState = {parkGet} onDeselectState={deselectState}></StateMod>)
+                            return (<StateMod key ={state.id + '1234'} selected = {state.id === stateName} toUploadState ={uploadState}  stateName={state.name} stateImage = {state.img} stateId = {state.id} onCallState = {parkGet} onDeselectState={deselectState}></StateMod>)
 
 
 
@@ -311,7 +322,7 @@ function Admin() {
                     
                      parksFiltered.map( (park) => {
 
-                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} onCallPark = {boardGet} onDeselectPark={deselectPark}  name={park.id} parkImage = {park.img}  ></ParkMod>
+                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} onCallPark = {boardGet} onDeselectPark={deselectPark}  parkId = {park.id} parkName = {park.name} parkImage = {park.img}  ></ParkMod>
 
 
 
@@ -374,4 +385,27 @@ function Admin() {
     }
 
 */
+
+
+//Old code for replace state
+/*            let i;
+            let replaceState = [...prevState];
+
+            for(i = 0; i < replaceState.length; i++)
+            {
+                if(stateId == replaceState[i].id)
+                {
+                    replaceState[i] = new;
+                }
+            }
+
+            console.log(replaceState);
+            
+            return [
+                ...replaceState,
+
+            ];    
+
+*/
+
 export default Admin;
