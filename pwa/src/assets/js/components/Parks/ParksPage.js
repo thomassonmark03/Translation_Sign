@@ -38,7 +38,7 @@ const TEST_PARKS= [
 const filterPark = (park, filterText) =>{
     const filterLength = filterText.length; 
     let matches = 0;
-    let lcParkName = park.id.toLowerCase();
+    let lcParkName = park.name.toLowerCase();
     let lcFilterText = filterText.toLowerCase();
 
 
@@ -80,7 +80,7 @@ const ParkPage = (props) =>{
                 {displayParks.map( (park) => {
 
                         return <Park
-                            name= {park.id}
+                            name= {park.name}
                             description= {'hello'}
                             parkImage = {park.img}
                             route= {'./' + park.name}

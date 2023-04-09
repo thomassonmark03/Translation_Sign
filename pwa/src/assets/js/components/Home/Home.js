@@ -36,7 +36,7 @@ const filterState = (state, filterText) =>{
     let matches = 0;
     for(let i = 0; i < filterLength && i < state.id.length; i++)
     {
-        if(state.id[i] === filterText[i] || state.id + '32' === filterText[i])
+        if(state.name[i] === filterText[i] || state.name + '32' === filterText[i])
             matches++;
     }
 
@@ -70,7 +70,7 @@ const Home = (props) =>{
                 {displayStates.map( (state) => {
 
                         return <State 
-                            name= {state.id}
+                            name= {state.name}
                             description= {'hello'}
                             stateImage = {state.img}
                             route= {'./' + state.name}
