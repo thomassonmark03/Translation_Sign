@@ -230,7 +230,7 @@ function Admin() {
     const uploadBoard = async(boardId, newBoardObj, imageFile) => {
         console.log('in upload board');
 
-        if(newBoardObj.img != "")
+        if(newBoardObj.img != undefined) 
         {
             //Ref https://firebase.google.com/docs/storage/web/upload-files
             const boardImgRef = ref(imgStorage, 'boards/'+newBoardObj.name);
@@ -488,45 +488,5 @@ function Admin() {
 
     );
 }
-/*const testAdd = async () =>
-    {
-        console.log('in add doc');
-        try {
-          const docRef = await addDoc(collection(db, "users"), {
-            first: 'Alan',
-            middle: 'Madison',
-            last: 'Young',
-            born: 1998
-          });
-          console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-          console.error("Error adding document: ", e);
-        }
-
-    }
-
-*/
-
-
-//Old code for replace state
-/*            let i;
-            let replaceState = [...prevState];
-
-            for(i = 0; i < replaceState.length; i++)
-            {
-                if(stateId == replaceState[i].id)
-                {
-                    replaceState[i] = new;
-                }
-            }
-
-            console.log(replaceState);
-            
-            return [
-                ...replaceState,
-
-            ];    
-
-*/
 
 export default Admin;
