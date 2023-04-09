@@ -61,7 +61,9 @@ const StateForm = (props) =>{
     return(
         <div>
 
+            <label>Name of State</label>
             <input type='text' onChange={nameHandler} value={name}></input>
+            <label>State Image</label>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updateState}>Update</button>
 

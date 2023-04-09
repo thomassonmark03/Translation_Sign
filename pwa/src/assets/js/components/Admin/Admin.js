@@ -132,18 +132,26 @@ function Admin() {
         await updateDoc( doc(db, 'States', stateId), {name: newStateObj.name, img: newStateObj.img});
         const newStateRef = doc(db, 'States', stateId);
         const newStateDoc = await getDoc(newStateRef);
+        const newState = {...newStateDoc.data(), id: stateId};
 
         setStates( (prevState) =>{
 
             let updateState = [...prevState];
             let i = 0;
+            let updated = false;
 
             for(i = 0; i < prevState.length; i++)
             {
                 if(prevState[i].id == stateId)
                 {
-                    updateState[i] = {...newStateDoc.data(), id: stateId};
+                    updateState[i] = {...newState};
+                    updated = true;
                 }
+            }
+
+            if(updated === false)
+            {
+                updateState.push({...newState});
             }
 
             console.log("Updated state:");
@@ -159,6 +167,56 @@ function Admin() {
 
 
 
+
+
+    }
+
+
+
+    const uploadPark = async(parkId, newParkObj) => {
+        console.log('in upload park');
+        //Ref https://firebase.google.com/docs/storage/web/upload-files
+        const parkImgRef = ref(imgStorage, 'parks/'+newParkObj.name);
+        const uploadSnapshot = await uploadBytes(parkImgRef, newParkObj.imgFile);
+        console.log(uploadSnapshot);
+    
+        //https://firebase.google.com/docs/storage/web/download-files
+        newParkObj.img = await getDownloadURL(parkImgRef);
+    
+        const parkPath = 'States/' + stateName + '/Parks';
+        const newParkRef = doc(db, parkPath,  parkId);
+        await updateDoc( newParkRef, {name: newParkObj.name, img: newParkObj.img});
+        const newParkDoc = await getDoc(newParkRef);
+        const newPark = {...newParkDoc.data(), id: parkId};
+    
+        setPark( (prevParks) =>{
+    
+            let updatePark = {...prevParks};
+            let i = 0;
+
+
+            for(i = 0; i < updatePark[stateName].length; i++)
+            {
+                if(updatePark[stateName][i].id === parkId)
+                {
+                    updatePark[stateName][i] = {...newPark};
+                }
+
+            }
+
+
+
+
+            return updatePark;
+    
+    
+    
+            
+        })
+    
+    
+    
+    
     }
 
     const deselectState = () =>
@@ -322,7 +380,7 @@ function Admin() {
                     
                      parksFiltered.map( (park) => {
 
-                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} onCallPark = {boardGet} onDeselectPark={deselectPark}  parkId = {park.id} parkName = {park.name} parkImage = {park.img}  ></ParkMod>
+                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} toUploadPark = {uploadPark} onCallPark = {boardGet} onDeselectPark={deselectPark}  parkId = {park.id} parkName = {park.name} parkImage = {park.img}  ></ParkMod>
 
 
 

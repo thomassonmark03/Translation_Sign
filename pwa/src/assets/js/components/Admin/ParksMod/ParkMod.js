@@ -31,9 +31,9 @@ const ParkMod = (props) =>{
     };
 
 
-    const updateState = (newParkObj) =>{
+    const updatePark = (newParkObj) =>{
     
-         props.toUploadPark(park_name, newParkObj);
+         props.toUploadPark(park_id, newParkObj);
     }
 
     let editMenu = "";
@@ -41,7 +41,7 @@ const ParkMod = (props) =>{
     if(selected)
     {
         editMenu =  <div>
-                        <ParkForm name={park_name} image={park_img} toStateUpdate={updateState}></ParkForm>
+                        <ParkForm name={park_name} image={park_img} toUpdatePark={updatePark}></ParkForm>
                     </div>;
             
     }

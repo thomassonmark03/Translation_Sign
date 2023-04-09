@@ -28,25 +28,25 @@ const ParkForm = (props) =>{
     };
 
 
-    const updateState = () => {
+    const updatePark = () => {
 
         if(name != "" && image != "")
         {
             const parkObj = {
             
                 name: name,
-                image: imageFile,
+                imgFile: imageFile,
 
             }
             console.log(parkObj);
             setImage("");
             setName("");
             setImageFile("");
-            props.toStateUpdate(parkObj);
+            props.toUpdatePark(parkObj);
         }
         else
         {
-            console.log('ERROR IN STATE FORM');
+            console.log('ERROR IN PARK FORM');
         }
     };
 
@@ -60,9 +60,11 @@ const ParkForm = (props) =>{
     //https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
     return(
         <div>
+            <label>Name of Park</label>
             <input type='text' onChange={nameHandler} value={name}></input>
+            <label>Image of Park</label>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
-            <button onClick={updateState}>Update</button>
+            <button onClick={updatePark}>Update</button>
 
 
         </div>
