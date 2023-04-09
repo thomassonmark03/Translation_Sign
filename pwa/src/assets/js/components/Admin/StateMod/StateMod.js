@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import StateForm from './StateForm';
 
 import './StateMod.css';
@@ -15,13 +15,11 @@ const StateMod = (props) =>{
 
         if(selected == true)
         {
-            setSelected(false);
             props.onDeselectState();
 
         }
         else
         {
-            setSelected(true);
             props.onCallState(state_name);
         }
 
@@ -36,6 +34,12 @@ const StateMod = (props) =>{
     }
 
     let editMenu = "";
+
+
+    //https://stackoverflow.com/questions/58888389/component-doesnt-re-render-when-props-change-using-usestate-hook
+    useEffect( () => {
+        setSelected(props.selected); 
+    }, [props.selected])
 
     if(selected)
     {

@@ -28,6 +28,21 @@ const TEST_STATES = [
 
 ];
 
+const filterState = (state, filterText) =>{
+    //Find length of string
+    //Find match of string
+    //If matches > 1/2 length of string, display
+    const filterLength = filterText.length; 
+    let matches = 0;
+    for(let i = 0; i < filterLength && i < state.id.length; i++)
+    {
+        if(state.id[i] === filterText[i] || state.id + '32' === filterText[i])
+            matches++;
+    }
+
+    return filterText === '' || matches >= filterLength - 2;
+};
+
 
 const Home = (props) =>{
 
@@ -40,22 +55,8 @@ const Home = (props) =>{
 
     };
 
-    //Find length of string
-    //Find match of string
-    //If matches > 1/2 length of string, display
-    const filterLength = filterText.length; 
 
-    const filterState = (state) =>{
-        let matches = 0;
-        for(let i = 0; i < filterLength && i < state.id.length; i++)
-        {
-            if(state.id[i] === filterText[i] || state.id + '32' === filterText[i])
-                matches++;
-        }
-
-        return filterText === '' || matches >= filterLength - 2;
-    };
-    const displayStates = states.filter(filterState);
+    const displayStates = states.filter((state) => {return filterState(state, filterText)});
 
     
     //const displayStates = [...states];
@@ -72,7 +73,7 @@ const Home = (props) =>{
                             name= {state.id}
                             description= {'hello'}
                             stateImage = {state.img}
-                            route= {'./' + state.id}
+                            route= {'./' + state.name}
                         
                         
                         
@@ -102,3 +103,4 @@ const Home = (props) =>{
 
 
 export default Home;
+export {filterState};

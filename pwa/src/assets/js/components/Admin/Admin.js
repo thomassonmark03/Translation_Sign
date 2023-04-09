@@ -8,8 +8,13 @@ import { collection,getDocs, addDoc} from 'firebase/firestore';
 import Header from '../Design/Header';
 
 import StateFilter from '../Home/StateFilter';
+import {filterState} from '../Home/Home'
+
 import ParkFilter from '../Parks/ParkFilter';
+import {filterPark} from '../Parks/ParksPage'
+
 import BoardFilter from '../Board/BoardFilter';
+import {filterBoard} from '../Board/BoardPage';
 
 
 
@@ -89,6 +94,7 @@ function Admin() {
     const stateCollection = collection(db, 'States');
     const [states, setStates] = useState([]);
     const [stateName, setStateName] = useState("");
+    const [stateFilter, setStateFilter] = useState("");
 
 
 
@@ -96,12 +102,16 @@ function Admin() {
     //const parks = TEST_STATES[0].parks;
     const [parks, setPark] = useState({});
     const [parkName, setParkName] = useState("");
+
+    const [parkFilter, setParkFilter] = useState("");
     const parksUnfiltered = parks[stateName];
     console.log("Here are the parks unfiltered");
     console.log(parksUnfiltered)
 
     const [boards, setBoards] = useState({}); 
+    const [boardName, setBoardName] = useState({}); 
     const boardsUnfiltered = boards[parkName];
+    const [boardFilter, setBoardFilter] = useState("");
 
 
 
@@ -143,6 +153,27 @@ function Admin() {
 
     }
 
+    const deselectState = () =>
+    {
+        setStateName("");
+        setParkName("");
+        setBoardName("");
+    }
+
+    const deselectPark = () =>
+    {
+        setParkName("");
+        setBoardName("");
+    }
+
+    const deselectBoard = () =>
+    {
+        setBoardName("");
+    }
+
+
+
+    //Getting from database
 
     useEffect( () => {
 
@@ -155,9 +186,14 @@ function Admin() {
         stateGet();
     }, []);
 
+
+    //Functions to do with selecting a state, park, board.
+
+    //Select state.
     const parkGet = async(calledStateName) =>
     {
-        console.log(calledStateName);
+        setParkName(""); //Deselects any previous parks
+        setBoardName(""); //Deselects any previous parks
         if(parks[calledStateName] === undefined)
         {
             const parkCollection = collection(db, 'States/'+ calledStateName + '/Parks');
@@ -182,8 +218,12 @@ function Admin() {
         
 
     }
+
+
+    //Select park
     const boardGet = async(calledParkName) =>
     {
+        setBoardName(""); //Deselects any previous boards
         console.log(calledParkName);
         if(boards[calledParkName] === undefined)
         {
@@ -203,6 +243,9 @@ function Admin() {
 
 
         }
+
+
+
         setParkName(calledParkName);
 
 
@@ -211,7 +254,27 @@ function Admin() {
     }
 
 
+    //Select board
+    const boardSelect = (boardName) => 
+    {
+        setBoardName(boardName);
+    }
 
+
+    //Filtering
+
+    let statesFiltered = states.filter( (state) => {return filterState(state, stateFilter)} );
+
+    let parksFiltered = [];
+    if(parksUnfiltered != undefined){
+        parksFiltered = parksUnfiltered.filter( (park) => {return filterPark(park, parkFilter)})
+    }
+
+    let boardsFiltered = [];
+    if(boardsUnfiltered != undefined){
+
+        boardsFiltered = boardsUnfiltered.filter( (board) => {return filterBoard(board, boardFilter) } )
+    }
 
     return (
         <div style={{background: "black"}}>
@@ -219,14 +282,14 @@ function Admin() {
             <div className='sign_translation_editor_container'>
                 <div className='sign_translation_editor__states__container'>
                     <div>
-                        <StateFilter></StateFilter>
+                        <StateFilter setFilter = {setStateFilter}></StateFilter>
                     </div>
 
                     <div>
-                    {states.map( (state) => {
+                    {statesFiltered.map( (state) => {
 
 
-                            return (<StateMod toUploadState ={uploadState}  route = './' name={state.id} stateImage = {state.img} onCallState = {parkGet} ></StateMod>)
+                            return (<StateMod key ={state.id + '1234'} selected = {state.id === stateName} toUploadState ={uploadState}  name={state.id} stateImage = {state.img} onCallState = {parkGet} onDeselectState={deselectState}></StateMod>)
 
 
 
@@ -240,13 +303,15 @@ function Admin() {
                 </div>
                 <div className='sign_translation_editor__parks__container'>
                     <div>
-                        <ParkFilter></ParkFilter>
+                        <ParkFilter setFilter = {setParkFilter}></ParkFilter>
                     </div>
                 <div>
 
-                    {parksUnfiltered !== undefined && parksUnfiltered.map( (park) => {
+                    {parksFiltered !== undefined &&
+                    
+                     parksFiltered.map( (park) => {
 
-                            return <ParkMod onCallPark = {boardGet} route = './' name={park.id} parkImage = {park.img}  ></ParkMod>
+                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} onCallPark = {boardGet} onDeselectPark={deselectPark}  name={park.id} parkImage = {park.img}  ></ParkMod>
 
 
 
@@ -260,13 +325,14 @@ function Admin() {
 
                 <div className='sign_translation_editor__boards__container'>
                     <div>
-                        <BoardFilter></BoardFilter>
+                        <BoardFilter setFilter = {setBoardFilter}></BoardFilter>
                     </div>
                     <div>
-                        {boardsUnfiltered !== undefined && boardsUnfiltered.map( (board) => {
+                        {boardsFiltered !== undefined 
+                        && boardsFiltered.map( (board) => {
 
 
-                                return <BoardMod route = './' name={board.title} boardImage = {board.img}  ></BoardMod>
+                                return <BoardMod key = {stateName + parkName + board.id + '1234'} selected = {board.title === boardName} onCallBoard = {boardSelect} onDeselectBoard={deselectBoard}  name={board.title} boardImage = {board.img}  ></BoardMod>
 
 
 

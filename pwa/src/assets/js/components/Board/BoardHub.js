@@ -36,7 +36,7 @@ const TEST_PARKS= [
 
 const BoardHub = (props) =>{
 
-    const boardCollection = collection(db, 'States/' + props.stateName + '/Parks/' + props.parkName + '/Boards');
+    const boardCollection = collection(db, 'States/' + props.stateId+ '/Parks/' + props.parkId + '/Boards');
     const [boards, setBoards] = useState([]);
 
     //console.log('States/' + props.stateName + '/Parks/' + props.parkName + '/Boards');
@@ -58,8 +58,13 @@ const BoardHub = (props) =>{
         let i;
         const boardRoutes = [];
         for(i = 0; i < boards.length; i++)
-        {
-            boardRoutes.push(<Route path={boards[i].id + '/*'} element={<BoardSingle board = {boards[i]}/>}/>) 
+        {        
+
+            const titleParts = boards[i].title.split(" ");
+            let linkTitle = titleParts[0];
+            if(titleParts[1] !== undefined)
+                linkTitle += titleParts[1]; 
+            boardRoutes.push(<Route path={linkTitle + '/*'} element={<BoardSingle board = {boards[i]}/>}/>) 
             //https://ui.dev/react-router-nested-routes
         }
     

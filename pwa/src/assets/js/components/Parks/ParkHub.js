@@ -37,7 +37,7 @@ const ParkHub = (props) =>{
 
     const path = useLocation().pathname;
 
-    const parkCollection = collection(db, 'States/' + props.stateName + "/Parks");
+    const parkCollection = collection(db, 'States/' + props.stateId + "/Parks");
     const [parks, setParks] = useState([]);
 
     //Database
@@ -58,7 +58,8 @@ const ParkHub = (props) =>{
         const parksRoutes = [];
         for(i = 0; i < parks.length; i++)
         {
-            parksRoutes.push(<Route path={parks[i].id + '/*'} element={<BoardHub stateName={props.stateName} parkName={parks[i].id}/>}></Route>) 
+
+            parksRoutes.push(<Route path={parks[i].name + '/*'} element={<BoardHub stateId ={props.stateId} parkId={parks[i].id}/>}></Route>) 
             //https://ui.dev/react-router-nested-routes
         }
         console.log(parksRoutes);

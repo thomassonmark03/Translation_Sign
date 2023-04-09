@@ -31,6 +31,26 @@ const TEST_PARKS= [
 // https://ui.dev/react-router-nested-routes
 
 
+const filterBoard = (board, filterText) =>{
+    //Find length of string
+    //Find match of string
+    //If matches > 1/2 length of string, display
+    const filterLength = filterText.length; 
+    let matches = 0;
+    let lcBoardName = board.title.toLowerCase();
+    let lcFilterText = filterText.toLowerCase();
+
+
+    for(let i = 0; i < filterLength && i < lcBoardName.length; i++)
+    {
+        if(lcBoardName[i] === lcFilterText[i])
+            matches++;
+    }
+
+    return lcFilterText === '' || (lcBoardName[0] === lcFilterText[0] && matches >= filterLength - 2);
+
+};
+
 const BoardPage = (props) =>{
 
     const boards = props.boards;
@@ -43,27 +63,7 @@ const BoardPage = (props) =>{
 
     };
 
-    //Find length of string
-    //Find match of string
-    //If matches > 1/2 length of string, display
-    const filterLength = filterText.length; 
-
-    const filterBoard = (board) =>{
-        let matches = 0;
-        let lcBoardName = board.id.toLowerCase();
-        let lcFilterText = filterText.toLowerCase();
-
-
-        for(let i = 0; i < filterLength && i < lcBoardName.length; i++)
-        {
-            if(lcBoardName[i] === lcFilterText[i])
-                matches++;
-        }
-
-        return lcFilterText === '' || (lcBoardName[0] === lcFilterText[0] && matches >= filterLength - 2);
-
-    };
-    const displayBoards = boards.filter(filterBoard);
+    const displayBoards = boards.filter( (board) => {return filterBoard(board, filterText)});
 
 
 
@@ -75,9 +75,13 @@ const BoardPage = (props) =>{
             <div class='container'>
                 {displayBoards.map((board)=> {
 
-                    console.log(board.id);
+                    const titleParts = board.title.split(" ");
+                    let linkTitle = titleParts[0];
+                    if(titleParts[1] !== undefined)
+                        linkTitle += titleParts[1]; 
+                    console.log(linkTitle + "in boardpage");
                     return( 
-                            <Link to={'./' + board.id}> 
+                            <Link to={'./' + linkTitle}> 
                                 <div className="content1">
                                     <h2 translate='no' >{board.title}</h2>
                                     <img alt={board.id} src={board.img}></img>
@@ -104,6 +108,7 @@ const BoardPage = (props) =>{
 
 
 export default BoardPage;
+export {filterBoard};
 
 
 

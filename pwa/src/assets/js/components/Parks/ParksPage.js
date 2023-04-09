@@ -31,6 +31,26 @@ const TEST_PARKS= [
 ];
 */
 
+//Find length of string
+//Find match of string
+//If matches > 1/2 length of string, display
+
+const filterPark = (park, filterText) =>{
+    const filterLength = filterText.length; 
+    let matches = 0;
+    let lcParkName = park.id.toLowerCase();
+    let lcFilterText = filterText.toLowerCase();
+
+
+    for(let i = 0; i < filterLength && i < lcParkName.length; i++)
+    {
+        if(lcParkName[i] === lcFilterText[i])
+            matches++;
+    }
+
+    return lcFilterText === '' || (lcParkName[0] === lcFilterText[0] && matches >= filterLength - 2);
+
+};
 
 //Refs: 
 // https://ui.dev/react-router-nested-routes
@@ -48,27 +68,7 @@ const ParkPage = (props) =>{
 
     };
 
-    //Find length of string
-    //Find match of string
-    //If matches > 1/2 length of string, display
-    const filterLength = filterText.length; 
-
-    const filterPark = (park) =>{
-        let matches = 0;
-        let lcParkName = park.id.toLowerCase();
-        let lcFilterText = filterText.toLowerCase();
-
-
-        for(let i = 0; i < filterLength && i < lcParkName.length; i++)
-        {
-            if(lcParkName[i] === lcFilterText[i])
-                matches++;
-        }
-
-        return lcFilterText === '' || (lcParkName[0] === lcFilterText[0] && matches >= filterLength - 2);
-
-    };
-    const displayParks = parks.filter(filterPark);
+    const displayParks = parks.filter((park) => {return filterPark(park, filterText)});
 
 
 
@@ -83,7 +83,7 @@ const ParkPage = (props) =>{
                             name= {park.id}
                             description= {'hello'}
                             parkImage = {park.img}
-                            route= {'./' + park.id}
+                            route= {'./' + park.name}
                         
                         
                         
@@ -115,6 +115,7 @@ const ParkPage = (props) =>{
 
 
 export default ParkPage;
+export {filterPark};
 
 
 

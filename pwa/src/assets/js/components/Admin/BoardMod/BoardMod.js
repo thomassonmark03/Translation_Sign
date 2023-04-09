@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import BoardForm from './BoardForm';
 
 import './BoardMod.css';
@@ -15,13 +15,11 @@ const BoardMod = (props) =>{
 
         if(selected == true)
         {
-            setSelected(false);
-
+            props.onDeselectBoard();
         }
         else
         {
-            setSelected(true);
-            props.onCallPark(board_name);
+            props.onCallBoard(board_name);
         }
 
 
@@ -42,6 +40,11 @@ const BoardMod = (props) =>{
                     </div>;
             
     }
+
+    //https://stackoverflow.com/questions/58888389/component-doesnt-re-render-when-props-change-using-usestate-hook
+    useEffect( () => {
+        setSelected(props.selected); 
+    }, [props.selected]);
 
     return(
         <div>
