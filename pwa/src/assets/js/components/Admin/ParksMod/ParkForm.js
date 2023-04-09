@@ -30,19 +30,21 @@ const ParkForm = (props) =>{
 
     const updatePark = () => {
 
-        if(name != "" && image != "")
+        if(name != "" || image != "")
         {
-            const parkObj = {
-            
-                name: name,
-                imgFile: imageFile,
+            const parkObj = {};
+           
+            if(name  != "")
+                parkObj.name = name;
 
-            }
+            if(image != "")
+                parkObj.img = image;
+
             console.log(parkObj);
             setImage("");
             setName("");
             setImageFile("");
-            props.toUpdatePark(parkObj);
+            props.toUpdatePark(parkObj, imageFile);
         }
         else
         {

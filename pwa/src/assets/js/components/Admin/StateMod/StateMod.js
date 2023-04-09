@@ -28,10 +28,10 @@ const StateMod = (props) =>{
     };
 
 
-    const updateState = (newStateObj) =>{
+    const updateState = (newStateObj, imageFile) =>{
     
          console.log(newStateObj);
-         props.toUploadState(state_id, newStateObj);
+         props.toUploadState(state_id, newStateObj, imageFile);
     }
 
     let editMenu = "";

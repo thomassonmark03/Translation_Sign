@@ -8,7 +8,8 @@ import {Link} from "react-router-dom";
 
 const BoardMod = (props) =>{
     const [selected, setSelected]= useState(props.selected);
-    const board_name = props.name;
+    const board_name = props.boardName;
+    const board_id = props.boardId;
     const board_image = props.boardImage;
 
     const editBoard= () =>{
@@ -19,16 +20,16 @@ const BoardMod = (props) =>{
         }
         else
         {
-            props.onCallBoard(board_name);
+            props.onCallBoard(board_id);
         }
 
 
     };
 
 
-    const updateBoard = (newBoardObj) =>{
+    const updateBoard = (newBoardObj, imageFile) =>{
     
-         props.toUploadPark(board_name, newBoardObj);
+         props.toUploadBoard(board_id, newBoardObj, imageFile);
     }
 
     let editMenu = "";
@@ -36,7 +37,7 @@ const BoardMod = (props) =>{
     if(selected)
     {
         editMenu =  <div>
-                        <BoardForm name={board_name} image={board_image} toStateUpdate={updateBoard}></BoardForm>
+                        <BoardForm name={board_name} image={board_image} toBoardUpdate={updateBoard}></BoardForm>
                     </div>;
             
     }

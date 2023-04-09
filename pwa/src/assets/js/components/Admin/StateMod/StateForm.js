@@ -30,19 +30,20 @@ const StateForm = (props) =>{
 
     const updateState = () => {
 
-        if(name != "" && image != "")
+        if(name != "" || image != "")
         {
-            const stateObj = {
-            
-                name: name,
-                imgFile: imageFile,
+            let stateObj = {}
+           
+            if(name != "")
+                stateObj.name = name;
+            if(image != "")
+                stateObj.img = image;
 
-            }
             console.log(stateObj);
             setImage("");
             setName("");
             setImageFile("");
-            props.toStateUpdate(stateObj);
+            props.toStateUpdate(stateObj, imageFile);
         }
         else
         {

@@ -6,14 +6,21 @@ import React, {useState} from 'react';
 const BoardForm = (props) =>{
 
 
-    const [name, setName] = useState("");
+    const [title, setTitle] = useState("");
+    const [engText, setEngText] = useState("");
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
 
 
-    const nameHandler = (event) =>{
+    const titleHandler = (event) =>{
 
-        setName(event.target.value);
+        setTitle(event.target.value);
+
+    };
+
+    const engTextHandler = (event) =>{
+
+        setEngText(event.target.value);
 
     };
 
@@ -30,19 +37,23 @@ const BoardForm = (props) =>{
 
     const updateBoard = () => {
 
-        if(name != "" && image != "")
+        if(title != "" || image != "" || engText != "")
         {
-            const boardObj = {
-            
-                name: name,
-                image: imageFile,
+            const boardObj = {};
 
-            }
+            if(title != "")
+                boardObj.title = title;
+            if(image != "")
+                boardObj.img = image;
+            if(engText != "")
+                boardObj.en = engText;
+            
             console.log(boardObj);
+            setTitle("");
+            setEngText("");
             setImage("");
-            setName("");
             setImageFile("");
-            props.toStateUpdate(boardObj);
+            props.toBoardUpdate(boardObj, imageFile);
         }
         else
         {
@@ -60,7 +71,11 @@ const BoardForm = (props) =>{
     //https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
     return(
         <div>
-            <input type='text' onChange={nameHandler} value={name}></input>
+            <label>Title</label>
+            <input type='text' onChange={titleHandler} value={title}></input>
+            <label>Board Text</label>
+            <input type='text' onChange={engTextHandler} value={engText}></input>
+            <label>Board Image</label>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updateBoard}>Update</button>
 

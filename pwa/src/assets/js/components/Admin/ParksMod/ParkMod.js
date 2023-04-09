@@ -31,9 +31,9 @@ const ParkMod = (props) =>{
     };
 
 
-    const updatePark = (newParkObj) =>{
+    const updatePark = (newParkObj, imageFile) =>{
     
-         props.toUploadPark(park_id, newParkObj);
+         props.toUploadPark(park_id, newParkObj, imageFile);
     }
 
     let editMenu = "";
