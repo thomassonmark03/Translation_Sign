@@ -31,7 +31,7 @@ const StateMod = (props) =>{
     const updateState = (newStateObj, imageFile) =>{
     
          console.log(newStateObj);
-         props.toUploadState(state_id, newStateObj, imageFile);
+         props.toUploadState(state_id, newStateObj, imageFile, "update");
     }
 
     let editMenu = "";
@@ -45,7 +45,7 @@ const StateMod = (props) =>{
     if(selected)
     {
         editMenu =  <div>
-                        <StateForm name={state_name} image={state_img} id = {state_id} toStateUpdate={updateState}></StateForm>
+                        <StateForm buttonUploadName= "Update" toStateUpdate={updateState}></StateForm>
                     </div>;
             
     }

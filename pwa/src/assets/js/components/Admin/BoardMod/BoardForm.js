@@ -5,6 +5,9 @@ import React, {useState} from 'react';
 
 const BoardForm = (props) =>{
 
+    const requireTitle = typeof(props.requireName) === "boolean"? props.requireName : false;
+    const requireEngText = typeof(props.requireEngText) === "boolean"? props.requireEngText: false;
+    const requireImage = typeof(props.requireImage) === "boolean"? props.requireImage : false;
 
     const [title, setTitle] = useState("");
     const [engText, setEngText] = useState("");
@@ -36,8 +39,10 @@ const BoardForm = (props) =>{
 
 
     const updateBoard = () => {
-
-        if(title != "" || image != "" || engText != "")
+        const checkTitle = !requireTitle || title !== "";
+        const checkImage = !requireImage || image !== "";
+        const checkEngText = !requireEngText || engText !== "";
+        if(checkTitle && checkImage && checkEngText)
         {
             const boardObj = {};
 

@@ -3,7 +3,7 @@ import './Admin.css';
 import { useState,useEffect } from "react";
 import {db, imgStorage} from "../Database/FirebaseConfig";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
-import { collection, getDocs, getDoc, doc, updateDoc} from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, updateDoc, setDoc} from 'firebase/firestore';
 
 import Header from '../Design/Header';
 
@@ -23,6 +23,10 @@ import {filterBoard} from '../Board/BoardPage';
 import StateMod from './StateMod/StateMod';
 import ParkMod from './ParksMod/ParkMod';
 import BoardMod from './BoardMod/BoardMod';
+
+//Creating imports
+import CreateState from './Create/CreateState';
+import CreatePark from './Create/CreatePark';
 
 
 const NotFoundImgState = 'https://www.online-tech-tips.com/wp-content/uploads/2022/03/image-41.jpeg';
@@ -116,13 +120,14 @@ function Admin() {
 
 
 
-    const uploadState = async(stateId, newStateObj, imageFile) => {
+    //Updating functions
+    const uploadState = async(stateId, newStateObj, imageFile, mode) => {
         console.log('in upload state');
         //Ref https://firebase.google.com/docs/storage/web/upload-files
 
         if(newStateObj.img != undefined) 
         {
-            const stateImgRef = ref(imgStorage, 'states/'+newStateObj.name);
+            const stateImgRef = ref(imgStorage, 'states/'+stateId);
             const uploadSnapshot = await uploadBytes(stateImgRef, imageFile);
             console.log(uploadSnapshot);
 
@@ -132,8 +137,12 @@ function Admin() {
             newStateObj.img = await getDownloadURL(stateImgRef);
         }
 
+        if(mode ==="update")
+            await updateDoc( doc(db, 'States', stateId), {...newStateObj});
+        else
+            await setDoc( doc(db, 'States', stateId), {...newStateObj});
 
-        await updateDoc( doc(db, 'States', stateId), {...newStateObj});
+        
         const newStateRef = doc(db, 'States', stateId);
         const newStateDoc = await getDoc(newStateRef);
         const newState = {...newStateDoc.data(), id: stateId};
@@ -155,7 +164,7 @@ function Admin() {
 
             if(updated === false)
             {
-                updateState.push({...newState});
+                updateState.unshift({...newState});
             }
 
             console.log("Updated state:");
@@ -177,13 +186,13 @@ function Admin() {
 
 
 
-    const uploadPark = async(parkId, newParkObj, imageFile) => {
+    const uploadPark = async(parkId, newParkObj, imageFile, mode) => {
         console.log('in upload park');
         //Ref https://firebase.google.com/docs/storage/web/upload-files
 
         if(newParkObj.img != undefined)
         {
-            const parkImgRef = ref(imgStorage, 'parks/'+newParkObj.name);
+            const parkImgRef = ref(imgStorage, 'parks/'+ parkId);
             const uploadSnapshot = await uploadBytes(parkImgRef, imageFile);
             console.log(uploadSnapshot);
     
@@ -193,7 +202,12 @@ function Admin() {
     
         const parkPath = 'States/' + stateName + '/Parks';
         const newParkRef = doc(db, parkPath,  parkId);
-        await updateDoc( newParkRef, {...newParkObj})
+
+        if(mode === "update")
+            await updateDoc( newParkRef, {...newParkObj})
+        else
+            await setDoc( newParkRef, {...newParkObj})
+
         const newParkDoc = await getDoc(newParkRef);
         const newPark = {...newParkDoc.data(), id: parkId};
     
@@ -202,15 +216,23 @@ function Admin() {
             let updatePark = {...prevParks};
             let i = 0;
 
-
-            for(i = 0; i < updatePark[stateName].length; i++)
+            if(mode === "update")
             {
-                if(updatePark[stateName][i].id === parkId)
+                for(i = 0; i < updatePark[stateName].length; i++)
                 {
-                    updatePark[stateName][i] = {...newPark};
-                }
+                    if(updatePark[stateName][i].id === parkId)
+                    {
+                        updatePark[stateName][i] = {...newPark};
+                    }
 
+                }
             }
+            else
+            {
+                updatePark[stateName].unshift({...newPark, id: parkId});
+            }
+
+
 
 
 
@@ -227,13 +249,13 @@ function Admin() {
     
     }
 
-    const uploadBoard = async(boardId, newBoardObj, imageFile) => {
+    const uploadBoard = async(boardId, newBoardObj, imageFile, mode) => {
         console.log('in upload board');
 
         if(newBoardObj.img != undefined) 
         {
             //Ref https://firebase.google.com/docs/storage/web/upload-files
-            const boardImgRef = ref(imgStorage, 'boards/'+newBoardObj.name);
+            const boardImgRef = ref(imgStorage, 'boards/' + boardId);
             const uploadSnapshot = await uploadBytes(boardImgRef, imageFile);
             console.log(uploadSnapshot);
     
@@ -243,7 +265,12 @@ function Admin() {
     
         const boardPath = 'States/' + stateName + '/Parks/' + parkName + '/Boards';
         const newBoardRef = doc(db, boardPath,  boardId);
-        await updateDoc( newBoardRef, {...newBoardObj});
+
+        if(mode === "update")
+            await updateDoc( newBoardRef, {...newBoardObj});
+        else
+            await setDoc( newBoardRef, {...newBoardObj});
+
         const newBoardDoc = await getDoc(newBoardRef);
         const newBoard = {...newBoardDoc.data(), id: boardId};
     
@@ -252,20 +279,28 @@ function Admin() {
             let updateBoards = {...prevBoards};
             let i = 0;
 
+
             console.log("previous boards: ");
             console.log(prevBoards);
             console.log("attempted parkName: ");
             console.log(parkName);
 
-
-            for(i = 0; i < updateBoards[parkName].length; i++)
+            if(mode == "update")
             {
-                if(updateBoards[parkName][i].id === boardId)
+                for(i = 0; i < updateBoards[parkName].length; i++)
                 {
-                    updateBoards[parkName][i] = {...newBoard};
-                }
+                    if(updateBoards[parkName][i].id === boardId)
+                    {
+                        updateBoards[parkName][i] = {...newBoard};
+                    }
 
+                }
             }
+            else
+            {
+                updateBoards[parkName].unshift({...newBoard, id:boardId});
+            }
+
 
 
 
@@ -416,7 +451,9 @@ function Admin() {
                     <div>
                         <StateFilter setFilter = {setStateFilter}></StateFilter>
                     </div>
-
+                    <div>
+                        <CreateState toUploadState = {uploadState}></CreateState>
+                    </div>
                     <div>
                     {statesFiltered.map( (state) => {
 
@@ -437,6 +474,9 @@ function Admin() {
                     <div>
                         <ParkFilter setFilter = {setParkFilter}></ParkFilter>
                     </div>
+                    {stateName != "" && <div>
+                        <CreatePark toUploadPark = {uploadPark}> </CreatePark>
+                    </div>}
                 <div>
 
                     {parksFiltered !== undefined &&

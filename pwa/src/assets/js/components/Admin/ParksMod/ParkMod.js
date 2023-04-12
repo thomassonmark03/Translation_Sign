@@ -16,13 +16,11 @@ const ParkMod = (props) =>{
 
         if(selected == true)
         {
-    //      setSelected(false);
             props.onDeselectPark();
 
         }
         else
         {
-    //      setSelected(true);
             props.onCallPark(park_id);
         }
 
@@ -33,7 +31,7 @@ const ParkMod = (props) =>{
 
     const updatePark = (newParkObj, imageFile) =>{
     
-         props.toUploadPark(park_id, newParkObj, imageFile);
+         props.toUploadPark(park_id, newParkObj, imageFile, "update");
     }
 
     let editMenu = "";
@@ -41,7 +39,8 @@ const ParkMod = (props) =>{
     if(selected)
     {
         editMenu =  <div>
-                        <ParkForm name={park_name} image={park_img} toUpdatePark={updatePark}></ParkForm>
+                        <ParkForm buttonName = "Update" toUpdatePark={updatePark}></ParkForm>
+                        <button>Delete Park</button>
                     </div>;
             
     }

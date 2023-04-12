@@ -29,7 +29,7 @@ const BoardMod = (props) =>{
 
     const updateBoard = (newBoardObj, imageFile) =>{
     
-         props.toUploadBoard(board_id, newBoardObj, imageFile);
+         props.toUploadBoard(board_id, newBoardObj, imageFile, "update");
     }
 
     let editMenu = "";

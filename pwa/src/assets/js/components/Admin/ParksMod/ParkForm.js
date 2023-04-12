@@ -5,6 +5,8 @@ import React, {useState} from 'react';
 
 const ParkForm = (props) =>{
 
+    const requireName = typeof(props.requireName) === "boolean"? props.requireName : false;
+    const requireImage = typeof(props.requireImage) === "boolean"? props.requireImage : false;
 
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
@@ -29,8 +31,10 @@ const ParkForm = (props) =>{
 
 
     const updatePark = () => {
+        const checkName = !requireName || name !== "";
+        const checkImage = !requireImage || image !== "";
 
-        if(name != "" || image != "")
+        if(checkName && checkImage)
         {
             const parkObj = {};
            
@@ -66,7 +70,7 @@ const ParkForm = (props) =>{
             <input type='text' onChange={nameHandler} value={name}></input>
             <label>Image of Park</label>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
-            <button onClick={updatePark}>Update</button>
+            <button onClick={updatePark}>{props.buttonName}</button>
 
 
         </div>
