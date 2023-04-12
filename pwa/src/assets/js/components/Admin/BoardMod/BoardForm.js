@@ -82,7 +82,7 @@ const BoardForm = (props) =>{
             <input type='text' onChange={engTextHandler} value={engText}></input>
             <label>Board Image</label>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
-            <button onClick={updateBoard}>Update</button>
+            <button onClick={updateBoard}>{props.buttonUploadName}</button>
 
 
         </div>

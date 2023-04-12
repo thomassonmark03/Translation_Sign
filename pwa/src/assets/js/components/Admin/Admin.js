@@ -27,6 +27,7 @@ import BoardMod from './BoardMod/BoardMod';
 //Creating imports
 import CreateState from './Create/CreateState';
 import CreatePark from './Create/CreatePark';
+import CreateBoard from './Create/CreateBoard';
 
 
 const NotFoundImgState = 'https://www.online-tech-tips.com/wp-content/uploads/2022/03/image-41.jpeg';
@@ -498,6 +499,10 @@ function Admin() {
                 <div className='sign_translation_editor__boards__container'>
                     <div>
                         <BoardFilter setFilter = {setBoardFilter}></BoardFilter>
+                    </div>
+                    <div>
+                        {parkName != "" &&
+                            <CreateBoard toUploadBoard = {uploadBoard}></CreateBoard>}
                     </div>
                     <div>
                         {boardsFiltered !== undefined 

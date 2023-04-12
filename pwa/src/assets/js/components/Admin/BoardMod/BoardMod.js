@@ -37,7 +37,7 @@ const BoardMod = (props) =>{
     if(selected)
     {
         editMenu =  <div>
-                        <BoardForm name={board_name} image={board_image} toBoardUpdate={updateBoard}></BoardForm>
+                        <BoardForm toBoardUpdate={updateBoard} buttonUploadName = "Update"></BoardForm>
                     </div>;
             
     }
