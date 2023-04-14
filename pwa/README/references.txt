@@ -9,7 +9,11 @@ Values to set the google translate cookie.
 https://cloud.google.com/translate/docs/languages
 
 
-https://stackoverflow.com/questions/71357147/how-to-create-a-collection-in-firebase-using-react
 Collection creation
+https://stackoverflow.com/questions/71357147/how-to-create-a-collection-in-firebase-using-react
+
+Deleting documents
+https://firebase.google.com/docs/firestore/manage-data/delete-data
+
 
     
