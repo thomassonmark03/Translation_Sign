@@ -61,9 +61,12 @@ const BoardHub = (props) =>{
         {        
 
             const titleParts = boards[i].title.split(" ");
-            let linkTitle = titleParts[0];
-            if(titleParts[1] !== undefined)
-                linkTitle += titleParts[1]; 
+
+            let linkTitle = "";
+            for (let i = 0; i < titleParts.length; i++)
+            {
+                linkTitle += titleParts[i];
+            }
             boardRoutes.push(<Route path={linkTitle + '/*'} element={<BoardSingle board = {boards[i]}/>}/>) 
             //https://ui.dev/react-router-nested-routes
         }

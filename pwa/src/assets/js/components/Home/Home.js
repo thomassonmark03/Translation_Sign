@@ -69,11 +69,18 @@ const Home = (props) =>{
             <div>
                 {displayStates.map( (state) => {
 
+                        const titleParts = state.name.split(" ");
+                        let linkTitle = "";
+                        for (let i = 0; i < titleParts.length; i++)
+                        {
+                            linkTitle += titleParts[i];
+                        }
+
                         return <State 
                             name= {state.name}
                             description= {'hello'}
                             stateImage = {state.img}
-                            route= {'./' + state.name}
+                            route= {'./' + linkTitle}
                         
                         
                         

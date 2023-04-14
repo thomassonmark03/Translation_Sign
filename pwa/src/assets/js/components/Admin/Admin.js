@@ -585,9 +585,49 @@ function Admin() {
                     <div>
                         {boardsFiltered !== undefined 
                         && boardsFiltered.map( (board) => {
+//
+                                let statesFullName = "";
+                                for(let i = 0; i < states.length; i++)
+                                {
+                                    if(stateName === states[i].id)
+                                    {
+                                        statesFullName = states[i].name; 
+                                        break;
+                                    }
+                                }
+                                let parksFullName = "";
+                                for(let i = 0; i < parksUnfiltered.length; i++)
+                                {
+                                    if(parkName === parksUnfiltered[i].id)
+                                    {
+                                        parksFullName = parksUnfiltered[i].name;
+                                        break;
+                                    }
 
+                                }
+                                const stateParts = statesFullName.split(" ");
+                                const parkParts = parksFullName.split(" ");
+                                const boardParts= board.title.split(" ");
+                                let stateLinkTitle = "";
+                                let parkLinkTitle = "";
+                                let boardLinkTitle = "";
+                                for( let i = 0; i < stateParts.length; i++)
+                                {
+                                    stateLinkTitle += stateParts[i];
+                                }
+                                for( let i = 0; i < parkParts.length; i++)
+                                {
+                                    parkLinkTitle += parkParts[i];
+                                }
+                                for( let i = 0; i < boardParts.length; i++)
+                                {
+                                    boardLinkTitle += boardParts[i];
+                                }
+                                
 
-                                return <BoardMod key = {stateName + parkName + board.id + '1234'} selected = {board.id === boardName} toUploadBoard ={uploadBoard} toDeleteBoard={deleteBoard} onCallBoard = {boardSelect} onDeselectBoard={deselectBoard}  boardId = {board.id} boardName={board.title} boardImage = {board.img}  ></BoardMod>
+                                const boardUrl = window.location.origin + '/' + stateLinkTitle+ '/' + parkLinkTitle+ '/' + boardLinkTitle;
+                                console.log(boardUrl);
+                                return <BoardMod key = {stateName + parkName + board.id + '1234'} selected = {board.id === boardName} toUploadBoard ={uploadBoard} toDeleteBoard={deleteBoard} onCallBoard = {boardSelect} onDeselectBoard={deselectBoard}  boardId = {board.id} boardName={board.title} boardImage = {board.img} boardEngText = {board.en} url={boardUrl}  ></BoardMod>
 
 
 

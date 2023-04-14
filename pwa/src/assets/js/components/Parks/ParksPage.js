@@ -62,6 +62,8 @@ const ParkPage = (props) =>{
     //const states = [...TEST_STATES];
     const [filterText, setFilterText] = useState('');
 
+
+
     const filterSet = (text) =>{
         setFilterText(text);
 
@@ -78,12 +80,18 @@ const ParkPage = (props) =>{
             <ParkFilter setFilter = {filterSet}/>
             <div>
                 {displayParks.map( (park) => {
+                        const titleParts = park.name.split(" ");
+                        let linkTitle = "";
+                        for (let i = 0; i < titleParts.length; i++)
+                        {
+                            linkTitle += titleParts[i];
+                        }
 
                         return <Park
                             name= {park.name}
                             description= {'hello'}
                             parkImage = {park.img}
-                            route= {'./' + park.name}
+                            route= {'./' + linkTitle}
                         
                         
                         

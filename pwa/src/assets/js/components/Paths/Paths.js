@@ -42,7 +42,14 @@ const Paths = (props) =>{
         
         for(i = 0; i < states.length; i++)
         {
-            stateRoutes.push(<Route path={'/' + states[i].name+ '/*'} element={<ParkHub stateId = {states[i].id}/>}></Route>) 
+
+            const titleParts = states[i].name.split(" ");
+            let linkTitle = "";
+            for (let i = 0; i < titleParts.length; i++)
+            {
+                linkTitle += titleParts[i];
+            }
+            stateRoutes.push(<Route path={'/' + linkTitle + '/*'} element={<ParkHub stateId = {states[i].id}/>}></Route>) 
             //https://ui.dev/react-router-nested-routes
         }
         console.log(stateRoutes);

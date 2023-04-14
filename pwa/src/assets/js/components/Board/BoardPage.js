@@ -76,10 +76,13 @@ const BoardPage = (props) =>{
                 {displayBoards.map((board)=> {
 
                     const titleParts = board.title.split(" ");
-                    let linkTitle = titleParts[0];
-                    if(titleParts[1] !== undefined)
-                        linkTitle += titleParts[1]; 
-                    console.log(linkTitle + "in boardpage");
+                    let linkTitle = "";
+                    for (let i = 0; i < titleParts.length; i++)
+                    {
+                        linkTitle += titleParts[i];
+                    }
+                    console.log("Here is the link title");
+                    console.log(linkTitle);
                     return( 
                             <Link to={'./' + linkTitle}> 
                                 <div className="content1">
