@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ParkForm from './ParkForm';
+import DeleteButton from '../Delete/DeleteButton';
 
 import './ParkMod.css';
 import {Link} from "react-router-dom";
@@ -34,13 +35,17 @@ const ParkMod = (props) =>{
          props.toUploadPark(park_id, newParkObj, imageFile, "update");
     }
 
+    const deletePark = () =>{
+        props.toDeletePark(park_id);
+    }
+
     let editMenu = "";
 
     if(selected)
     {
         editMenu =  <div>
                         <ParkForm buttonName = "Update" toUpdatePark={updatePark}></ParkForm>
-                        <button>Delete Park</button>
+                        <DeleteButton delete = {deletePark} name={park_name} typeName ={'Park'}></DeleteButton>
                     </div>;
             
     }

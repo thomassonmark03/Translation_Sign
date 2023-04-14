@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import BoardForm from './BoardForm';
+import DeleteButton from '../Delete/DeleteButton';
 
 import './BoardMod.css';
 import {Link} from "react-router-dom";
@@ -32,12 +33,18 @@ const BoardMod = (props) =>{
          props.toUploadBoard(board_id, newBoardObj, imageFile, "update");
     }
 
+    const deleteBoard = () =>{
+
+        props.toDeleteBoard(board_id);
+    }
+
     let editMenu = "";
 
     if(selected)
     {
         editMenu =  <div>
                         <BoardForm toBoardUpdate={updateBoard} buttonUploadName = "Update"></BoardForm>
+                        <DeleteButton delete = {deleteBoard} name={board_name} typeName ={'Board'}></DeleteButton>
                     </div>;
             
     }

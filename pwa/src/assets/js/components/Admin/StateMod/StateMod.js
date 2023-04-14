@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import StateForm from './StateForm';
+import DeleteButton from '../Delete/DeleteButton';
 
 import './StateMod.css';
 import {Link} from "react-router-dom";
@@ -34,6 +35,14 @@ const StateMod = (props) =>{
          props.toUploadState(state_id, newStateObj, imageFile, "update");
     }
 
+
+
+
+    const deleteState = () =>{
+    
+        props.toDeleteState(state_id);
+    }
+
     let editMenu = "";
 
 
@@ -46,6 +55,7 @@ const StateMod = (props) =>{
     {
         editMenu =  <div>
                         <StateForm buttonUploadName= "Update" toStateUpdate={updateState}></StateForm>
+                        <DeleteButton delete = {deleteState} name = {state_name} typeName ={'State'}></DeleteButton>
                     </div>;
             
     }

@@ -3,7 +3,7 @@ import './Admin.css';
 import { useState,useEffect } from "react";
 import {db, imgStorage} from "../Database/FirebaseConfig";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
-import { collection, getDocs, getDoc, doc, updateDoc, setDoc} from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, updateDoc, setDoc, deleteDoc} from 'firebase/firestore';
 
 import Header from '../Design/Header';
 
@@ -115,7 +115,8 @@ function Admin() {
 
     const [boards, setBoards] = useState({}); 
     const [boardName, setBoardName] = useState({}); 
-    const boardsUnfiltered = boards[parkName];
+    const boardIndex = stateName + '/' + parkName;
+    const boardsUnfiltered = boards[boardIndex];
     const [boardFilter, setBoardFilter] = useState("");
 
 
@@ -288,18 +289,18 @@ function Admin() {
 
             if(mode == "update")
             {
-                for(i = 0; i < updateBoards[parkName].length; i++)
+                for(i = 0; i < updateBoards[boardIndex].length; i++)
                 {
-                    if(updateBoards[parkName][i].id === boardId)
+                    if(updateBoards[boardIndex][i].id === boardId)
                     {
-                        updateBoards[parkName][i] = {...newBoard};
+                        updateBoards[boardIndex][i] = {...newBoard};
                     }
 
                 }
             }
             else
             {
-                updateBoards[parkName].unshift({...newBoard, id:boardId});
+                updateBoards[boardIndex].unshift({...newBoard, id:boardId});
             }
 
 
@@ -317,6 +318,81 @@ function Admin() {
     
     
     }
+
+    //delete functions
+    const deleteState = async(stateId) =>
+    {
+        await deleteDoc(doc(db, 'States/', stateId) );
+
+        setStates( (prevStates) => {
+            const newStates = [];
+            let i = 0;
+
+            for(i = 0; i < prevStates.length; i++)
+            {
+                if(prevStates[i].id != stateId)
+                {
+                    newStates.push(prevStates[i]);
+                }
+            }
+
+            return newStates;
+
+
+        })
+        deselectState();
+    }
+    const deletePark = async(parkId) =>
+    {
+        await deleteDoc(doc(db, 'States/'+ stateName + '/Parks', parkId) );
+        setPark( (prevParks) => {
+            let i;
+
+            const newParks = []; 
+
+            for(i = 0; i < prevParks[stateName].length; i++)
+            {
+                if(prevParks[stateName][i].id != parkId)
+                {
+                    newParks.push(prevParks[stateName][i]);
+                } 
+            }
+
+            prevParks[stateName] = newParks;
+
+            return prevParks;
+
+        });
+
+        deselectPark();
+    }
+    const deleteBoard= async(boardId) =>
+    {
+        await deleteDoc(doc(db, 'States/'+ stateName + '/Parks/' + parkName + '/Boards', boardId) );
+        setBoards( (prevBoards) => {
+            let i;
+
+            const newBoards = []; 
+
+            for(i = 0; i < prevBoards[boardIndex].length; i++)
+            {
+                if(prevBoards[boardIndex][i].id != boardId)
+                {
+                    newBoards.push(prevBoards[boardIndex][i]);
+                } 
+            }
+
+            prevBoards[boardIndex] = newBoards;
+
+            return prevBoards;
+
+        });
+
+        deselectBoard();
+    }
+
+
+    //deselect functions
 
     const deselectState = () =>
     {
@@ -393,14 +469,16 @@ function Admin() {
     const boardGet = async(calledParkId) =>
     {
         setBoardName(""); //Deselects any previous boards
-        if(boards[calledParkId] === undefined)
+
+        const localBoardIndex= stateName + '/' + calledParkId;
+        if(boards[localBoardIndex] === undefined)
         {
             const boardCollection = collection(db, 'States/'+ stateName + '/Parks/' + calledParkId + '/Boards');
                
             const board = await getDocs(boardCollection);
 
             setBoards( (prevBoards) => {
-                const newBoard = {[calledParkId]: board.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
+                const newBoard = {[localBoardIndex]: board.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
                 const newBoards = {...prevBoards, ...newBoard};
                 console.log(newBoards);
 
@@ -459,7 +537,7 @@ function Admin() {
                     {statesFiltered.map( (state) => {
 
 
-                            return (<StateMod key ={state.id + '1234'} selected = {state.id === stateName} toUploadState ={uploadState}  stateName={state.name} stateImage = {state.img} stateId = {state.id} onCallState = {parkGet} onDeselectState={deselectState}></StateMod>)
+                            return (<StateMod key ={state.id + '1234'} selected = {state.id === stateName} toUploadState ={uploadState} toDeleteState ={deleteState}  stateName={state.name} stateImage = {state.img} stateId = {state.id} onCallState = {parkGet} onDeselectState={deselectState}></StateMod>)
 
 
 
@@ -484,7 +562,7 @@ function Admin() {
                     
                      parksFiltered.map( (park) => {
 
-                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} toUploadPark = {uploadPark} onCallPark = {boardGet} onDeselectPark={deselectPark}  parkId = {park.id} parkName = {park.name} parkImage = {park.img}  ></ParkMod>
+                            return <ParkMod selected = {park.id === parkName}key= {stateName + park.id + '1234'} toUploadPark = {uploadPark} toDeletePark ={deletePark} onCallPark = {boardGet} onDeselectPark={deselectPark}  parkId = {park.id} parkName = {park.name} parkImage = {park.img}  ></ParkMod>
 
 
 
@@ -509,7 +587,7 @@ function Admin() {
                         && boardsFiltered.map( (board) => {
 
 
-                                return <BoardMod key = {stateName + parkName + board.id + '1234'} selected = {board.id === boardName} toUploadBoard ={uploadBoard} onCallBoard = {boardSelect} onDeselectBoard={deselectBoard}  boardId = {board.id} boardName={board.title} boardImage = {board.img}  ></BoardMod>
+                                return <BoardMod key = {stateName + parkName + board.id + '1234'} selected = {board.id === boardName} toUploadBoard ={uploadBoard} toDeleteBoard={deleteBoard} onCallBoard = {boardSelect} onDeselectBoard={deselectBoard}  boardId = {board.id} boardName={board.title} boardImage = {board.img}  ></BoardMod>
 
 
 
