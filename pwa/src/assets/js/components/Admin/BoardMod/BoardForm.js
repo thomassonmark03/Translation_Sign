@@ -1,5 +1,6 @@
 import { async } from '@firebase/util';
 import React, {useState} from 'react';
+import './BoardMod.css';
 
 
 
@@ -79,7 +80,7 @@ const BoardForm = (props) =>{
             <label>Title</label>
             <input type='text' onChange={titleHandler} value={title}></input>
             <label>Board Text</label>
-            <input type='text' onChange={engTextHandler} value={engText}></input>
+            <textarea className= "board_form___textarea" type='text' onChange={engTextHandler} value={engText}></textarea>
             <label>Board Image</label>
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updateBoard}>{props.buttonUploadName}</button>

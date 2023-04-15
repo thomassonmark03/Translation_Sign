@@ -254,6 +254,7 @@ function Admin() {
 
     const uploadBoard = async(boardId, newBoardObj, imageFile, mode) => {
         console.log('in upload board');
+        console.log(newBoardObj);
 
         if(newBoardObj.img != undefined) 
         {

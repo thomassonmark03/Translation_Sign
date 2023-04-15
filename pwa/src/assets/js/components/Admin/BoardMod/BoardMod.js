@@ -61,8 +61,8 @@ const BoardMod = (props) =>{
         <div>
             <div onClick={editBoard} className={`board ${selected ? "board_selected":"board_not_selected"} `}>
                 <img alt= {board_name + ' image here'} src={board_image}></img>
-                <p>{board_name}</p>
-                <p style={{font: 12,background: 'orange'}}>{board_text}</p>
+                <h1>{board_name}</h1>
+                <div style={{font: 12,background: 'orange'}}>{board_text}</div>
 
             </div>
             {editMenu}
