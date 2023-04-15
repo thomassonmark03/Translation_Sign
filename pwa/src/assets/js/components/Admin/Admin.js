@@ -1,9 +1,10 @@
 import React from 'react';
 import './Admin.css';
 import { useState,useEffect } from "react";
-import {db, imgStorage} from "../Database/FirebaseConfig";
+import {db, imgStorage, app} from "../Database/FirebaseConfig";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 import { collection, getDocs, getDoc, doc, updateDoc, setDoc, deleteDoc} from 'firebase/firestore';
+
 
 import Header from '../Design/Header';
 
@@ -322,7 +323,15 @@ function Admin() {
     //delete functions
     const deleteState = async(stateId) =>
     {
+
+        const parksDocs = await getDocs(collection(db, 'States/' + stateId + '/Parks'));
+
+        parksDocs.forEach( (doc) => {
+            deletePark(doc.id, stateId);
+        });
         await deleteDoc(doc(db, 'States/', stateId) );
+        
+
 
         setStates( (prevStates) => {
             const newStates = [];
@@ -342,23 +351,37 @@ function Admin() {
         })
         deselectState();
     }
-    const deletePark = async(parkId) =>
+    const deletePark = async(parkId, stateId = stateName) =>
     {
-        await deleteDoc(doc(db, 'States/'+ stateName + '/Parks', parkId) );
+        const boardDocs = await getDocs(collection(db, 'States/' + stateId + '/Parks/' + parkId + '/Boards'));
+        console.log("In delete park: ")
+        console.log(parkId+ " " + stateId);
+
+        boardDocs.forEach( (doc) =>{    
+            console.log("board docs in delete park");
+            console.log(doc);
+            deleteBoard(doc.id, stateId, parkId);
+        });
+
+        await deleteDoc(doc(db, 'States/'+ stateId + '/Parks', parkId) );
         setPark( (prevParks) => {
             let i;
 
             const newParks = []; 
+            const parksNum = prevParks[stateId].length;
 
-            for(i = 0; i < prevParks[stateName].length; i++)
+            if(parksNum !== undefined)
             {
-                if(prevParks[stateName][i].id != parkId)
+                for(i = 0; i < prevParks[stateId].length; i++)
                 {
-                    newParks.push(prevParks[stateName][i]);
-                } 
-            }
+                    if(prevParks[stateId][i].id != parkId)
+                    {
+                        newParks.push(prevParks[stateId][i]);
+                    } 
+                }
 
-            prevParks[stateName] = newParks;
+                prevParks[stateId] = newParks;
+            }
 
             return prevParks;
 
@@ -366,24 +389,35 @@ function Admin() {
 
         deselectPark();
     }
-    const deleteBoard= async(boardId) =>
+    const deleteBoard= async(boardId, stateId = stateName, parkId = parkName) =>
     {
-        await deleteDoc(doc(db, 'States/'+ stateName + '/Parks/' + parkName + '/Boards', boardId) );
+        console.log("In delete board: ")
+        const localBoardIndex = stateId + '/' + parkId;
+        console.log(boardId + " " + stateId + " " + parkId);
+        await deleteDoc(doc(db, 'States/'+ stateId + '/Parks/' + parkId + '/Boards/', boardId) );
+
         setBoards( (prevBoards) => {
+
             let i;
-
-            const newBoards = []; 
-
-            for(i = 0; i < prevBoards[boardIndex].length; i++)
+            if(prevBoards[localBoardIndex]!== undefined)
             {
-                if(prevBoards[boardIndex][i].id != boardId)
+
+                const newBoards = []; 
+                const boardsNum = prevBoards[localBoardIndex].length;
                 {
-                    newBoards.push(prevBoards[boardIndex][i]);
-                } 
+                    for(i = 0; i < boardsNum; i++)
+                    {
+                        if(prevBoards[localBoardIndex][i].id != boardId)
+                        {
+                            newBoards.push(prevBoards[localBoardIndex][i]);
+                        } 
+                    }
+            
+
+                prevBoards[localBoardIndex] = newBoards;
+
+                }
             }
-
-            prevBoards[boardIndex] = newBoards;
-
             return prevBoards;
 
         });

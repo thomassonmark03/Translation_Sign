@@ -40,4 +40,4 @@ enableIndexedDbPersistence(db).catch( (error) =>{
     
 
 // Initialize Cloud Firestore and get a reference to the service
-export {db, imgStorage};
+export {db, imgStorage, app};
