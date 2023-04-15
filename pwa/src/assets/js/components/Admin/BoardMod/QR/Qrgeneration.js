@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import QRCode from 'qrcode';
+import {useReactToPrint} from 'react-to-print';
+import './QR.css';
 
 const Qrgeneration = (props) => {
     const [qrcode,setQrcode] = useState('')
     const [revealQr, setRevealQr] = useState(false);
+
+    const QR_ref = useRef();
+    const QR_component = <img ref= {QR_ref} className= 'QR_img' src={qrcode} alt=' '/>;
 
     const GenerateQRCode = (url) =>{
         QRCode.toDataURL(url, (err,url) => {
@@ -11,6 +16,12 @@ const Qrgeneration = (props) => {
             setQrcode(url)
         })
     }
+
+    //https://www.npmjs.com/package/react-to-print
+    const printQRCode = useReactToPrint( {
+            content: () => QR_ref.current,
+        })
+
 
     useEffect(
         () => {
@@ -20,12 +31,20 @@ const Qrgeneration = (props) => {
     ,[props.url])
 
 
+
   return (
     <> 
         <div className="generator">
-            {revealQr === true && <img src={qrcode} alt=' '/>}
+            {revealQr === true && QR_component}
+            {revealQr === true && 
+
+                <button onClick={printQRCode}>Print QR Code</button>
+
+
+            }
             <button onClick={()=>{setRevealQr(true)}}> Reveal QR Code </button>
             <button onClick={()=>{setRevealQr(false)}}> Hide Qr Code </button>
+
         </div>
     </>
   );
