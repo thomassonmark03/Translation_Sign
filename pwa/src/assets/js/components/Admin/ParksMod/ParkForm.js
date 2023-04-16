@@ -11,6 +11,7 @@ const ParkForm = (props) =>{
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
+    const [imageURL, setImageURL] = useState("");
 
 
     const nameHandler = (event) =>{
@@ -28,6 +29,14 @@ const ParkForm = (props) =>{
 
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
+        setImageURL((prevState) => 
+            {
+                URL.revokeObjectURL(prevState);
+            
+                return URL.createObjectURL(event.target.files[0]);
+            
+            }
+        );
 
     };
 
@@ -52,6 +61,16 @@ const ParkForm = (props) =>{
             setImage("");
             setName("");
             setImageFile("");
+            setImageURL((prevState) => 
+                {
+                    URL.revokeObjectURL(prevState);
+            
+                    return "";
+            
+                }
+            );
+
+
             props.toUpdatePark(parkObj, imageFile);
         }
         else
@@ -74,7 +93,7 @@ const ParkForm = (props) =>{
             <input type='text' onChange={nameHandler} value={name}></input>
             <label>Image of Park</label>
             {image != "" && 
-                <img src = {URL.createObjectURL(imageFile)} width={300} height={300}></img>
+                <img src = {imageURL} width={300} height={300}></img>
             }
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updatePark}>{props.buttonName}</button>

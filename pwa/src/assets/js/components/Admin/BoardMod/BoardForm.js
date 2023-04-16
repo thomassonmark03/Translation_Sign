@@ -14,6 +14,7 @@ const BoardForm = (props) =>{
     const [engText, setEngText] = useState("");
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
+    const [imageURL, setImageURL] = useState("");
 
 
     const titleHandler = (event) =>{
@@ -32,11 +33,17 @@ const BoardForm = (props) =>{
 
     const imageHandler = (event) =>{
 
-        //Memory management, prevents memory leaks from unreleased image files.
-        URL.revokeObjectURL(imageFile);
-
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
+        setImageURL((prevState) => 
+            {
+                //Memory management
+                URL.revokeObjectURL(prevState);
+            
+                return URL.createObjectURL(event.target.files[0]);
+            
+            }
+        );
 
 
 
@@ -59,12 +66,18 @@ const BoardForm = (props) =>{
                 boardObj.en = engText;
             
             console.log(boardObj);
-            //Memory management, prevents memory leaks from unreleased image files.
-            URL.revokeObjectURL(imageFile);
             setTitle("");
             setEngText("");
             setImage("");
             setImageFile("");
+            setImageURL((prevState) => 
+                {
+                    URL.revokeObjectURL(prevState);
+            
+                    return "";
+            
+                }
+            );
             props.toBoardUpdate(boardObj, imageFile);
         }
         else
@@ -89,7 +102,7 @@ const BoardForm = (props) =>{
             <textarea className= "board_form___textarea" type='text' onChange={engTextHandler} value={engText}></textarea>
             <label>Board Image</label>
             {image != "" && 
-                <img src = {URL.createObjectURL(imageFile)} width={300} height={300}></img>
+                <img src = {imageURL} width={300} height={300}></img>
             }
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
 

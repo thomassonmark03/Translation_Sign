@@ -12,6 +12,7 @@ const StateForm = (props) =>{
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
+    const [imageURL, setImageURL] = useState("");
 
 
     const nameHandler = (event) =>{
@@ -24,11 +25,18 @@ const StateForm = (props) =>{
 
     const imageHandler = (event) =>{
 
-        //Memory management, prevents memory leaks from unreleased image files.
-        URL.revokeObjectURL(imageFile);
 
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
+        setImageURL((prevState) => 
+            {
+                URL.revokeObjectURL(prevState);
+            
+                return URL.createObjectURL(event.target.files[0]);
+            
+            }
+        );
+
         console.log(event.target.files[0]);
 
     };
@@ -48,11 +56,17 @@ const StateForm = (props) =>{
                 stateObj.img = image;
 
             console.log(stateObj);
-            //Memory management, prevents memory leaks from unreleased image files.
-            URL.revokeObjectURL(imageFile);
             setImage("");
             setName("");
             setImageFile("");
+            setImageURL((prevState) => 
+                {
+                    URL.revokeObjectURL(prevState);
+            
+                    return "";
+            
+                }
+            );
             props.toStateUpdate(stateObj, imageFile);
         }
         else
@@ -76,7 +90,7 @@ const StateForm = (props) =>{
             <input type='text' onChange={nameHandler} value={name}></input>
             <label>State Image</label>
             {image != "" && 
-                <img src = {URL.createObjectURL(imageFile)} width={300} height={300}></img>
+                <img src = {imageURL} width={300} height={300}></img>
             }
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updateState}>{props.buttonUploadName}</button>
