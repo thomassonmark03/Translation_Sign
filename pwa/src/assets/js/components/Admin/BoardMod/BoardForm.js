@@ -34,7 +34,7 @@ const BoardForm = (props) =>{
 
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
-        console.log(event.target.files[0]);
+
 
     };
 
@@ -72,7 +72,7 @@ const BoardForm = (props) =>{
 
     
 
-    //console.log(name);
+    //console.log(image);
 
     //https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
     return(
@@ -82,7 +82,11 @@ const BoardForm = (props) =>{
             <label>Board Text</label>
             <textarea className= "board_form___textarea" type='text' onChange={engTextHandler} value={engText}></textarea>
             <label>Board Image</label>
+            {image != "" && 
+                <img src = {URL.createObjectURL(imageFile)} width={300} height={300}></img>
+            }
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
+
             <button onClick={updateBoard}>{props.buttonUploadName}</button>
 
 

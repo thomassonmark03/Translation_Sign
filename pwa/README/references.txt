@@ -16,4 +16,16 @@ Deleting documents
 https://firebase.google.com/docs/firestore/manage-data/delete-data
 
 
+For linebreaks in html
+https://stackoverflow.com/questions/39325414/line-break-in-html-with-n
+
+
+https://www.npmjs.com/package/react-to-print
+Using react-to-print
+
+
+
+https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
+previewing images using URL.createObjectURL(File obj)
+
     

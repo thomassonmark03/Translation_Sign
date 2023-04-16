@@ -69,6 +69,9 @@ const ParkForm = (props) =>{
             <label>Name of Park</label>
             <input type='text' onChange={nameHandler} value={name}></input>
             <label>Image of Park</label>
+            {image != "" && 
+                <img src = {URL.createObjectURL(imageFile)} width={300} height={300}></img>
+            }
             <input type='file' accept='.png,.jpg,.tif' onChange={imageHandler} value={image}></input>
             <button onClick={updatePark}>{props.buttonName}</button>
 
