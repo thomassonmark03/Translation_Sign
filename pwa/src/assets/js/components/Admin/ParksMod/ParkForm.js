@@ -23,9 +23,11 @@ const ParkForm = (props) =>{
 
     const imageHandler = (event) =>{
 
+        //Memory management, prevents memory leaks from unreleased image files.
+        URL.revokeObjectURL(imageFile);
+
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
-        console.log(event.target.files[0]);
 
     };
 
@@ -45,6 +47,8 @@ const ParkForm = (props) =>{
                 parkObj.img = image;
 
             console.log(parkObj);
+            //Memory management, prevents memory leaks from unreleased image files.
+            URL.revokeObjectURL(imageFile);
             setImage("");
             setName("");
             setImageFile("");

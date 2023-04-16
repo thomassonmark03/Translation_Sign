@@ -24,6 +24,9 @@ const StateForm = (props) =>{
 
     const imageHandler = (event) =>{
 
+        //Memory management, prevents memory leaks from unreleased image files.
+        URL.revokeObjectURL(imageFile);
+
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
         console.log(event.target.files[0]);
@@ -45,6 +48,8 @@ const StateForm = (props) =>{
                 stateObj.img = image;
 
             console.log(stateObj);
+            //Memory management, prevents memory leaks from unreleased image files.
+            URL.revokeObjectURL(imageFile);
             setImage("");
             setName("");
             setImageFile("");

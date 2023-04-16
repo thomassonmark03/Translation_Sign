@@ -32,8 +32,12 @@ const BoardForm = (props) =>{
 
     const imageHandler = (event) =>{
 
+        //Memory management, prevents memory leaks from unreleased image files.
+        URL.revokeObjectURL(imageFile);
+
         setImageFile(event.target.files[0]);
         setImage(event.target.value);
+
 
 
     };
@@ -55,6 +59,8 @@ const BoardForm = (props) =>{
                 boardObj.en = engText;
             
             console.log(boardObj);
+            //Memory management, prevents memory leaks from unreleased image files.
+            URL.revokeObjectURL(imageFile);
             setTitle("");
             setEngText("");
             setImage("");
