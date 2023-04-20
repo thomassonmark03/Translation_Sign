@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Route,Routes} from "react-router-dom";
-import Header from '../Design/Header';
 import Home from '../Home/Home';
-import Body from '../test/Body';
 import Admin from '../Admin/Admin';
 import ParkHub from '../Parks/ParkHub';
 
@@ -10,6 +8,7 @@ import BoardPage from '../Board/BoardSingle';
 
 import { collection, getDocs} from 'firebase/firestore';
 import { db } from '../Database/FirebaseConfig';
+import Contact from '../Admin/Login/Contact';
 //
     
 const Paths = (props) =>{
@@ -64,13 +63,13 @@ const Paths = (props) =>{
     return(
         <Routes>
             <Route path= '/' element={<Home states = {states}/>}/>
-            <Route path= '/test' element={[<Header/>,<Body/>]}/>
 
             {renderStatePaths()}
 
 
             <Route path='/BoardPage' element={<BoardPage/>}/>
             <Route path='/Admin' element={<Admin/>}/>
+            <Route path= '/signIn/*' element={<Contact/>}/>
 
 
 

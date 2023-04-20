@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, ref} from "firebase/storage";
 import { getFirestore, enableIndexedDbPersistence } from "@firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD7rbT-_XC8s4IQXkIe8FcGsQbli9DSqpg",
@@ -16,6 +17,7 @@ const app = initializeApp(firebaseConfig);
 const imgStorage = getStorage(app);
 
 const db = getFirestore(app);
+const authApp = getAuth(app);
 
 
 enableIndexedDbPersistence(db).catch( (error) =>{
@@ -40,4 +42,4 @@ enableIndexedDbPersistence(db).catch( (error) =>{
     
 
 // Initialize Cloud Firestore and get a reference to the service
-export {db, imgStorage, app};
+export {db, imgStorage, app, authApp};
