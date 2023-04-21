@@ -10,26 +10,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from '../Database/FirebaseConfig';
 import BoardPage from '../Board/BoardSingle';
 
-/*
-const TEST_PARKS= [
-
-    {
-        name: 'Texas',
-        description: 'Big Texas',
-        image: TexasPic,
-        route: './test'
-    },
-
-    {
-        name: 'California',
-        description: 'Hot and Dry',
-        image: CaliforniaPic,
-        route: './test'
-    }
-
-
-];
-*/
 
 //Find length of string
 //Find match of string

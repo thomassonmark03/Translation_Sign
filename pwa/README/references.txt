@@ -28,4 +28,15 @@ Using react-to-print
 https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
 previewing images using URL.createObjectURL(File obj)
 
-    
+
+
+https://itnext.io/responsive-background-images-using-react-hooks-941af365ea1f   
+more responsive images for mobile users.
+
+
+https://stackoverflow.com/questions/19014250/rerender-view-on-browser-resize-with-react
+make it so the browser responds to the changes in size.
+    https://stackoverflow.com/questions/56800694/what-is-the-expected-return-of-useeffect-used-for
+    Part of the above, explains the useLayoutEffect or useEffect return value.
+
+
