@@ -559,7 +559,6 @@ function Admin() {
 
     return (
         <div style={{background: "black"}}>
-            <Header></Header>
             <div className='sign_translation_editor_container'>
                 <div className='sign_translation_editor__states__container'>
                     <div>

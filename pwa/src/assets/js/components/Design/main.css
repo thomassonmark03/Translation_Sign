@@ -33,6 +33,17 @@
   .cta a:hover{
     color: #FF0000;
   }
+
+  .cta button{
+    text-decoration: none;
+    color:aliceblue;
+    transition: color .7s ease 0s;
+    background: none;
+    border: none;
+  }
+  .cta button:hover{
+    color: #FF0000;
+  }
   .headerlink a:hover {
     color: #FF0000;
   }

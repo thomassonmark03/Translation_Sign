@@ -1,5 +1,5 @@
 import { authApp } from '../../Database/FirebaseConfig'; 
-import {getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import {getAuth, signInWithCredential, EmailAuthProvider, signInWithEmailAndPassword, signOut, EmailAuthCredential } from 'firebase/auth';
 import Cookie from 'js-cookie'
 import React, { useState } from 'react';
 import AdminHome from '../AdminHome';
@@ -10,10 +10,42 @@ function Contact() {
     const [loginError, setLoginError] = useState('');
     const [userLogin, setUser] = useState(getAuth().currentUser);
 
+
+    /*const loginCookie = Cookie.get('loginCookie');
+    console.log(loginCookie);
+    if(loginCookie != undefined)
+    {
+        const cookieLogin = async()=>{
+            try{
+                await signInWithCredential(loginCookie); 
+                const loginInfo = getAuth.currentUser;
+
+                setUser(loginInfo);
+
+
+            } catch(error){
+                let errorMessage = error.code;
+
+                //Way to extract error message
+                //https://stackoverflow.com/questions/18290599/extract-part-of-the-string
+                errorMessage = errorMessage.split('auth/').pop();
+                errorMessage = errorMessage.replace('-', ' ');
+                setLoginError(errorMessage);
+            }
+            
+        }
+        cookieLogin();
+
+    }*/
+    
+
     const submit = async() => {
         try{
-            //const response = await signInWithEmailAndPassword(authApp,email,password);
-            setUser(getAuth());
+            await signInWithEmailAndPassword(authApp,email,password)
+            const loginInfo = getAuth().currentUser;
+            //EmailAuthProvider(
+            setUser(loginInfo);
+            //Cookie.set('loginCookie', loginInfo.uid, {expires: 1/24, sameSite:'None', secure:true});
 
 
         } catch(error){
@@ -26,7 +58,7 @@ function Contact() {
             setLoginError(errorMessage);
         }
     }
-
+    console.log(userLogin);
 
     return (
         <>

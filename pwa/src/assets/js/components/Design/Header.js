@@ -1,9 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import "./main.css";
 import logo from "./usacelogo.png";
-import { Link } from "react-router-dom";
+import { app } from "../Database/FirebaseConfig";
+import { getAuth, signOut } from "firebase/auth";
+import { Link} from "react-router-dom";
 
-function Header() {
+function Header(props) {
+    const showLogin = typeof(props.showLogin) === 'boolean'? props.showLogin:false;
+    const adminSignOut = () =>{
+        signOut(getAuth());
+        
+    }
   return (
     <div className="header">
       <div className="teamname">
@@ -15,9 +22,14 @@ function Header() {
           <a href="https://www.usace.army.mil/">US Army Corps of Engineers</a>
         </div>
       </div>
-      <div className="cta">
-        <Link to="/signIn">Admin Login</Link>
+      {showLogin === false && <div className="cta">
+        <Link to="/Admin">Admin Login</Link>
       </div>
+      }
+      {showLogin === true && <div className="cta">
+        <Link onClick={adminSignOut} to='/'>Logout</Link>
+      </div>
+      }
     </div>
   );
 }

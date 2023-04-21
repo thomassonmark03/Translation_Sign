@@ -68,8 +68,7 @@ const Paths = (props) =>{
 
 
             <Route path='/BoardPage' element={<BoardPage/>}/>
-            <Route path='/Admin' element={<Admin/>}/>
-            <Route path= '/signIn/*' element={<Contact/>}/>
+            <Route path= '/Admin/*' element={<Contact/>}/>
 
 
 
