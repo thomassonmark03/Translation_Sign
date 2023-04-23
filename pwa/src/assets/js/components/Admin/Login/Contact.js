@@ -59,7 +59,7 @@ function Contact() {
         }
     }
     console.log(userLogin);
-
+    //userLogin === null
     return (
         <>
             {userLogin === null && <div>
@@ -82,22 +82,4 @@ function Contact() {
     )
 }
 export default Contact
-
-
-/*<div>
-    <label>Success!</label>
-    <button onClick={()=>{
-        signOut(getAuth())
-        console.log(getAuth())
-    
-        }
-
-
-    }>Signout</button>
-</div>
-*/
-
-
-
-
 
