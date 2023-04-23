@@ -1,8 +1,8 @@
 import { authApp } from '../../Database/FirebaseConfig'; 
 import {getAuth, signInWithCredential, EmailAuthProvider, signInWithEmailAndPassword, signOut, EmailAuthCredential } from 'firebase/auth';
-import Cookie from 'js-cookie'
 import React, { useState } from 'react';
 import AdminHome from '../AdminHome';
+import Header from '../../Design/Header';
 
 function Contact() {
     const [email,setEmail] = useState('');
@@ -63,6 +63,7 @@ function Contact() {
     return (
         <>
             {userLogin === null && <div>
+            <Header></Header>
             <h3>Login Here</h3>
             <label for="username">Username</label>
             <input type="text" placeholder="Email" onChange={(event)=> setEmail(event.target.value)}/>
