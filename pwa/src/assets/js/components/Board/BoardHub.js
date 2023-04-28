@@ -1,33 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import {Route,Routes, useLocation} from "react-router-dom";
+import {Route,Routes} from "react-router-dom";
 import BoardPage from './BoardPage';
-import BoardSingle from './BoardSingle';
+import {MemoBoardSingle} from './BoardSingle';
 
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from '../Database/FirebaseConfig';
 import { render } from '@testing-library/react';
 
-/*
-const TEST_PARKS= [
-
-    {
-        name: 'Texas',
-        description: 'Big Texas',
-        image: TexasPic,
-        route: './test'
-    },
-
-    {
-        name: 'California',
-        description: 'Hot and Dry',
-        image: CaliforniaPic,
-        route: './test'
-    }
-
-
-];
-*/
 
 
 //Refs: 
@@ -38,8 +18,7 @@ const BoardHub = (props) =>{
 
     const boardCollection = collection(db, 'States/' + props.stateId+ '/Parks/' + props.parkId + '/Boards');
     const [boards, setBoards] = useState([]);
-
-    //console.log('States/' + props.stateName + '/Parks/' + props.parkName + '/Boards');
+    let i;
 
     //Database
     useEffect(() => {
@@ -67,7 +46,7 @@ const BoardHub = (props) =>{
             {
                 linkTitle += titleParts[i];
             }
-            boardRoutes.push(<Route path={linkTitle + '/*'} element={<BoardSingle board = {boards[i]}/>}/>) 
+            boardRoutes.push(<Route path={linkTitle + '/*'} element={<MemoBoardSingle board = {boards[i]}/>}/>) 
             //https://ui.dev/react-router-nested-routes
         }
     

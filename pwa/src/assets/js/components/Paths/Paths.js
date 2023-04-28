@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Route,Routes} from "react-router-dom";
 import Home from '../Home/Home';
-import Admin from '../Admin/Admin';
 import ParkHub from '../Parks/ParkHub';
-
-import BoardPage from '../Board/BoardSingle';
+import NotFound from './NotFound';
 
 import { collection, getDocs} from 'firebase/firestore';
 import { db } from '../Database/FirebaseConfig';
@@ -67,7 +65,7 @@ const Paths = (props) =>{
             {renderStatePaths()}
 
 
-            <Route path='/BoardPage' element={<BoardPage/>}/>
+            <Route exact path='*' element={<NotFound/>}/>
             <Route path= '/Admin/*' element={<Contact/>}/>
 
 
