@@ -1,11 +1,11 @@
 import React from 'react'
 
 
-import './Home.css'
+import './State.css'
 import {Link} from "react-router-dom"
 
 
-
+//State component. It will display the image, name, and is clickable. 
 const State = (props) =>{
     return(
         <Link to={props.route}>

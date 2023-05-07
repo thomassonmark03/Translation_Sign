@@ -8,7 +8,7 @@ import Paths from './components/Paths/Paths';
 
 
 
-
+//Root webpage
 function App() {
 
 
@@ -18,6 +18,8 @@ function App() {
     const display = ()=>{
 
 
+        //If the googtrans cookie is undefined, show the language page.
+        //Otherwise, show what path you are on.
         if(language != undefined)
         {
             return [<Paths></Paths>]
@@ -29,7 +31,8 @@ function App() {
         }
 
     }
-    
+   
+    //Sets the langugage variable once, unless the googtrans cookie changes.
     useEffect(
 
         () =>{
@@ -43,6 +46,8 @@ function App() {
 
     , Cookies.get('googtrans'));
 
+
+    //Popup that alerts the users that cookies are used on this website.
     useEffect(
 
         () =>{
@@ -58,7 +63,7 @@ function App() {
 
 
 
-
+    //Handles displaying the language page or paths, as well as the popup.
     return(
         <div>
             {display()}
@@ -77,12 +82,3 @@ function App() {
 
 }
 export default App
-
-/*\
-
-            <Route path="/texas" element={[<Texas/>]}/>
-            <Route path="/oklahoma" element={[<Oklahoma/>]}/>
-            <Route path="/contact" element={[<Contact/>]} />
-            <Route path="/kansas" element={[<Kansas/>]} />
-
-*/

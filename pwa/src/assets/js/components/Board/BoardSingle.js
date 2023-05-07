@@ -1,13 +1,11 @@
-import React, {useState, useEffect, memo} from 'react';
+import React, {memo} from 'react';
 
 import Board from './Board';
 import Header from '../Design/Header';
-import DangerZone from './danger_zone.png';
-
-import { db } from '../Database/FirebaseConfig';
-import { doc, getDoc } from "firebase/firestore";
+import BackButton from '../Design/BackButton';
 
 
+//Works alongside the Board component to show the header, backbutton, and board + board text.
 const BoardSingle = (props) =>{
 
     const board = props.board;
@@ -17,6 +15,9 @@ const BoardSingle = (props) =>{
     return(
         <div>
             <Header></Header>
+            <div style={{background: '#24252a'}}>
+                <BackButton text='Return to Board Hub'></BackButton>
+            </div>
             <Board title={board.title} image={board.img} enText={board.en} ></Board>
         </div>
 

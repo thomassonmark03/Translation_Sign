@@ -1,14 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Header from '../Design/Header'
-import {Route,Routes} from "react-router-dom";
 import Park from './Park'
 import ParkFilter from './ParkFilter'
+import BackButton from '../Design/BackButton'
 
 
 
-import { collection, getDocs } from "firebase/firestore";
-import { db } from '../Database/FirebaseConfig';
-import BoardPage from '../Board/BoardSingle';
 
 
 //Find length of string
@@ -57,6 +54,9 @@ const ParkPage = (props) =>{
     return(
         <div>
             <Header></Header>
+            <div style={{background: '#24252a'}}>
+                <BackButton text='Return to State Hub'></BackButton>
+            </div>
             <ParkFilter setFilter = {filterSet}/>
             <div>
                 {displayParks.map( (park) => {

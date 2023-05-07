@@ -3,6 +3,10 @@ import { getStorage, ref} from "firebase/storage";
 import { getFirestore, enableIndexedDbPersistence } from "@firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+//EXTREMELY IMPORTANT.
+//If another firebase account is needed to handle the website, this must be changed.
+//Note, this tied to each firebase account, so, even if this is changed, this cannot be used
+//to modify another project.
 const firebaseConfig = {
   apiKey: "AIzaSyD7rbT-_XC8s4IQXkIe8FcGsQbli9DSqpg",
   authDomain: "usacetranslation.firebaseapp.com",
@@ -14,12 +18,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+//Initialize firebase storage.
 const imgStorage = getStorage(app);
 
+
+//Get the firestore database object as well as a way to authenticate the app.
 const db = getFirestore(app);
 const authApp = getAuth(app);
 
 
+//Allow the app to keep cookies to allow offline capabilities.
 enableIndexedDbPersistence(db).catch( (error) =>{
     if(error.code =='failed-precondition')
     {

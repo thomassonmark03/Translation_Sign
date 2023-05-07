@@ -2,6 +2,8 @@
 import React from "react";
 import Header from "../Design/Header";
 
+
+//Webpage for any non-existing page. Standared 404 page not found.
 const NotFound = () =>
 {
     return <div>

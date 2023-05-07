@@ -2,9 +2,12 @@ import { async } from '@firebase/util';
 import React, {useState} from 'react';
 
 
-
+//Gets input from the user to modify a state.
+//Can modify the name and the image.
+//The programmer may specify if the name and image is required or not.
 const StateForm = (props) =>{
 
+    //If the require prop for name or image is not explicitly set, set it to false.
     const requireName = typeof(props.requireName) === "boolean"? props.requireName : false;
     const requireImage = typeof(props.requireImage) === "boolean"? props.requireImage : false;
 
@@ -15,14 +18,13 @@ const StateForm = (props) =>{
     const [imageURL, setImageURL] = useState("");
 
 
+    //The handlers will set the variables to be used when creating state objects
+    //when the user is inputting the variables.
     const nameHandler = (event) =>{
 
         setName(event.target.value);
 
     };
-
-
-
     const imageHandler = (event) =>{
 
 
@@ -41,21 +43,26 @@ const StateForm = (props) =>{
 
     };
 
-
+    //Handles updating the state after the update state button is pressed.
     const updateState = () => {
+
+        //If a parameter is required and is not filled out, do not proceed.
         const checkName = !requireName || name !== "";
         const checkImage = !requireImage || image !== "";
-
         if(checkName && checkImage)
         {
             let stateObj = {}
            
+            //Only modify the state object with parameters that are filled out.
+            //This allows modifying the state object in individual fields without
+            //destroying the original object.
             if(name != "")
                 stateObj.name = name;
             if(image != "")
                 stateObj.img = image;
 
-            console.log(stateObj);
+
+            //Reset the input fields and revoke the image url.
             setImage("");
             setName("");
             setImageFile("");
@@ -80,9 +87,9 @@ const StateForm = (props) =>{
 
     
 
-    //console.log(name);
 
     //https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
+    //Get state and image input, display the image if one is selected. Also, display the update button.
     return(
         <div>
 

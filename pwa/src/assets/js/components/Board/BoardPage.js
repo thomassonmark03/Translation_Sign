@@ -1,42 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import Header from '../Design/Header';
-import {Route,Routes, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
+import BackButton from '../Design/BackButton';
 import BoardFilter from './BoardFilter';
 import './BoardPage.css';
 
 
-/*
-const TEST_PARKS= [
-
-    {
-        name: 'Texas',
-        description: 'Big Texas',
-        image: TexasPic,
-        route: './test'
-    },
-
-    {
-        name: 'California',
-        description: 'Hot and Dry',
-        image: CaliforniaPic,
-        route: './test'
-    }
-
-
-];
-*/
 
 
 //Refs: 
 // https://ui.dev/react-router-nested-routes
 
-
+//Handles how to filter the boards. Super simple, just check to see if the
+//filter text matches half text in the board title. Note, positioning of the
+//text matters.
 const filterBoard = (board, filterText) =>{
     //Find length of string
     //Find match of string
     //If matches > 1/2 length of string, display
     const filterLength = filterText.length; 
     let matches = 0;
+    //Puts both names to lowercase to allow for case independant comparison.
     let lcBoardName = board.title.toLowerCase();
     let lcFilterText = filterText.toLowerCase();
 
@@ -47,14 +31,17 @@ const filterBoard = (board, filterText) =>{
             matches++;
     }
 
+    //If the filter text is empty, display all the states.
+    //Otherwise, the matches are considered as well as the first letter of the board.
     return lcFilterText === '' || (lcBoardName[0] === lcFilterText[0] && matches >= filterLength - 2);
 
 };
 
+//Shows the general board page with all the boards.
 const BoardPage = (props) =>{
 
+    //Get the boards from the board hub.
     const boards = props.boards;
-    //const states = [...TEST_STATES];
     const [filterText, setFilterText] = useState('');
 
     const filterSet = (text) =>{
@@ -63,13 +50,18 @@ const BoardPage = (props) =>{
 
     };
 
+    //From the boards in the board hub, filter down to the ones specified by the filter text.
     const displayBoards = boards.filter( (board) => {return filterBoard(board, filterText)});
 
 
 
+    //Show the header, a back button, the board filter, and the boards after filtering.
     return(
         <div>
             <Header></Header>
+            <div style={{background: '#24252a'}}>
+                <BackButton text='Return to Park Hub'></BackButton>
+            </div>
             <BoardFilter setFilter = {filterSet}/>
 
             <div class='container'>

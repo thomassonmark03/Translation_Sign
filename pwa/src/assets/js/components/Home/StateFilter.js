@@ -1,6 +1,10 @@
 import React from 'react'
 import './StateFilter.css'
 
+
+
+//Simple component that takes in input from the user and passes it back
+//to the Home page to tell it what states to filter out.
 const StateFilter = (props) =>{
 
     const filterChanged = (event) =>{

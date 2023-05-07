@@ -1,9 +1,10 @@
 import { authApp } from '../../Database/FirebaseConfig'; 
-import {getAuth, signInWithCredential, EmailAuthProvider, signInWithEmailAndPassword, signOut, EmailAuthCredential } from 'firebase/auth';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import React, { useState } from 'react';
 import AdminHome from '../AdminHome';
 import Header from '../../Design/Header';
 
+//Page for handling the login features.
 function Contact() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('')
@@ -11,55 +12,28 @@ function Contact() {
     const [userLogin, setUser] = useState(getAuth().currentUser);
 
 
-    /*const loginCookie = Cookie.get('loginCookie');
-    console.log(loginCookie);
-    if(loginCookie != undefined)
-    {
-        const cookieLogin = async()=>{
-            try{
-                await signInWithCredential(loginCookie); 
-                const loginInfo = getAuth.currentUser;
-
-                setUser(loginInfo);
-
-
-            } catch(error){
-                let errorMessage = error.code;
-
-                //Way to extract error message
-                //https://stackoverflow.com/questions/18290599/extract-part-of-the-string
-                errorMessage = errorMessage.split('auth/').pop();
-                errorMessage = errorMessage.replace('-', ' ');
-                setLoginError(errorMessage);
-            }
-            
-        }
-        cookieLogin();
-
-    }*/
     
 
+    //On submit, attempt to login. Display errors if they occur under the password box.
     const submit = async() => {
         try{
             await signInWithEmailAndPassword(authApp,email,password)
             const loginInfo = getAuth().currentUser;
-            //EmailAuthProvider(
             setUser(loginInfo);
-            //Cookie.set('loginCookie', loginInfo.uid, {expires: 1/24, sameSite:'None', secure:true});
 
 
         } catch(error){
             let errorMessage = error.code;
 
-            //Way to extract error message
-            //https://stackoverflow.com/questions/18290599/extract-part-of-the-string
             errorMessage = errorMessage.split('auth/').pop();
             errorMessage = errorMessage.replace('-', ' ');
             setLoginError(errorMessage);
         }
     }
-    console.log(userLogin);
-    //userLogin === null
+
+
+    //Shows the login page with username, password, and submit button.
+    //If the user is successfully logged in, which is handled by firebase, you may the admin home page.
     return (
         <>
             {userLogin === null && <div>

@@ -1,6 +1,9 @@
 import React from 'react'
 import './ParkFilter.css'
 
+
+//Takes input from the user and feedsback to the
+//Park page on how to filter the parks.
 const ParkFilter = (props) =>{
 
     const filterChanged = (event) =>{

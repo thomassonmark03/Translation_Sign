@@ -2,11 +2,10 @@ import React from 'react';
 import './Admin.css';
 import { useState,useEffect } from "react";
 import {db, imgStorage, app} from "../Database/FirebaseConfig";
-import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
+import {getDownloadURL, ref, uploadBytes, deleteObject} from 'firebase/storage'
 import { collection, getDocs, getDoc, doc, updateDoc, setDoc, deleteDoc} from 'firebase/firestore';
 
 
-import Header from '../Design/Header';
 
 import StateFilter from '../Home/StateFilter';
 import {filterState} from '../Home/Home'
@@ -31,130 +30,102 @@ import CreatePark from './Create/CreatePark';
 import CreateBoard from './Create/CreateBoard';
 
 
-const NotFoundImgState = 'https://www.online-tech-tips.com/wp-content/uploads/2022/03/image-41.jpeg';
-const NotFoundImgPark = 'https://community.librenms.org/uploads/default/original/2X/7/759793552edd033b80526884b06a706fdd1a06ba.png';
-const NotFoundImgBoard = 'https://i.ytimg.com/vi/K94i1ALQ-H4/mqdefault.jpg'
 
 
-const TEST_BOARDS = [
-
-    {
-        name: 'Board1',
-        enText: 'Safety jargon smargon',
-        image: NotFoundImgBoard,
-    },
-
-    {
-        name: 'Board2',
-        enText: 'SKIP',
-        image: NotFoundImgBoard,
-    }
-
-
-];
-
-
-const TEST_PARKS = [
-
-    {
-        name: 'Park1',
-        description: 'Poland',
-        image: NotFoundImgPark,
-        board: [TEST_BOARDS[0]]
-    },
-
-    {
-        name: 'Park2',
-        description: 'England',
-        image: NotFoundImgPark,
-        board: [TEST_BOARDS[1]]
-    }
-
-
-];
-
-const TEST_STATES = [
-
-    {
-        name: 'Texas',
-        description: 'Big Texas',
-        image: NotFoundImgState,
-        parks: [TEST_PARKS[0]],
-    },
-
-    {
-        name: 'California',
-        description: 'Hot and Dry',
-        image: NotFoundImgState,
-        parks: [TEST_PARKS[1]],
-    }
-
-
-];
-
-
-
-
+//Main page for sign upload
+//You can delete, modify, and create states, parks, and boards.
 function Admin() {
 
+    //Gets the state objects from the database
     const stateCollection = collection(db, 'States');
+    //State objects used to display states.
     const [states, setStates] = useState([]);
+    //Used for determining paths when communicating with the database.
     const [stateName, setStateName] = useState("");
+    //Used to filter out states for display.
     const [stateFilter, setStateFilter] = useState("");
 
-    console.log(states);
 
-
-
-    //const [states, setState] = useState(TEST_STATES);
-    //const parks = TEST_STATES[0].parks;
+    //Used to display parks. These will persist(preventing unnecessary database calls), and can only be called
+    //by getting the correct index with the state id.
     const [parks, setPark] = useState({});
-    const [parkName, setParkName] = useState("");
 
+    //holds the park ids for determing paths to the database.
+    const [parkName, setParkName] = useState("");
+    //holds the text for filtering out the parks.
     const [parkFilter, setParkFilter] = useState("");
+    //holds the unfiltered parks, later filtered for displaying.
     const parksUnfiltered = parks[stateName];
 
+    
+    //Used to display boards. These will persist(preventing unnecessary database calls), and can only be called
+    //by getting the correct index with the state id + park id.
     const [boards, setBoards] = useState({}); 
+    //holds the board ids for determing paths to the database.
     const [boardName, setBoardName] = useState({}); 
+    //Holds index that allows for boards to be called for to display.
     const boardIndex = stateName + '/' + parkName;
+    //holds the unfiltered boards, later filtered for displaying.
     const boardsUnfiltered = boards[boardIndex];
+    //holds the filter text used for filtering out boards.
     const [boardFilter, setBoardFilter] = useState("");
 
 
 
 
-    //Updating functions
+    //Upload functions
+
+    //The upload functions requires the database id, the object to replace the current
+    //database object in firestore, an imagefile(if available).
+    //There are two modes, update and upload. Upload replaces the entire object
+    //regardless of what was there or not. Update only replaces the parameters filled out and
+    //is recommended for keeping the same parks and boards.
+    
+    //The difference between upload state, upload park, and upload board is just a matter
+    //of the paths to modify the corresponding database object in firebase.
+    //The state path only requires the state id, but a park requires the state id and the park id
+    //to modify it:
+    //State path: States/[state_id]
+    //Park Path: States[state_id]/Parks/[park_id]
+    //Board Path: States[state_id]/Parks/[park_id]/Boards/[board_id]
     const uploadState = async(stateId, newStateObj, imageFile, mode) => {
-        console.log('in upload state');
         //Ref https://firebase.google.com/docs/storage/web/upload-files
 
+        //Only attempt to upload an image if one is defined.
         if(newStateObj.img != undefined) 
         {
+            //Get a state image reference and upload it. Get its link to put
+            //into the database.
+            //https://firebase.google.com/docs/storage/web/download-files
             const stateImgRef = ref(imgStorage, 'states/'+stateId);
             const uploadSnapshot = await uploadBytes(stateImgRef, imageFile);
-            console.log(uploadSnapshot);
-
-            //https://firebase.google.com/docs/storage/web/download-files
-
-
             newStateObj.img = await getDownloadURL(stateImgRef);
         }
 
+        //Update versus upload. The first updates the parameters modified
+        //The second full on replaces the entire object, deleting any exisitng parameters
+        //not specified.
         if(mode ==="update")
             await updateDoc( doc(db, 'States', stateId), {...newStateObj});
         else
             await setDoc( doc(db, 'States', stateId), {...newStateObj});
 
         
+        //After updating/uploading, get the object from firestore to see if it was successful.
         const newStateRef = doc(db, 'States', stateId);
         const newStateDoc = await getDoc(newStateRef);
         const newState = {...newStateDoc.data(), id: stateId};
 
+        //Remove the previous object in the states array, and replace it by the one
+        //in firebase, hoping that it is new.
         setStates( (prevState) =>{
 
             let updateState = [...prevState];
             let i = 0;
             let updated = false;
+
+
+            //Look for the state to update
 
             for(i = 0; i < prevState.length; i++)
             {
@@ -165,13 +136,12 @@ function Admin() {
                 }
             }
 
+            //If you can't find the state to update, just add it to the beginning of the array.
             if(updated === false)
             {
                 updateState.unshift({...newState});
             }
 
-            console.log("Updated state:");
-            console.log(updateState);
 
             return updateState;
 
@@ -190,27 +160,30 @@ function Admin() {
 
 
     const uploadPark = async(parkId, newParkObj, imageFile, mode) => {
-        console.log('in upload park');
         //Ref https://firebase.google.com/docs/storage/web/upload-files
 
+        //Only update the park image if one is available.
         if(newParkObj.img != undefined)
         {
+            //Upload a park image and get the link back.
+            //https://firebase.google.com/docs/storage/web/download-files
             const parkImgRef = ref(imgStorage, 'parks/'+ parkId);
             const uploadSnapshot = await uploadBytes(parkImgRef, imageFile);
-            console.log(uploadSnapshot);
-    
-            //https://firebase.google.com/docs/storage/web/download-files
             newParkObj.img = await getDownloadURL(parkImgRef);
         }
     
+        //Path used to update or upload a park.
         const parkPath = 'States/' + stateName + '/Parks';
         const newParkRef = doc(db, parkPath,  parkId);
 
+        //Update modifies filled out parameters, upload will destroy
+        //the object and replace it with the object with filled out parameters.
         if(mode === "update")
             await updateDoc( newParkRef, {...newParkObj})
         else
             await setDoc( newParkRef, {...newParkObj})
 
+        //Get a reference back to the updated or uploaded park document
         const newParkDoc = await getDoc(newParkRef);
         const newPark = {...newParkDoc.data(), id: parkId};
     
@@ -219,6 +192,8 @@ function Admin() {
             let updatePark = {...prevParks};
             let i = 0;
 
+            //if we are updating, attempt to find the original park object in the array. If so, update it.
+            //If we are uploading, just put it into the array.
             if(mode === "update")
             {
                 for(i = 0; i < updatePark[stateName].length; i++)
@@ -252,43 +227,44 @@ function Admin() {
     
     }
 
+    //This function will either upload a board or update it.
     const uploadBoard = async(boardId, newBoardObj, imageFile, mode) => {
-        console.log('in upload board');
-        console.log(newBoardObj);
 
+        //If there is an image to upload, attempt to upload it.
         if(newBoardObj.img != undefined) 
         {
             //Ref https://firebase.google.com/docs/storage/web/upload-files
+            //https://firebase.google.com/docs/storage/web/download-files
+            //Get an image reference for the board, and upload it. Get its link
+            //to be set to the database.
             const boardImgRef = ref(imgStorage, 'boards/' + boardId);
             const uploadSnapshot = await uploadBytes(boardImgRef, imageFile);
-            console.log(uploadSnapshot);
-    
-            //https://firebase.google.com/docs/storage/web/download-files
             newBoardObj.img = await getDownloadURL(boardImgRef);
         }
     
+        //Get the board path that involves the state, park, and board id.
+        //If you upload the doc, delete the previous object and upload a new object
+        //with new parameters. Otherwise, you can update the object which keeps the
+        //old parameters except for any filled out ones to be updated.
         const boardPath = 'States/' + stateName + '/Parks/' + parkName + '/Boards';
         const newBoardRef = doc(db, boardPath,  boardId);
-
         if(mode === "update")
             await updateDoc( newBoardRef, {...newBoardObj});
         else
             await setDoc( newBoardRef, {...newBoardObj});
 
+
+
+        //Get the new doc that was uploaded and set it as the new object in the boards array.
         const newBoardDoc = await getDoc(newBoardRef);
         const newBoard = {...newBoardDoc.data(), id: boardId};
-    
         setBoards( (prevBoards) =>{
     
             let updateBoards = {...prevBoards};
             let i = 0;
 
 
-            console.log("previous boards: ");
-            console.log(prevBoards);
-            console.log("attempted parkName: ");
-            console.log(parkName);
-
+            //If updating, find the object in the array and replace it.
             if(mode == "update")
             {
                 for(i = 0; i < updateBoards[boardIndex].length; i++)
@@ -302,6 +278,7 @@ function Admin() {
             }
             else
             {
+                //If uploading, just add it to the boards array.
                 updateBoards[boardIndex].unshift({...newBoard, id:boardId});
             }
 
@@ -322,18 +299,37 @@ function Admin() {
     }
 
     //delete functions
+    //Each delete function follows the same steps.
+    //Get the sublevels, an example being that the sublevels for states is parks.
+    //Whenever you delete an object, you delete every sublevel as well. This 
+    //means the sublevels must also delete their sublevels. This insures no ghosts are 
+    //left which are lone collections whose parent collections were deleted.
     const deleteState = async(stateId) =>
     {
 
+        //Get all the parks docs for this state
         const parksDocs = await getDocs(collection(db, 'States/' + stateId + '/Parks'));
 
+
+        //Delete all the parks for this state.
+        //Delete the state itself afterwards.
         parksDocs.forEach( (doc) => {
             deletePark(doc.id, stateId);
         });
         await deleteDoc(doc(db, 'States/', stateId) );
+
+        //Delete the image alongside it.
+        const stateImgRef = ref(imgStorage, 'states/'+stateId);
+        try{
+            await deleteObject(stateImgRef);
+        }catch(error)
+        {
+            console.log(error);   
+        }
         
 
 
+        //Remove the state from the states array.
         setStates( (prevStates) => {
             const newStates = [];
             let i = 0;
@@ -352,19 +348,29 @@ function Admin() {
         })
         deselectState();
     }
+
+
     const deletePark = async(parkId, stateId = stateName) =>
     {
+        //Get all the boards from this park
         const boardDocs = await getDocs(collection(db, 'States/' + stateId + '/Parks/' + parkId + '/Boards'));
-        console.log("In delete park: ")
-        console.log(parkId+ " " + stateId);
 
+        //Delete all the boards from this park.
+        //Delete the park itself afterwards.
         boardDocs.forEach( (doc) =>{    
-            console.log("board docs in delete park");
-            console.log(doc);
             deleteBoard(doc.id, stateId, parkId);
         });
-
         await deleteDoc(doc(db, 'States/'+ stateId + '/Parks', parkId) );
+
+        //Delete the image alongside it.
+        const parkImgRef = ref(imgStorage, 'parks/'+parkId);
+        try{
+            await deleteObject(parkImgRef);
+        }catch(error){
+            console.log(error);
+        }
+
+        //Delete the park within the array so that it does not show up anymore.
         setPark( (prevParks) => {
             let i;
 
@@ -392,11 +398,23 @@ function Admin() {
     }
     const deleteBoard= async(boardId, stateId = stateName, parkId = parkName) =>
     {
-        console.log("In delete board: ")
+        //Get board and delete it.
         const localBoardIndex = stateId + '/' + parkId;
-        console.log(boardId + " " + stateId + " " + parkId);
         await deleteDoc(doc(db, 'States/'+ stateId + '/Parks/' + parkId + '/Boards/', boardId) );
 
+
+
+        //Delete the image alongside it.
+        const boardImgRef = ref(imgStorage, 'boards/'+boardId);
+        console.log(boardImgRef);
+
+        try{
+        await deleteObject(boardImgRef);
+        }catch(error){
+            console.log(error);
+        }
+
+        //Remove the board from the boards array.
         setBoards( (prevBoards) => {
 
             let i;
@@ -429,6 +447,9 @@ function Admin() {
 
     //deselect functions
 
+
+    //Deselection occurs when the names in stateName, parkName, and boardName
+    //are set to empty.
     const deselectState = () =>
     {
         setStateName("");
@@ -450,7 +471,8 @@ function Admin() {
 
 
     //Getting from database
-
+    //Get all the states after the dom is updated, this is the only required database call 
+    //when the admin is mounted.
     useEffect( () => {
 
         const stateGet = async() =>
@@ -465,11 +487,14 @@ function Admin() {
 
     //Functions to do with selecting a state, park, board.
 
-    //Select state.
+    //When the state is selected, it gets all of the parks within that state.
     const parkGet = async(calledStateId) =>
     {
         setParkName(""); //Deselects any previous parks
         setBoardName(""); //Deselects any previous parks
+
+        //If the parks already exits in the array, use that.
+        //Otherwise get it from the database.
         if(parks[calledStateId] === undefined)
         {
             const parkCollection = collection(db, 'States/'+ calledStateId + '/Parks');
@@ -479,20 +504,17 @@ function Admin() {
             setPark( (prevParks) => {
                 const newPark = {[calledStateId]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
                 const newParks = {...prevParks, ...newPark};
-                console.log("Here are the new parks:");
-                console.log(newParks);
 
 
                 return newParks;
-                //return {...prevParks, [calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
             
             })
 
 
         }
+        //Set the state name as it is required to extract the parks from the parks array on reload.
         setStateName(calledStateId);
 
-        console.log(parks);
 
 
         
@@ -500,11 +522,13 @@ function Admin() {
     }
 
 
-    //Select park
+    //When a park is selected, get all of its boards.
     const boardGet = async(calledParkId) =>
     {
         setBoardName(""); //Deselects any previous boards
 
+        //If the board already exists in the boards array, use that.
+        //Otherwise get it from the database.
         const localBoardIndex= stateName + '/' + calledParkId;
         if(boards[localBoardIndex] === undefined)
         {
@@ -515,19 +539,16 @@ function Admin() {
             setBoards( (prevBoards) => {
                 const newBoard = {[localBoardIndex]: board.docs.map( (doc) =>({...doc.data(), id: doc.id}))};
                 const newBoards = {...prevBoards, ...newBoard};
-                console.log(newBoards);
 
                 return newBoards;
-                //return {...prevParks, [calledStateName]: park.docs.map( (doc) =>({...doc.data(), id: doc.id}))}
             
             })
 
 
         }
-
-
-
+        //Set the park name as that is necessary to load in the boards on reload.
         setParkName(calledParkId);
+
 
 
         
@@ -535,7 +556,8 @@ function Admin() {
     }
 
 
-    //Select board
+    //The board select merely sets the board name such that the right board
+    //is selected on reload.
     const boardSelect = (boardId) => 
     {
         setBoardName(boardId);
@@ -543,7 +565,8 @@ function Admin() {
 
 
     //Filtering
-
+    //Simply uses the filter function within Home.js for state,
+    //ParkPage.js for parks, and BoardPage.js for boards.
     let statesFiltered = states.filter( (state) => {return filterState(state, stateFilter)} );
 
     let parksFiltered = [];
@@ -557,6 +580,7 @@ function Admin() {
         boardsFiltered = boardsUnfiltered.filter( (board) => {return filterBoard(board, boardFilter) } )
     }
 
+    //Displays the required states, parks, and boards.
     return (
         <div style={{background: "black"}}>
             <div className='sign_translation_editor_container'>
@@ -619,7 +643,12 @@ function Admin() {
                     <div>
                         {boardsFiltered !== undefined 
                         && boardsFiltered.map( (board) => {
-//
+                                //This function also handles the QR link.
+                                //Basically, it gets the state name, the park name,
+                                //and the board name. They are stripped of the spaces
+                                //within the name, and are inserted the following link:
+                                //States/[state_name]/Parks/[park_name]/Boards/[board_name]
+
                                 let statesFullName = "";
                                 for(let i = 0; i < states.length; i++)
                                 {
@@ -660,7 +689,6 @@ function Admin() {
                                 
 
                                 const boardUrl = window.location.origin + '/' + stateLinkTitle+ '/' + parkLinkTitle+ '/' + boardLinkTitle;
-                                console.log(boardUrl);
                                 return <BoardMod key = {stateName + parkName + board.id + '1234'} selected = {board.id === boardName} toUploadBoard ={uploadBoard} toDeleteBoard={deleteBoard} onCallBoard = {boardSelect} onDeselectBoard={deselectBoard}  boardId = {board.id} boardName={board.title} boardImage = {board.img} boardEngText = {board.en} url={boardUrl}  ></BoardMod>
 
 

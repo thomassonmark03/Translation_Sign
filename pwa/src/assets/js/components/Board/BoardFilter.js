@@ -1,6 +1,8 @@
 import React from 'react'
 import './BoardFilter.css'
 
+//Simple component that listens for change in its input,
+//and relyas it back to the parent to change the filtering for the boards.
 const BoardFilter = (props) =>{
 
     const filterChanged = (event) =>{

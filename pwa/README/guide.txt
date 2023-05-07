@@ -1,0 +1,149 @@
+How to build this project to run on a local server:
+
+1)install Node.js
+2)run npm build
+3)navigate to into the Translation_Sign folder.
+4)run npm start
+
+
+
+Navigating the folders for Sign Translation:
+
+
+
+App.js: This is the file that holds the root for all the other files. 
+This file will decide between the language page and displaying the correct webpage you are on.
+If a language has not been chosen, which is seen through a cookie saved, the language page will be shown.
+Otherwise, it will show the correct webpage based on what path you are on.
+
+Note: Each folder has a css file, usually for each file there. The css handles the visuals and placement
+of the components.
+
+    Paths and Home Folder:
+        The paths.js file is basically the states hub page. 
+        It has 3 jobs:
+            1st: generate all of the webpage paths for each state.
+            2nd: generate all of the states as components using the State component for selection.
+            3rd: allow the users to navigate to the admin page.
+
+
+        How states are generated are specified in the Home folder.
+
+        Home.js: Generates the states based on the states objects sent by Paths.js. It also holds
+        the logic for filtering out the states.
+        State.js:
+            Decides how states are created.
+            Each state component has a name and a route it will take as specified in the State component page. 
+            There is also a description arguement that is unused.
+        StateFilter.js: Merely communicates with Home.js on what is inputted so Home.js can filter out
+        the states.
+
+
+    Parks folder:
+        The main page is the parks hub page.
+            Similar to the path.js page:
+
+            It has 2 jobs:
+                1st: generate all of the webpage paths for each park.
+                2nd: generate all of the park as components using the park component for selection.
+
+            ParkPage.js: Generates the parks based on the parks objects sent by ParksHub.js. It also holds
+            the logic for filtering out the parks.
+            Park.js:
+                Decides how parks are created.
+                Each park component has a name and a route it will take as specified in the park component page. 
+                There is also a description argument that is unused.
+            ParkFilter.js: Merely communicates with ParkPage.js on what is inputted so ParkPage.js can filter out
+            the Parks.
+        
+    Boards folder:
+        The main page is the boards hub page.
+            Similar to the park.js page:
+
+            It has 2 jobs:
+                1st: generate all of the webpage paths for each board.
+                2nd: generate all of the boards as components using the board component for selection.
+
+            BoardPage.js: Generates the boards based on the boards objects sent by BoardsHub.js. It also holds
+            the logic for filtering out the boards. Note, this is different from ParkPage or Home becauase
+            all the logic for generating the boards to select are handled here.
+
+            BoardFilter.js: Merely communicates with BoardPage.js on what is inputted so BoardPage.js can filter out
+            the Boards.
+
+        Viewing the board for translation
+            BoardSingle.js: Handles generating a webpage for a single board, works alongside board.js.
+            
+            Boards.js:
+                Displays the board title, the board image, and the board body text. The body text
+                will be displayed.
+
+    Language Folder:
+        Handles how language is selected. Very simple, just select a language and hit the confirm button.
+        Default language is spanish.
+
+
+    Design Folder:
+        Handles the designs of the webpages that are independant of the actual page.
+        Backbutton.js: Lets the user go to the previous page, an example is on boards page, they can
+        go back to park pages.
+        Header.js: Displays a home button, the admin login/admin signout, a link to the USACE page, and
+        the choose language button.
+
+    Database folder*****VERY IMPORTANT*****:
+        Firebaseconfig.js:
+        This handles setting up and linking the firebase project, the backend that hosts the website,
+        provides the database, and the storage for the image files for like states, parks, and boards.
+        If a different firebase account wants to be used to host the website, follow these guidlines for
+        changing the Firebaseconfig.js to what you need:
+        https://firebase.google.com/docs/web/setup 
+
+
+    Admin Folder: 
+        This folder handles the entirety of the sign upload feature.
+
+        Login Folder:
+            Contact.js:
+                Handles the initial page for the admin features. You must login with an account
+                setup in the firebase project(not firebase itself, this is specific to the project)
+                to see the admin features.
+
+        AdminHome.js:
+            After logging in, the admin home page will be displayed. Only has one feature at the moment
+            for selection, sign upload.
+
+        Admin.js:
+            The main page for the admin login. It communicates with the firestore database as well as storage
+            to create, update, and delete states, parks, and boards. It also sends the QR link to the
+            QR component for generation.
+
+        Create Folder:
+            The files within the create folder handle how states, parks, and boards are created. Each
+            one utilizes forms that must be filled out to create the corresponding object. 
+            States and Parks must fill out the name to set their id, but they can also upload an image.
+            Boards must also fillout their title, but they can also set the board text as well as the image.
+        Delete Folder:
+            This is simple object used by the Mod files in the State, Park, and Board folder to commuicate
+            that a component needs to be deleted.
+
+        QR Folder:
+            This handles how QR codes are generated after passing the QR link from the admin to this component.
+            QR codes can be hidden until revealed and 
+            ***printed(not recommended to use the print button, rather
+            you should cut the images and paste them into a word document)***.
+
+        State folder, Park folder, and Board folder:
+            Each of these folders has a Mod and Form file. The mod file handles how the user
+            can manipulate the components shown either through opening a form and updating the component
+            or deleting the component. 
+            The form file in particular handles what you can update on the component, thus, they can
+            be modified in the future if the state, park, or board components need to have a more
+            complex form.
+
+
+        
+
+        
+
+
+

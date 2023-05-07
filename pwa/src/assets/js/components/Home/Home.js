@@ -4,34 +4,11 @@ import State from './State'
 import StateFilter from './StateFilter'
 
 
-import TexasPic from './States/texas.jpg'
-import CaliforniaPic from './States/california.jpg'
-
-
-
-const TEST_STATES = [
-
-    {
-        id: 'Texas',
-        description: 'Big Texas',
-        img: TexasPic,
-        route: './test'
-    },
-
-    {
-        name: 'California',
-        description: 'Hot and Dry',
-        img: CaliforniaPic,
-        route: './test'
-    }
-
-
-];
-
+//Takes a state object as well as filter text to filter out the states.
 const filterState = (state, filterText) =>{
     //Find length of string
     //Find match of string
-    //If matches > 1/2 length of string, display
+    //If matches > 1/2 length of string, keep that state. 
     const filterLength = filterText.length; 
     let matches = 0;
     for(let i = 0; i < filterLength && i < state.id.length; i++)
@@ -43,7 +20,8 @@ const filterState = (state, filterText) =>{
     return filterText === '' || matches >= filterLength - 2;
 };
 
-
+//Handles how the state home page is generated, including all its states based on
+//the states object passed by the paths file.
 const Home = (props) =>{
 
     const states = [...props.states];
@@ -58,10 +36,7 @@ const Home = (props) =>{
 
     const displayStates = states.filter((state) => {return filterState(state, filterText)});
 
-    
-    //const displayStates = [...states];
-
-
+    //Display the header, the state filter, and the states.
     return(
         <div>
             <Header></Header>

@@ -5,8 +5,8 @@
 .board-filter{
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
     background: #24252a;
+    justify-content: flex-end;
     
 
 }

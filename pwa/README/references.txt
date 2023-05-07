@@ -40,3 +40,17 @@ make it so the browser responds to the changes in size.
     Part of the above, explains the useLayoutEffect or useEffect return value.
 
 
+https://dmitripavlutin.com/use-react-memo-wisely/
+    For rendering components once.
+
+
+ https://www.baylanguages.com/2020/06/16/languagenames/
+    Names of languages
+
+
+https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
+    Explains how to extract files from the directory.
+
+
+https://stackoverflow.com/questions/18290599/extract-part-of-the-string
+    Way to extract error message
