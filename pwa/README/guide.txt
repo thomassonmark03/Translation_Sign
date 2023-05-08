@@ -6,6 +6,24 @@ How to build this project to run on a local server:
 4)run npm start
 
 
+This guide was inspired another guide online: https://www.knowledgehut.com/blog/web-development/deploying-react-app-to-firebase
+Use the above guide if this guide does not work or if you need some visuals about what you need to do.
+This guide has a bit more specifics about this project and how to run it, so it could be ideal to use both.
+To run this on firebase server:
+0)Test on the local server first using the previous steps
+1)run a terminal into the folder containing this project, in particular, be in the Translation_Sign folder.
+2)input the command: firebase login
+    Log into your firebase account
+    **Note: make sure your configuration files are updated to correspond to your firebase project**.
+    **This can be found in the database folder**
+3)input the command: npm run build
+4)input the command: firebase init
+    If there is already a firebase project hit no and continue to the next step.
+    Otherwise, select hosting
+    Then, select use an existing project.
+    Select the project name.
+5)input the command: firebase deploy
+
 
 Navigating the folders for Sign Translation:
 
@@ -126,7 +144,7 @@ of the components.
             This is simple object used by the Mod files in the State, Park, and Board folder to commuicate
             that a component needs to be deleted.
 
-        QR Folder:
+        QR Folder(within Board folder):
             This handles how QR codes are generated after passing the QR link from the admin to this component.
             QR codes can be hidden until revealed and 
             ***printed(not recommended to use the print button, rather

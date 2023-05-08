@@ -2,55 +2,81 @@
 
 Adding the google translate element to the webpage. 
 {within index.html in pwa/public/index.hmtl}
-https://www.w3schools.com/howto/howto_google_translate.asp
-
+“How to - Google Translate.” How To Google Translate, W3schools, 2023, https://www.w3schools.com/howto/howto_google_translate.asp. 
 
 Values to set the google translate cookie.
-https://cloud.google.com/translate/docs/languages
+“Language Support: Neural Machine Translation Model.” Google, Google, 3 May 2023, https://cloud.google.com/translate/docs/languages. 
 
+------------------------------------------------------------------------------------------------------------
+Copyright 2023 Google
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 Collection creation
-https://stackoverflow.com/questions/71357147/how-to-create-a-collection-in-firebase-using-react
+{used whenever the database is called to extract objects}
+{examples are Paths.js, ParksHub.js, BoardsHub.js, and Admin.js}
+“Add Data to Cloud Firestore.” Google, Google, 4 May 2023, https://firebase.google.com/docs/firestore/manage-data/add-data. 
 
 Deleting documents
-https://firebase.google.com/docs/firestore/manage-data/delete-data
+{used in Admin.js to delete documents in firestore}
+“Delete Data from Cloud Firestore.” Google, Google, 5 May 2023, https://firebase.google.com/docs/firestore/manage-data/delete-data. 
 
+    Deleting files in storage
+    {used in Admin.js to delete images in the firebase cloud storage}
+    “Delete Files with Cloud Storage on Web.” Google, Google, 5 May 2023, https://firebase.google.com/docs/storage/web/delete-files#:~:text=To%20delete%20a%20file%2C%20first,error%20if%20the%20Promise%20rejects. 
 
-For linebreaks in html
-https://stackoverflow.com/questions/39325414/line-break-in-html-with-n
+-------------------------------------------------------------------------------------------------------------
 
-
-https://www.npmjs.com/package/react-to-print
 Using react-to-print
+{used in QRgeneration.js to allow for an easy print function for the QR codes}
+gregnb, and Matthew Herbst. “React-to-Print.” Npm, Npm, 2 Feb. 2012, https://www.npmjs.com/package/react-to-print. 
 
 
-
-https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
 previewing images using URL.createObjectURL(File obj)
+{inspired ideas used in BoardForm.js to preview images selected for image upload}
+Baev, Ivan, and Simbian. “Preview an Image before It Is Uploaded.” Stack Overflow, Stack Overflow, 16 Dec. 2010, https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded. 
 
 
-
-https://itnext.io/responsive-background-images-using-react-hooks-941af365ea1f   
 more responsive images for mobile users.
+{inspired ideas used in Board.js, allowing for dyanic resizing for varying screen sizes}
+Lööf, Siri. “Responsive Background Images Using React Hooks🍍.” Medium, ITNEXT, 22 Feb. 2019, https://itnext.io/responsive-background-images-using-react-hooks-941af365ea1f. 
 
-
-https://stackoverflow.com/questions/19014250/rerender-view-on-browser-resize-with-react
 make it so the browser responds to the changes in size.
-    https://stackoverflow.com/questions/56800694/what-is-the-expected-return-of-useeffect-used-for
+{inspired ideas used in Board.js to allow for dynamic resizing with varying screen sizes}
+digibake, and Sophie Alpert. “Rerender View on Browser Resize with React.” Stack Overflow, Stack Overflow, 25 Sept. 2013, https://stackoverflow.com/questions/19014250/rerender-view-on-browser-resize-with-react. 
+
     Part of the above, explains the useLayoutEffect or useEffect return value.
+    {inspired ideas used in Board.js}
+    PrimeTimeTran, and ravibagul91. “What Is the Expected Return of `UseE:Wffect` Used for?” Stack Overflow, Stack Overflow, 28 June 2019, https://stackoverflow.com/questions/56800694/what-is-the-expected-return-of-useeffect-used-for. 
+
+For rendering components once.
+{attempted usage in BoardSingle.js, not very successful/effect was not as expected}
+Pavlutin, Dmitri. “Use React.memo() Wisely.” Dmitri Pavlutin Blog, 27 Jan. 2023, https://dmitripavlutin.com/use-react-memo-wisely/. 
+
+Names of languages, used for making the language selection.
+{used in LanguagePage.js for names for the language selection}
+Bay Language Academy. “Language Names in Their Own Language.” Bay Language Academy, Bay Language Academy, 16 June 2020, https://www.baylanguages.com/2020/06/16/languagenames/. 
+
+Explains how to extract files from the directory.
+{inspired ideas used in StateForm.js, ParkForm.js, and BoardForm.js to get images to upload files}
+W, Joe, and fahad. “Get File Object from File Input.” Stack Overflow, Stack Overflow, 27 May 2015, https://stackoverflow.com/questions/30483645/get-file-object-from-file-input. 
+
+Way to extract error message
+{Usage in Contact.js for login screen to show why a login failed}
+Toniq, and adeneo. “Extract Part of the String.” Stack Overflow, Stack Overflow, 17 Aug. 2013, https://stackoverflow.com/questions/18290599/extract-part-of-the-string. 
 
 
-https://dmitripavlutin.com/use-react-memo-wisely/
-    For rendering components once.
 
-
- https://www.baylanguages.com/2020/06/16/languagenames/
-    Names of languages
-
-
-https://stackoverflow.com/questions/30483645/get-file-object-from-file-input
-    Explains how to extract files from the directory.
-
-
-https://stackoverflow.com/questions/18290599/extract-part-of-the-string
-    Way to extract error message
+Shows how to deploy the firebase project to firebase.
+{used in the guide.txt to make our own guide on firebase project deployment in more specific detail}
+Gupta, Mritunjay. “How to Deploy React Application to Firebase.” KnowledgeHut, KnowledgeHut, 16 Feb. 2023, https://www.knowledgehut.com/blog/web-development/deploying-react-app-to-firebase. 
