@@ -1,0 +1,27 @@
+*{
+    margin:0px 0px
+}
+
+.backbutton__body{
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background: #24252a;
+    
+
+}
+
+
+.backbutton__button{
+    height: 10px;
+    width: 50%;
+    font-size: 16px;
+    color: white;
+    background: #24252a;
+    padding: 10px;
+
+}
+
+
+

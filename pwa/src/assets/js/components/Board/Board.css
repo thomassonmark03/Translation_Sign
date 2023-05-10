@@ -1,0 +1,67 @@
+
+
+
+.boardTitle{
+
+    font-size: 20px;
+    background-color: gray;
+
+
+
+
+
+}
+
+.boardBody__window{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+
+}
+
+.boardImage__window{
+
+    width: 50%;
+    height: 100%;
+    flex-grow: 1;
+}
+
+.boardText__window{
+    flex-grow: 1;
+    background-color: white;
+    border: 3px solid black; 
+    border-color: black;
+    padding: 50px;
+    width: 50%;
+    height: 100%;
+    font-family: sans-serif;
+}
+
+.boardBody__app{
+
+    display: block;
+
+}
+
+
+.boardImage__app{
+    width: 80%;
+    height: 80%;
+}
+
+.boardText__app{
+    background-color: white;
+    border: 3px solid black; 
+    border-color: black;
+    padding: 50px;
+    width: 80%;
+    height: 100%;
+    font-family: sans-serif;
+}
+
+
+
+
+
+

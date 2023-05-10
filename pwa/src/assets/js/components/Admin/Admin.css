@@ -1,0 +1,51 @@
+
+
+:root{
+    --state--bg-color: aliceblue;
+    --park--bg-color: rgb(134, 168, 74);
+    --board--bg-color: coral;
+}
+
+.sign_translation_editor_container{
+
+    display: flex;
+    flex-direction: row;
+
+    flex-wrap: nowrap;
+
+
+}
+
+.sign_translation_editor__states__container{
+    background-color: var(--state--bg-color);
+    flex: 1 1 33%;
+    border: 2px solid black;
+    border-radius: 5px;
+
+
+
+}
+
+.sign_translation_editor__parks__container{
+
+    background-color: var(--park--bg-color);
+    flex: 1 1 33%;
+    border: 2px solid black;
+    border-radius: 5px;
+
+}
+
+
+
+
+.sign_translation_editor__boards__container{
+
+    background-color: var(--board--bg-color); 
+    flex: 1 1 33%;
+    border: 2px solid black;
+    border-radius: 5px;
+
+}
+
+
+
